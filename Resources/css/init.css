@@ -1,0 +1,244 @@
+/* The main thing this does is to hide the <body> element,
+which will be re-shown when a theme kicks in. This, of course,
+means themes must set display:block on the <body> element */
+
+@import url("timeline-filters.css");
+@import url("popbox-content.css");
+
+#container {
+	opacity:1.0;
+	display:block;
+	-webkit-animation-name: body-fade-in;
+	-webkit-animation-duration: 1s;
+	-webkit-animation-iteration-count: 1;
+}
+	@-webkit-keyframes body-fade-in {
+		0% {
+			-webkit-transform: scale(0.1);
+			opacity:0.2;
+		}	
+		100% {
+			-webkit-transform: scale(1.0);
+			opacity:1.0;
+		}
+	}
+
+	#container.animation-fadeout {
+		-webkit-animation-name: body-fade-out;
+		-webkit-animation-duration: 1s;
+		-webkit-animation-iteration-count: 1;
+		opacity:0;
+	}
+
+		@-webkit-keyframes body-fade-out {
+			0% {
+				-webkit-transform: scale(1.0);
+				opacity:1.0;
+			}	
+			100% {
+				-webkit-transform: scale(0.1);
+				opacity:0.0;
+			}
+		}
+
+/*
+	beta ribbon image that appears inside the #container
+*/
+#beta-ribbon {
+	position: absolute;
+	top:     -1px;
+	right:    0px;
+	pointer-events: none;
+	z-index:  1000;
+	pointer-events: none;
+}
+
+/*
+	cheezy new items animation test
+*/
+div.timeline-entry.animate-in:nth-of-type(-n+7) {
+	-webkit-animation-name: timeline-entry-in;
+	-webkit-animation-duration: .6s;
+	-webkit-animation-iteration-count: 1;
+	-webkit-animation-timing-function: ease-in;
+}
+
+@-webkit-keyframes timeline-entry-in {
+	from {
+		opacity:0;
+/*		-webkit-transform: translateY(-100px);*/
+		-webkit-transform-origin: center center;
+	}
+	to {
+		opacity:1.0;
+/*		-webkit-transform: translateY(0px);*/
+	}
+}
+
+
+/*
+    Should disable ugly AIR focus outlines in most cases
+*/
+*:focus {
+    outline:1px dotted #666;
+}
+
+/* selectable settings */
+* {
+  user-select:none;
+    -webkit-user-select:none;
+}
+input, textarea, .status-text, .status-text * {
+  user-select:none;
+    -webkit-user-select:text;
+}
+
+#tab-prefs{
+  display:none;
+}
+
+.relaunch-required {
+	font-weight:bold;
+	color:#990000;
+}
+
+div.status-text img.inline {
+	display:block;
+	max-width:150px;
+	max-height:150px;
+}
+
+div.status-text img.emoticon {
+	vertical-align: -20%;
+}
+
+
+/* this hides tweets other than dms and replies when enabled */
+div.timeline.dm-replies div.timeline-entry {
+	display:none;
+}
+
+div.timeline.dm-replies div.reply, div.timeline.dm-replies div.dm {
+	display:block;
+}
+
+#wilhelm {
+	font-size:3em;
+	font-weight: bold;
+	text-align: center;
+	text-shadow: #111111 0px 2px 5px;
+	color: #990000;
+	margin:.2em;
+	opacity:.7;
+	-khtml-border-radius:10px;
+	-webkit-box-shadow:0px 0px 10px #333333;
+	background-color: #FFFFFF;
+	display:none;
+	position:absolute;
+}
+
+
+/*
+    These things aren't retrieved properly via Summize search
+*/
+#timeline-search .status-source,
+#timeline-search .status-protected {
+    display:none;
+}
+
+.highlight {
+    background:#EEEEAA;
+    color:#000000;
+    border-bottom:1px dotted #333333;
+}
+
+.hidden {
+	display:none !important;
+}
+
+
+#suggestions {
+	background-color: #000000;
+	background-color: rgba(0,0,0,.8);
+	color: #FFFFCC;
+	padding:0px;
+	margin:0px;
+	-khtml-border-radius:5px;
+	list-style: none;
+	position:absolute;
+	bottom:150px;
+	left:15px;
+	max-height:200px;
+	max-width:200px;
+	overflow:hidden;
+	z-index:2000; /*So this is on top*/
+}
+
+#suggestions .autocomplete-match {
+    padding: 4px 5px;
+    cursor: pointer;
+	margin-right:5px;
+	font-size:10px;
+}
+
+#suggestions .autocomplete-match:first-child {
+	font-weight: bold;
+	text-decoration: underline;
+	color:white;
+}
+
+.timeline-entry .in-reply-to {
+}
+
+#not-logged-in {
+	padding:5px;
+	background:#CCCCCC;
+	font-size:10pt;
+}
+
+#tooltip{
+  z-index:10002; /* = #DOMWindow z-index + 1 */
+}
+#tooltip img {
+/*    max-width: 73px;
+    max-height: 73px;*/
+}
+
+
+.menuitem.selected {
+	font-weight:bold;
+}
+
+/*** Timelines ***/
+
+.timeline-wrapper div.empty,
+.timeline-wrapper div.new-user,
+#timelinewrapper-userlists div.loading,
+#timelinewrapper-search div.loading{
+  display:none;
+}
+div#timeline-followerslist:empty + div.loadmore-panel {
+  display: none;
+}
+
+/*** Entry form ***/
+
+#entryform:not(.has-drafts) #entryform-drafts{
+  display:none;
+}
+#entrybox.flash{
+  animation-name:entrybox-flash;
+    -webkit-animation-name:entrybox-flash;
+  animation-duration:1s;
+    -webkit-animation-duration:1s;
+  animation-iteration-count:1;
+    -webkit-animation-iteration-count:1;
+}
+
+div.embedly {
+};
+	div.embedly img {
+		position:relative;
+		max-width: 300px;
+		max-height:250px;
+	}

@@ -1,0 +1,348 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>Upload Image</title>
+	
+	<link rel="stylesheet" href="utilitywindow.css" type="text/css" media="screen" title="no title" charset="utf-8">
+	<script src="app:/vendors/air/AIRAliases.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app:/vendors/jquery/jquery.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app:/assets/spaz/spaz.js" type="text/javascript" charset="utf-8"></script>	
+	<script src="app:/assets/spaz/spaz.debug.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app:/assets/spaz/spaz.sys.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app:/assets/spaz/spaz.upload.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app:/assets/spaz/spaz.data.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app:/assets/spaz/spaz.uploadservice.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app:/assets/spaz/spaz.ui.js" type="text/javascript" charset="utf-8"></script>
+	
+	<script src="app:/spazcore/spazcore-air.js" type="text/javascript" charset="utf-8"></script>
+	
+	<script type="text/javascript" charset="utf-8">
+		Spaz.Prefs = window.opener.Spaz.Prefs;
+		
+		var service_url = null;
+	
+		var browseForImage = function() {
+			var imageFilter = new air.FileFilter("Images", "*.jpg;*.jpeg;*.gif;*.png");
+			var userFile = new air.File();
+			userFile.browseForOpen("Choose an image file", [imageFilter]);
+			
+			userFile.addEventListener(air.Event.SELECT, function(event) {
+				
+				sch.dump('Chosen file: '+event.target.url);
+							
+				if (!Spaz.Prefs.get('services-twitpic-sharepassword') ) {
+					if ( !confirm('Uploading requires that you share your Twitter username and password with the service. Are you sure you want to do this?') ) {
+						return false;
+					}
+				}
+							
+				if (event.target.url.match(/^(.+)\.(jpg|jpeg|gif|png)$/i)<1) {
+					alert("File must be one of the following:\n .jpg, .jpeg, .gif, .png");
+					return;
+				}
+				handleDrop(event.target.url);
+			})
+		}
+
+		
+	
+		var prepPhotoPost = function(url) {
+		    var eb = window.opener.$('#entrybox');
+		    eb.focus();
+		    if (url) {
+		        eb.val($('#post-message').val() + ' ' + url);
+		        //eb[0].setSelectionRange(eb.val().length - $('#post-message').val().length, eb.val().length);
+				eb[0].setSelectionRange(0, $('#post-message').val().length);
+		        return true;
+		    } else {
+		        return false;
+		    }
+
+			window.opener.$('#irt').fadeOut('fast');
+			window.opener.$('#irt-message').html('').attr('data-status-id', '0');
+
+		}
+		
+		
+	
+		// see http://www.netlobo.com/url_query_string_javascript.html
+		function gup( name )
+		{
+			name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+			var regexS = "[\\?&]"+name+"=([^&#]*)";
+			var regex = new RegExp( regexS );
+			var results = regex.exec( window.location.href );
+			if( results == null )
+			  return "";
+			else
+			  return results[1];
+		}
+
+
+		function handleDrop(fileUrl) {
+			$('#upload-droplet').html('<img src="'+fileUrl+'" />');
+			$('#upload-droplet>img').css('width', $('#upload-droplet').width());
+			$('#upload-droplet>img').css('height', $('#upload-droplet').height());
+			$('#file-url').val(fileUrl);
+		}
+
+    
+	    function dragEnterOverHandler(event){
+	        event.preventDefault();
+	    }
+
+	    function dropHandler(event){
+
+			event.preventDefault();
+			
+			if (!Spaz.Prefs.get('services-twitpic-sharepassword') ) {
+				if ( !confirm('Uploading requires that you share your Twitter username and password with the service. Are you sure you want to do this?') ) {
+					return false;
+				}
+			}
+
+
+		
+			var fileUrl = event.dataTransfer.getData("text/uri-list");
+		
+			sch.dump(fileUrl);
+		
+			if (fileUrl.match(/^(.+)\.(jpg|jpeg|gif|png)$/i)<1) {
+				alert("File must be one of the following:\n .jpg, .jpeg, .gif, .png");
+				return;
+			}
+			handleDrop(fileUrl);
+			return;
+	    }
+	
+		/*
+			Upload the dragged image to Twitpic
+		*/
+		function uploadDraggedImage(fileUrl) {
+			
+			alert('This is NOT gonna work until rewritten for oAuth');
+			
+			sch.dump(fileUrl);
+			
+			Spaz.UI.showLoading();
+				
+			// upload the file
+			Spaz.Data.uploadFile({
+				'extra'  :{
+					"username": Spaz.Prefs.getUsername(),
+					"password": Spaz.Prefs.getPassword(),
+					"source":Spaz.Prefs.get('twitter-source'),
+					"message":$('#post-message').val()
+				},
+				'url'    :service_url,
+				'fileUrl':fileUrl,
+				'open'   : Spaz.UI.showLoading,
+				'complete': function(event) {
+					Spaz.UI.hideLoading();
+					
+					var loader = event.target;
+				    sch.dump(loader.data);
+
+					var parser=new DOMParser();
+					xmldoc = parser.parseFromString(loader.data,"text/xml");
+					
+					//var mediaurl = $(xmldoc).find('mediaurl').text();
+					//sch.dump(mediaurl);
+					//prepPhotoPost(mediaurl);
+					//$('#status-text').html('Complete');
+					var rspAttr = xmldoc.getElementsByTagName("rsp")[0].attributes;
+					if (rspAttr.getNamedItem("stat").nodeValue == 'ok')
+					{
+						var mediaurl = $(xmldoc).find('mediaurl').text();
+						sch.dump(mediaurl);
+						prepPhotoPost(mediaurl);
+						$('#status-text').html('Complete');
+					} 
+					else
+					{
+						var errAttributes = xmldoc.getElementsByTagName("err")[0].attributes;
+						sch.dump(errAttributes);
+						errMsg = errAttributes.getNamedItem("msg").nodeValue;
+						sch.dump(errMsg);
+						$('#status-text').html(errMsg);
+					} 
+				}
+			});
+		}
+	</script>
+	
+	
+	<script type="text/javascript" charset="utf-8">
+	
+		$(document).ready(function() {
+
+			$('#loading').hide();
+			
+			var target = $('#content').get(0);
+			target.addEventListener("dragenter", dragEnterOverHandler);
+			target.addEventListener("dragover", dragEnterOverHandler);
+			target.addEventListener("drop", dropHandler);
+
+			// get the pref
+			var service = Spaz.Prefs.get('file-uploader');
+			service_url = Spaz.Uploadservice.services[service].url;
+			sch.dump("service is "+ service);
+			sch.dump("service url "+ service_url);
+
+			var sharepass = Spaz.Prefs.get('services-twitpic-sharepassword');
+			sch.dump("sharepass is "+ sharepass);
+			
+			// populate the dropdown
+			for (method in Spaz.Uploadservice.services) {
+				if (method[0] != '$') {
+					if (method == service) {
+						$('#file-uploader').append('<option value="'+method+'" selected="selected">'+method+'</option>');
+						$('#extra-'+service).show();
+					} else {
+						$('#file-uploader').append('<option value="'+method+'">'+method+'</option>');
+						$('#extra-'+service).hide();
+					}
+				}
+			}
+			
+			$('#upload-droplet').click(function() {
+				browseForImage();
+			});
+			
+			
+			// bind service dropdown
+			$('#file-uploader').bind('change', function() {
+				var service = $('#file-uploader').val()
+				Spaz.Prefs.set('file-uploader', service);
+				
+				service_url = Spaz.Uploadservice.services[service].url;
+				sch.dump("service is "+ service);
+				sch.dump("service url "+ service_url);
+				
+				$('.service-extras').fadeOut();
+				$('#extra-'+service).fadeIn();
+				
+			});
+			
+
+			
+			
+			// bind click to shorten action
+			$('#upload-button').bind('click', function() {
+				var fileUrl = $('#file-url').val();
+				if (fileUrl) {
+					uploadDraggedImage(fileUrl);
+				} else {
+					browseForImage();
+				}
+				
+				// var service = Spaz.Prefs.get('file-uploader');
+				// sch.dump("service is "+ service);
+				// Spaz.Upload[service]($('#shorten-original-link').val());
+			});
+			
+			
+			$('#post-message').keyup(function(e) {
+				if ($('#post-message').val().length>110) {
+					$('#post-message').val( $('#post-message').val().substr(0,110) );
+				}
+				sch.dump($('#post-message').val().length);
+			})
+			
+			
+			
+			var fileUrl = sc.helpers.escape_html(decodeURIComponent(gup('fileUrl')));
+			if (fileUrl) {
+				handleDrop(fileUrl);
+			}
+			
+			sch.dump(window.location.href);
+			
+			// sch.dump(air.NativeApplication.nativeApplication.spazPrefs);
+		})
+	</script>
+	
+	
+	<style type="text/css" media="screen">
+		#upload-droplet {
+			margin-left:auto;
+			margin-right:auto;
+			margin-bottom:10px;
+			border:3px solid #666;
+			background:transparent;
+/*			-webkit-border-radius:10px;*/
+			font-size:56pt;
+			width:100px;
+			height:100px;
+			text-align:center;
+		}
+		#upload-droplet:hover {
+			background:#CCFFCC;
+			cursor:pointer;
+		}
+		#post-message {
+			height:4.2em;
+			font-size:9pt;
+		}
+		#upload-button {
+			font-size:11pt;
+		}
+		#verification-result {
+			font-size:8pt;
+		}
+			#status-text {
+				margin-left:5px;
+			}
+	</style>
+	
+</head>
+
+<body id="uploadWindow">
+
+<h1>Upload Image</h1>
+
+<div id="content">
+	
+	<div id="upload-droplet" title="Click to upload">
+		
+		&#x21E7;
+		
+	</div>
+	
+	
+	<form id="shortenLink-form" onsubmit="return false;">
+		<div class="formrow">
+			<label for="file-uploader">Service</label>
+			<select id="file-uploader" name="file-uploader" onChange="">
+			</select>
+		</div>
+		
+		
+		
+		
+		<div class="formrow">
+			<label for="original-link">File</label>
+			<input type="text" name="file-url" id="file-url" disabled='disabled' />
+		</div>
+		<div class="formrow">
+			<label for="post-message">Message</label>
+			<textarea type="text" name="post-message" id="post-message"></textarea>
+		</div>
+		
+		<div style="text-align:center">
+			<input type="button" id="upload-button" name="upload" value="Upload" /> 
+		</div>
+		
+		<!-- <div id="extra-twitpic" class="formrow service-extras" style="text-align:center; margin-top:15px">
+			<input type="button" id="upload-button" name="upload" value="Upload" disabled="disabled" style="font-size:24pt" /> 
+		</div> -->
+		<div id="verification-result" align="center"><span id='loading'><!-- <img src='{theme-dir}/images/loading.gif' /> --></span><span id="status-text"></span></div>
+	</form>
+</div>
+
+</body>
+</html>

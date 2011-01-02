@@ -1,0 +1,1212 @@
+@charset "UTF-8";
+@import "jquery-ui/jquery-ui.css";
+
+/*
+	Setting up some basics here
+*/
+html {
+    width: 100%;
+    height:100%;
+}
+
+body {
+	font-family:Myriad, Myriad Pro, Tahoma, Arial, Helvetica, sans-serif;
+	margin:0px;
+	padding:0px;
+    width: 100%;
+    height:100%;
+    display:block;
+}
+/*body:not(.active){
+  opacity:0.75;
+}
+*/
+h1, h2, h3, h4, h5 {
+	padding:0;
+	margin:0;
+}
+
+a, a:link, .clickable {
+	color:#8787BA;
+	text-decoration:none;
+	cursor:pointer;
+}
+
+div.timeline-entry:nth-child(odd){
+	background-color: #FFFFFF;
+	border-top-color: transparent;
+	background-image: transparent;
+	background-repeat: repeat-x;
+}
+div.timeline-entry:nth-child(even){
+	background-color: #FFFFFF;
+	border-top-color: transparent;
+	background-image: transparent;
+	background-repeat: repeat-x;
+}
+
+
+
+
+	/*********************************************************************
+		The container is a div that wraps around all of the content
+	*/
+	#container {
+		overflow:hidden;
+		background-color:#FFFFFF;
+		-khtml-border-radius:5px; /* this is webkit-specific and gives us rounded corners*/
+		top:	1px; /* This has an effective 8px padding to show us the app dropshadow */
+		left:	8px; /* using all-four-sides positioning lets it expand properly on resizing */
+		bottom:	8px;
+		right:	8px;
+	    position: fixed;
+		border:1px solid #CCC;
+	}
+	
+
+		/*********************************************************************
+			The contains the classic "Spaz" title and the window buttons
+		*/
+		#header {
+			background:#FFFFFF;
+			color:#666666;
+			font-size:16px;
+			margin-left:auto;
+			margin-right:auto;
+			margin-top:0;
+			padding:5px 10px 10px 10px;
+			text-align:left;
+			height:42px;
+			position:absolute;
+			top:   0px;
+			left:  0px;
+			right: 0px;
+			-khtml-border-top-left-radius:5px;
+			-khtml-border-top-right-radius:5px;
+			cursor: move;
+		}
+			/*
+				These are the minimize and close buttons for the main window
+			*/
+			#window-buttons {
+				position:absolute;
+				right:	3px;
+				top:	2px;
+				text-align:right;
+			}
+
+				.window-button {
+					padding:2px 6px 2px;
+					color:#666666;
+					background-color:transparent;
+					-khtml-border-radius:5px;
+					font-size:14px;
+					cursor:pointer;
+					margin:0;
+				}
+
+				.window-button:hover {
+					color:#FFFFFF;
+					background-color:#999999;
+				}
+
+			/*
+				These mimic the window-button styles
+			*/
+			#header-label {
+				position:absolute;
+				left:	3px;
+				top:	2px;
+				padding:2px 6px 2px;
+				font-size:16px;
+				color:#666666;
+				background-color:transparent;
+				-khtml-border-radius:5px;
+				cursor:pointer;
+				margin:0;
+			}
+				/*
+					This puts a &raquo; after "Spaz"
+				*/
+				#header-label:after {
+					content:' \00BB';	
+				}
+
+				#header-label:hover {
+					color:#FFFFFF;
+					background-color:#999999;
+				}
+
+		
+			/*
+				The tabs group contains the tabs themselves and the content panels
+			
+				From Spry CSS Notes:
+				This is the selector for the main TabbedPanels container. For our
+				default style, this container does not contribute anything visually,
+				but it is floated left to make sure that any floating or clearing done
+				with any of its child elements are contained completely within the
+				TabbedPanels container, to minimize any impact or undesireable
+				interaction with other floated elements on the page that may be used
+				for layout.
+			
+				If you want to constrain the width of the TabbedPanels widget, set a
+				width on the TabbedPanels container. By default, the TabbedPanels widget
+				expands horizontally to fill up available space.
+			 
+			*/
+			#tabs, .TabbedPanels {
+				margin: 0px;
+				padding: 0px;
+				float: left;
+				clear: none;
+			}
+		
+			/*
+				The timeline tabs, a UL group
+
+				From Spry CSS Notes:
+				This is the selector for the TabGroup. The TabGroup container houses
+				all of the tab buttons for each tabbed panel in the widget. This container
+				does not contribute anything visually to the look of the widget for our
+				default style.
+			*/
+			#timeline-tabs, .TabbedPanelsTabGroup {
+				position:absolute;
+				left:17px;
+				right:10px;
+				top:32px;
+				margin: 0px;
+				padding: 0px;
+			}
+
+
+			/*				
+				From Spry CSS Notes:
+				This is the selector for the TabbedPanelsTab. This container houses
+				the title for the panel. This is also the tab "button" that the user clicks
+				on to activate the corresponding content panel so that it appears on top
+				of the other tabbed panels contained in the widget.
+
+				For our default style, each tab is positioned relatively 1 pixel down from
+				where it wold normally render. This allows each tab to overlap the content
+				panel that renders below it. Each tab is rendered with a 1 pixel bottom
+				border that has a color that matches the top border of the current content
+				panel. This gives the appearance that the tab is being drawn behind the
+				content panel.
+			 */
+			.TabbedPanelsTab {
+				position: relative;
+				top: -4px;
+				float: left;
+				padding: 2px 2px;
+				margin: 0px 1px 0px 0px;
+				font-size: 11px;
+				background-color: #BBBBBB;
+				color:#FFFFFF;
+				list-style: none;
+				-moz-user-select: none;
+				-khtml-user-select: none;
+				/*-khtml-border-top-left-radius:.5em;
+									-khtml-border-top-right-radius:.5em;*/
+
+				cursor: pointer;
+				border:none;
+				border: solid 1px;
+			}
+
+			/*
+				From Spry CSS Notes:
+				This selector is an example of how to change the appearnce of a tab button
+				container as the mouse enters it. The class "TabbedPanelsTabHover" is
+				programatically added and removed from the tab element as the mouse enters
+				and exits the container.
+			 */
+			.TabbedPanelsTabHover {
+				background-color: #333333;
+			}
+
+			/*
+				From Spry CSS Notes:
+				This selector is an example of how to change the appearance of a tab button
+				container after the user has clicked on it to activate a content panel.
+				The class "TabbedPanelsTabSelected" is programatically added and removed
+				from the tab element as the user clicks on the tab button containers in
+				the widget.
+
+				As mentioned above, for our default style, tab buttons are positioned
+				1 pixel down from where it would normally render. When the tab button is
+				selected, we change its bottom border to match the background color of the
+				content panel so that it looks like the tab is part of the content panel.
+			 */
+			.TabbedPanelsTabSelected {
+				background-color: transparent;
+				border: solid 1px #BBBBBB;
+				color:#FFFFFF;
+			}
+
+			/*
+				From Spry CSS Notes:
+				This selector is an example of how to make a link inside of a tab button
+				look like normal text. Users may want to use links inside of a tab button
+				so that when it gets focus, the text *inside* the tab button gets a focus
+				ring around it, instead of the focus ring around the entire tab.
+			 */
+			.TabbedPanelsTab a {
+				color: #FFFFFF;
+				text-decoration: none;
+			}
+			/* These two tabs get a little extra margin-left to separate things into groups */
+			#tab-followerslist {
+				margin-left:5px;
+			}
+			#tab-prefs {
+				margin-left:5px;
+			}
+				/* The image in the tab itself */
+				.tab-icon {
+					margin-bottom:-1px;
+					width:10px;
+					height:10px;
+					display:block;
+					background-repeat: no-repeat;
+				}
+				    /*#tab-friends .tab-icon { background:url('images/tab-icon-timeline.png'); }
+				    				    #tab-user .tab-icon { background:url('images/tab-icon-user.png'); }
+				    				    #tab-public .tab-icon { background:url('images/tab-icon-public.png'); }
+				    				    #tab-search .tab-icon { background:url('images/tab-icon-search.png'); }
+				    				    #tab-followerslist .tab-icon { background:url('images/tab-icon-following.png'); }
+				    				    #tab-followerslist .tab-icon { background:url('images/tab-icon-followers.png'); }
+				    				    #tab-prefs .tab-icon { background:url('images/tab-icon-prefs.png'); }*/
+
+			/*
+				These are the content panels, wrapped inside a single container div
+				
+				From Spry CSS Notes:
+				This is the selector for the ContentGroup. The ContentGroup container houses
+				all of the content panels for each tabbed panel in the widget. For our
+				default style, this container provides the background color and borders that
+				surround the content.
+			*/
+			#timeline-tabs-content, .TabbedPanelsContentGroup {
+				clear: both;
+				position:absolute;
+				border-top:      1px solid #DDDDDD;
+				border-bottom: 1px solid #DDDDDD;
+				top:   52px;
+				left:  0px;
+				right: 0px;
+				bottom:42px;
+				background-color:transparent;
+			}
+
+				/* This is the selector for the Content panel. The Content panel holds the
+				 * content for a single tabbed panel. For our default style, this container
+				 * provides some padding, so that the content is not pushed up against the
+				 * widget borders.
+				 *
+				 * The name of the class ("TabbedPanelsContent") used in this selector is
+				 * not necessary to make the widget function. You can use any class name you
+				 * want to style the Content container.
+				 */
+				.TabbedPanelsContent {
+					margin:0px;
+					padding:0px;
+/*					-webkit-animation-name: 'revealtabcontent';
+				    -webkit-animation-duration: .3s;
+				    -webkit-animation-iteration-count: 1;
+*/					
+				}
+
+				/* This selector is an example of how to change the appearnce of the currently
+				 * active container panel. The class "TabbedPanelsContentVisible" is
+				 * programatically added and removed from the content element as the panel
+				 * is activated/deactivated.
+				 */
+				.TabbedPanelsContentVisible {
+
+				}
+
+					/*
+						The panelmenu appears at the top of each timeline
+					*/
+					.panelmenu {
+	                    background-color:#EEEEEE;
+	                    padding:2px;
+						height:20px;
+					}
+						.panelmenu form {
+	                        margin-left: auto;
+	                        margin-right:auto;
+	                        text-align:left;
+							margin:0px;
+							padding:0px;
+	                    }
+						.panelmenu form input {
+							font-size:10px;
+							margin:2px 0 2px;
+						}
+							.panelmenu form input[type='button'] {
+								padding:1px 4px;
+								border:1px solid transparent;
+								background-color:#BBBBBB;
+								color:#333333;
+							}
+							.panelmenu form input[type='button']:hover {
+								border:1px solid #888888;
+								background-color:#AAAAAA;
+								color:#222222;
+							}
+						
+				        .panelmenu form input[type='text'] {
+	                        width:75px;
+							padding-left:6px;
+							background-color:#DDDDDD;
+	                        border:1px solid #BBBBBB;
+							color:#333333;
+							-khtml-border-radius:5px;
+	                    }
+	                		.panelmenu form input[type='text']:focus {
+	                            border:1px solid #888888;
+								background-color:#AAAAAA;
+								color:#222222;
+	                        }
+			        
+
+					/*
+						This wraps to provide scrolling for div.timeline
+					*/
+					.timeline-wrapper {
+						overflow:auto;
+						position:absolute;
+						top:24px;
+						left:0px;
+						right:0px;
+						bottom:0px;
+					}
+
+					@-webkit-keyframes revealtabcontent {
+
+						0% {
+							-webkit-transform: scale(4.0);
+							opacity:0.1;
+						}
+						100% {
+							-webkit-transform: scale(1.0);
+							opacity:1.0;
+						}
+
+					}
+					
+					#timelinewrapper-prefs {
+						top:0px;
+					}
+					
+						/*
+							The .timeline divs are all inside .TabbedPanelsContent divs
+						*/
+						div.timeline {
+/*							overflow:auto;*/
+/*							background:green;*/
+							background-image:none;
+							background-repeat:repeat-x;
+							background-position: 0px -4px;
+							padding:0px;
+							margin:0px;
+/*							overflow:auto;*/
+/*							position:absolute;*/
+						}
+
+
+							/*
+								This is effectively dead since the Twitter API doesn't support paging anymore.
+								Still, I'm keeping it in in case we ever re-enable some sort of paging.
+							*/
+							div.timeline-pager {
+								background-color: #555555;
+								color:#ffffcc;
+								position:absolute;
+								bottom: 90px;
+								left:   10px;
+								right:  10px;
+								height: 11px;
+								padding:2px;
+								font-size: 8px;
+								border-top:   1px solid #555555;
+								border-bottom:1px solid #555555;
+							}
+							div.timeline-pager a {
+								color:#ffffcc;
+							}
+							div.timeline-pager-left {
+								position:absolute;
+								left: 4px;
+								top: -4px;
+								font-size:16px;
+							}
+							div.timeline-pager-info {
+								text-align:center;
+							}
+							div.timeline-pager-right {
+								position:absolute;
+								right: 4px;
+								top:  -4px;
+								font-size:16px;
+							}
+					.timeline-wrapper div.intro,
+					.timeline-wrapper div.loading,
+					.timeline-wrapper div.empty{
+						margin:150px 50px 0;
+						color:#999;
+						font-size:0.75em;
+						text-align:center;
+					}
+
+		/*
+			The entryform contains the #entrybox textarea input for posts and the #updateButton
+		*/
+		#entryform {
+			position:absolute;
+			margin:0;
+			padding:0;
+			bottom:19px;
+			left:0px;
+			right:0px;
+			z-index: 10;
+			border-bottom: 1px solid #DDDDDD;
+		}
+			/*
+				This is a Spry textarea widget
+			*/
+			#entrybox {
+				bottom:0px;
+				position:absolute;
+				margin:0;
+				left:   0px;
+				right:  0px;
+				height:16px;
+				font-size:11px;
+				overflow:auto;
+				padding:6px 3px 0;
+				text-align:left;
+				background-color:#FFFFDD;
+				border:none;
+				background-image:none;
+			}
+
+				/* the hint shown when the widget does not have focus */
+				.textareaHintState {
+					color:#AAAAAA;
+				}
+				/* Formatting for when the textarea has focus */
+				.textareaFocusState {
+					color:#333333;
+				}
+			
+			/*
+				This is the counter for number of chars entered
+			*/
+			#entrybox-popup {
+				position:absolute;
+				z-index: 100;
+				font-size:9px;
+				display:none;
+				bottom:22px;
+				right: 20px;
+				padding:3px;
+				background-color:rgba(224,224,224,.9);
+				color:#000;
+				-khtml-border-top-left-radius:5px;
+				-khtml-border-top-right-radius:5px;
+			}
+				#irt {
+					color:#333;
+				}
+					#irt-message {
+					}
+					#irt-dismiss {
+						padding:0px 4px 1px;
+						color:#CCC;
+						background-color:rgba(32,32,32,.8);
+						-khtml-border-radius:4px;
+						font-size:9px;
+						cursor:pointer;
+						margin:0;
+					}
+						#irt-dismiss:hover {
+							color:#FFFFFF;
+							background-color:rgba(0,0,0,.9);
+						}
+
+			/*
+				The button to submit the post. This can be hidden completely, and the user can still
+				hit ENTER to send, so it's not really necessary
+			*/
+			#updateButton {
+				bottom:3px;
+				right: 3px;
+				position:absolute;
+				opacity:0.5;
+				display:none;
+			}
+				#updateButton:hover {
+					opacity:0.9;
+				}
+			
+			
+		/*
+			The bar at the bottom of the app that displays info
+		*/
+		#statusbar {
+			position:absolute;
+			padding:13px 8px 2px 8px;
+			font-size:10px;
+			color:#999999;
+			background-color:#FFFFFF;
+			bottom:0px;
+			left:0px;
+			right:0px;
+			-khtml-border-bottom-left-radius:5px;
+			-khtml-border-bottom-right-radius:5px;
+			overflow:hidden;
+			white-space:nowrap;
+			cursor:move;
+		}
+			/*
+				The wrapper for the little loading animation
+			*/
+			#loading {
+				float:right;
+				display:none;
+				height:10px;
+				width: 10px;
+				background:url('images/loading.gif');
+				background-repeat: no-repeat;
+				
+			}
+
+			#statusbar-text {}
+
+			span.statusbar-username {
+				font-weight:bold;
+			}
+
+
+		/*
+			The little resizing widget. This is totally misnamed (it should be "se" and not "sw")
+			but I'm kind of an idiot.
+		*/
+		#resize-sw {
+			position:absolute;
+			bottom:0px;
+			right:0px;
+			font-size:12px;
+			background-image:url('images/resize-sw.png');
+			cursor: sw-resize;
+			text-align:center;
+			width: 13px;
+			height:13px;
+			opacity:0.5;
+		}
+
+
+
+
+
+
+	/*
+		Tooltips, those little popup messages that appear when you float over links and some other junk
+	*/
+	#tooltip {
+		background-color:#000000;
+		color:#FFFFFF;
+		font-size:10px;
+		padding:5px !important;
+		border:0px solid black;
+		opacity:0.8;
+		position:fixed;
+		z-index:1000;
+		top:1px;
+		left:1px;
+		-khtml-border-radius:5px;
+		display:none;
+		min-width:100px;
+		max-width:320px;
+
+	}
+		#tooltip h3, #tooltip div {
+			margin: 0;
+			font-weight:normal;
+			font-size:inherit;
+		}
+
+
+
+	/*********************************************
+		context menus
+		- not sure that these will continue to be used, if native versions can work okay
+	*/
+	div.context-menu {
+		position:fixed;
+		z-index: 1010;
+		font-size:10px;
+		font-weight: normal;
+		top:10px;
+		left:10px;
+		overflow: auto;
+		background-color: #000000;
+		background-repeat: repeat-x;
+		color:#FFFFFF;
+		-webkit-box-shadow:0px 0px 6px #333333;
+		display:none;
+		padding:5px;
+		opacity:0.8;
+		-khtml-border-radius:5px;
+	}
+		div.context-menu ul {
+			padding:0;
+			margin:0;
+			list-style: none;
+		}
+			div.context-menu li {
+				list-style: none;
+				padding:4px;
+			}
+				div.context-menu li:hover {
+					background-color:#333333;
+					color:#ffffff;
+					cursor: pointer;
+					-khtml-border-radius:5px;
+				}
+
+
+
+
+
+
+
+
+/*************************************************
+	Timeline entries are... entries in the timelines
+*/
+div.timeline-entry {
+/*  background-color: #CCCC99;*/
+	padding: 10px 5px;
+	/*border-top-width: medium;
+		border-top-style: solid;
+		border-top-color: #999966;*/
+	clear:both;
+	overflow:hidden;
+	font-size:11px;
+	-webkit-animation-name: 'fadein';
+    -webkit-animation-duration: .4s;
+    -webkit-animation-iteration-count: 1;
+}
+
+@-webkit-keyframes 'fadein' {
+
+ 0% {
+   opacity: 0.2;
+ }
+ 100% {
+   opacity: 1.0;
+ }
+}
+
+
+
+	/*
+		Entries that are replies directed at the user
+	*/
+	div.timeline-entry.reply {
+		background-color: #FFFFDD;
+		background-image: none;
+	}
+	/*
+		Entries that are direct messages to the user
+	*/
+	div.timeline-entry.dm {
+		background-color: #FFDDDD;
+		background-image: none;
+	}
+
+	div.timeline-entry.reply.ui-selected {
+		background-color: #DDFFDD;
+		background-image: none;
+	}
+	div.timeline-entry.dm.ui-selected {
+		background-color: #FFCCFF;
+		background-image: none;
+	}
+	
+	/*
+		Selected entries
+		the .ui-selected class name comes from the one used by the jQuery.ui selectables plugin
+		We don't actually use that here, but it was experimented with, and may return sometime
+	*/
+	div.timeline-entry.ui-selected
+	{
+		background-color:#DDDDED;
+		color:#111111;
+	}
+		div.timeline-entry.ui-selected div.status-link {
+			/*font-size:10px;
+						color:#CCCCCC;*/
+		}
+		div.timeline-entry.ui-selected a, div.timeline-entry.ui-selected a:link, div.timeline-entry.ui-selected .clickable {
+			/*color:#CCCCCC;*/
+			text-decoration:none;
+			cursor:pointer;
+		}
+		div.timeline-entry.ui-selecting
+		{
+			/*background-color: #666666 !important;*/
+/*			opacity:0.6;*/
+		}
+		
+	/*
+		Entries that have been "read" (selected and then deselected)
+	*/
+	div.timeline-entry.read { opacity:.8 }
+		div.timeline-entry.read .status-text { color:#777777; }
+		div.timeline-entry.read.ui-selected .status-text {
+			color:#444444;
+		}
+
+		div.timeline-entry.read div.user-image {
+			opacity:.7;
+		}
+
+	/*
+		A container for the avatar image and the user's screen name
+	*/
+	div.user {
+		float:left;
+		width:60px;
+		text-align:center;
+		overflow:visible;
+		margin-right:5px;
+		position:relative;
+	}
+
+		div.user-image {
+		  width:48px;
+		  height:48px;
+/*			border:3px double #999999;*/
+			margin:0 auto 2px;
+			background:#FFFFFF 0 0 no-repeat;
+/*      background-image:url(images/userimg-bg.png);*/
+			background-size:48px 48px;
+				-webkit-background-size:48px 48px;
+			box-shadow:0 1px 5px #333;
+				-webkit-box-shadow:0 1px 5px #333;
+			opacity:1;
+			text-indent:-9999em;
+		}
+
+		div.user-screen-name {
+			font-size:10px;
+			overflow:hidden;
+			display:none;
+		}
+
+	/*
+		This is the container for the "status", which is the message posted + some metadata about it + some action links
+	*/
+	div.status {
+		font-size:13px;
+		margin:0 0 0 70px;
+		padding:0;
+	}
+		/*
+			This is the actual text of the posting
+		*/
+		div.status-text {
+/*			font-family:Palatino,Georgia, "Times New Roman", Times, serif;*/
+			margin-bottom:4px;
+			font-size:12px;
+			color:#555555;
+		}
+			div.status-text a:link{
+				text-overflow:ellipsis;
+	            white-space: nowrap;
+				max-width:150px;
+				overflow:hidden;
+				display:inline-block;
+			}
+		/* the container for the "actions" for this post, like reply, dm, delete, fav, etc */
+		div.status-actions {
+			font-size:10px;
+			float:right;
+		}
+		    .status-action {
+		        width:15px;
+		        height:12px;
+		        background-repeat: no-repeat;
+		        display: inline-block;
+		    }
+
+    		    .status-action-fav { background-image:url('images/status-fav-off.png'); }
+		 			div.timeline-entry.favorited .status-action-fav { background-image:url('images/status-fav-on.png'); }
+    		    .status-action-retweet { background-image:url('images/status-retweet.png'); }
+    		    .status-action-dm { background-image:url('images/status-dm.png'); }
+    		    .status-action-reply { background-image:url('images/status-reply.png'); }
+				.status-action-del { background-image:url('images/status-delete.png'); }
+
+		/* the container for the "permalink" to the post */
+		div.status-link {
+			font-size:10px;
+			color:#444444;
+		}
+			a.status-created-at {} /* the link to the relative time of the posting. this is the permalink */
+			
+			.status-source {} /* the text that says "from Foobar" */
+			.status-source-label {} /* the text with the name of the posting source ("Foobar") */
+
+			/* the icon that indicates this is a protected post */
+			span.status-protected {
+				background:url('images/icon-lock.png');
+                padding:0 6px; /* width doesn't matter on inline element, so use padding to force width */
+                height:12px;
+			}
+
+
+
+
+
+.followerslist-row {
+	font-size:8pt;
+	clear:both;
+	padding:8px;
+}
+	.followerslist-row .directory-user {
+
+	}
+		.directory-user .user-image {
+			background-color:#dddddd;
+			border:1px solid #999;
+			width:24px;
+			height:24px;
+			margin:0 5px 0 0;
+			-webkit-box-shadow:none;
+			float:left;
+		}
+		.directory-user .directory-user-name {
+			font-weight:bold;
+			font-size:10pt;
+		}
+		.directory-user .directory-user-location {
+
+		}
+		.directory-user .directory-user-homepage {
+
+		}
+
+
+
+
+
+/*************************************************
+	All about the PREFERENCES panel
+*/
+#prefs-form {
+	font-size:11px;
+	margin:0px 10px;
+	padding:10px;
+}
+
+	/*
+		The Prefs form contains a collapsible panel group Spry widget
+	*/
+	#prefsCPG, .CollapsiblePanelGroup {}
+		
+		.CollapsiblePanel {}
+		
+		.CollapsiblePanelClosed {}
+		
+		/* make the title tab darker when the panel is open */
+		#prefs-form .CollapsiblePanelOpen h2.CollapsiblePanelTab {
+			color:#333333;
+		}
+
+			/*
+				The tab is the clickable title that opens and closes the panel
+			*/
+			#prefs-form h2.CollapsiblePanelTab {
+				font-weight:bold;
+				font-size:14px;
+				color:#999999;
+				border-bottom:1px solid #CCCCCC;
+				cursor: pointer;
+				padding-bottom:2px;
+				padding-top:8px;
+				margin-bottom:0px;
+			}
+
+
+			/*
+				The panel that actually contains stuff
+			*/
+			#prefs-form .CollapsiblePanelContent {
+				margin:   0px;
+				padding: 10px 10px 0;
+				border-bottom: 1px solid #CCCCCC;
+				clear:both;
+				background-color: #F0F0F0;
+				color: #555555;
+				overflow: hidden;
+			}
+
+
+
+
+				/*
+					The div.formrows wrap each pref gui piece
+				*/
+				div.formrow {
+/*                    white-space: nowrap;*/
+					clear:both;
+					margin-bottom:5px;
+				}                    
+                    
+					#prefs-form label {
+						min-width:80px;
+						text-align:left;
+						font-weight:bold;
+						display:block;
+					}
+					#prefs-form label.checkbox {
+						float: none;
+						padding:0;
+						margin:0 0 0 1px;
+						display:inline;
+					}
+
+                    #prefs-form fieldset {
+                        border-left-width: 0px;
+                        border-right-width: 0px;
+                        border-bottom-width: 0px;
+						border-color: #CCCCCC;
+                        padding:5px 0 5px 3px;                        
+                        margin: 10px 0 0 0;                        
+                    }
+
+                        #prefs-form legend {
+                            font-weight:bold;
+                        }
+
+                        #prefs-form fieldset label {
+                            font-weight:normal;
+                        }
+
+					/*
+						Buncha junk for various form fields, really only used in the Preferences section
+					*/
+					#prefs-form input[type='password'],
+					#prefs-form input[type='text'],
+					#prefs-form select {
+						border:1px solid #AAAAAA;
+						padding:4px;
+						width:90%;
+					}
+					#prefs-form input[type='checkbox'] {
+						vertical-align:-20%;
+					}
+					#prefs-form option {
+						font-family:sans-serif;
+						size:10px;
+					}
+					input[type='button'], input[type='submit'] {
+						background-color:#666666;
+						color:#FFFFFF;
+						-khtml-border-radius:5px;
+						border:2px solid #333333;
+						font-size:10px;
+						cursor:pointer;
+						padding:3px;
+					}
+						input[type='button']:focus, input[type='submit']:focus,
+						input[type='button']:hover, input[type='submit']:hover {
+							background-color:#111111;
+							border-color:#444444;
+							color:#FFFFFF;
+						}
+
+                    input[type="text"]:focus,
+                    input[type="password"]:focus,
+                    textarea:focus {
+                        background-color:#FFFFCC;
+                    }
+                    
+                    
+					/*
+						A few specific pref "widgets" need special formatting
+					*/
+					input[type='text']#prefs-user-stylesheet {
+						width:80px;
+					}
+					input[type='text']#network-refreshinterval {
+						width:20px;
+					}
+               input[type='text']#dock-refreshinterval {
+                  width:30px;
+               }
+					input[type='text']#window-alpha {
+						width:30px;
+						text-align:right;
+					}
+					#prefs-user-stylesheet-button, #prefs-user-stylesheet-clear {
+						padding:2px;
+						font-size:10px;
+						margin:0px;
+					}
+
+	/*
+		The update/save prefs button sits outside the panel group
+	*/
+	#prefs-update-button {
+		margin-left:0;
+		font-size:13px;
+	}
+
+
+
+
+
+
+
+
+/*
+	Tables should look pretty
+*/
+table.data {
+	margin-left:auto;
+	margin-right:auto;
+	text-align:center;
+	padding:5px;
+	border-top:3px solid #333333;
+	border-bottom:1px solid #333333;
+	border-collapse:collapse;
+	width:100%;
+}
+	table.data th {
+		background-color:#202020;
+		color:#DDDDDD;
+		font-size:9px;
+		font-weight:bold;
+		text-align:left;
+		padding:4px;
+	}
+
+	table.data tr {
+		border-top-style: solid;
+		border-top-width: 1px;
+	}
+
+		table.data tr:hover {
+			background:#FFFFCC;
+		}
+
+	table.data td {
+		font-size:10px;
+		padding:4px;
+		text-align:left;
+	}
+
+		table.data td.label {
+			font-weight:bold;
+			text-align:right;
+			border-right:1px solid #999999;
+		}
+		table.data td.label:after { /*content:":";*/ }
+		table.data td.value {
+			padding:2px;
+		}
+
+
+
+
+
+
+
+
+
+
+/*
+	I think this is needed by some widgets. Maybe not?
+*/
+.SpryHiddenRegion {
+	visibility:hidden;
+}
+
+
+
+
+/* Turn on a 13x13 scrollbar */
+::-webkit-scrollbar {
+    width: 13px;
+    height: 13px;
+}
+
+::-webkit-scrollbar-button:vertical {
+}
+
+/* Turn on single button up on top, and down on bottom */
+::-webkit-scrollbar-button:start:decrement,
+::-webkit-scrollbar-button:end:increment {
+    display: block;
+}
+
+/* Turn off the down area up on top, and up area on bottom */
+::-webkit-scrollbar-button:vertical:start:increment,
+::-webkit-scrollbar-button:vertical:end:decrement {
+    display: none;
+}
+
+/* Place The scroll down button at the bottom */
+::-webkit-scrollbar-button:vertical:increment {
+    background-color: #AAA;
+	-khtml-border-radius:1em; /* this is webkit-specific and gives us rounded corners*/
+}
+
+/* Place The scroll up button at the up */
+::-webkit-scrollbar-button:vertical:decrement {
+    background-color: #AAA;
+	-khtml-border-radius:1em; /* this is webkit-specific and gives us rounded corners*/
+}
+
+::-webkit-scrollbar-track:vertical {
+	-khtml-border-radius:1em; /* this is webkit-specific and gives us rounded corners*/
+}
+
+/* Top area above thumb and below up button */
+::-webkit-scrollbar-track-piece:vertical:start {
+	-khtml-border-radius:1em; /* this is webkit-specific and gives us rounded corners*/
+}
+
+/* Bottom area below thumb and down button */
+::-webkit-scrollbar-track-piece:vertical:end {
+	-khtml-border-radius:1em; /* this is webkit-specific and gives us rounded corners*/
+}
+
+/* Track below and above */
+::-webkit-scrollbar-track-piece {
+    background-color: #CCC;
+}
+
+/* The thumb itself */
+::-webkit-scrollbar-thumb:vertical {
+    height: 50px;
+    background-color: #999;
+	-khtml-border-radius:1em; /* this is webkit-specific and gives us rounded corners*/
+}
+
+/* Corner */
+::-webkit-scrollbar-corner:vertical {
+    background-color: black;
+}
+
+/* Resizer */
+::-webkit-scrollbar-resizer:vertical {
+    background-color: gray;
+}
