@@ -1163,16 +1163,16 @@ Spaz.Prefs.setSoundFileLocations = function() {
 	var soundFileUpdate = sch.getFileObject(sch.getAppStorageDir());
 	soundFileUpdate = soundFileUpdate.resolvePath('usersounds/Csnd.mp3');
 
-	var soundFileStartup = air.File.applicationStorageDirectory;
+	var soundFileStartup = sch.getFileObject(sch.getAppStorageDir());
 	soundFileStartup = soundFileStartup.resolvePath('usersounds/On.mp3');
 
-	var soundFileShutdown = air.File.applicationStorageDirectory;
+	var soundFileShutdown = sch.getFileObject(sch.getAppStorageDir());
 	soundFileShutdown = soundFileShutdown.resolvePath('usersounds/Off.mp3');
 
-	var soundFileNew = air.File.applicationStorageDirectory;
+	var soundFileNew = sch.getFileObject(sch.getAppStorageDir());
 	soundFileNew = soundFileNew.resolvePath('usersounds/New.mp3');
 
-	var soundFileWilhelm = air.File.applicationStorageDirectory;
+	var soundFileWilhelm = sch.getFileObject(sch.getAppStorageDir());
 	soundFileWilhelm = soundFileWilhelm.resolvePath('usersounds/wilhelm.mp3');
 
 	if (soundFileUpdate.exists()) {
