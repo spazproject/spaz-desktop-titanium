@@ -37,23 +37,24 @@ Spaz.restartReloadTimer = function() {
 };
 
 Spaz.createUserDirs = function() {
-	var appStore = air.File.applicationStorageDirectory;
-	var userThemesDir = appStore.resolvePath(USERDIR_THEMES);
+	var appStore = sch.getFileObject(sch.getAppStorageDir());
+	
+	var userThemesDir = appStore.resolve(USERDIR_THEMES);
 	userThemesDir.createDirectory();
 
-	var userPluginsDir = appStore.resolvePath(USERDIR_PLUGINS);
+	var userPluginsDir = appStore.resolve(USERDIR_PLUGINS);
 	userPluginsDir.createDirectory();
 
-	var userSmileysDir = appStore.resolvePath(USERDIR_SMILEYS);
+	var userSmileysDir = appStore.resolve(USERDIR_SMILEYS);
 	userSmileysDir.createDirectory();
 
-	var userSoundsDir = appStore.resolvePath(USERDIR_SOUND);
+	var userSoundsDir = appStore.resolve(USERDIR_SOUND);
 	userSoundsDir.createDirectory();
 
-	sch.debug(userThemesDir.nativePath);
-	sch.debug(userPluginsDir.nativePath);
-	sch.debug(userSmileysDir.nativePath);
-	sch.debug(userSoundsDir.nativePath);
+	sch.debug(userThemesDir.toString());
+	sch.debug(userPluginsDir.toString());
+	sch.debug(userSmileysDir.toString());
+	sch.debug(userSoundsDir.toString());
 };
 
 
@@ -92,9 +93,11 @@ Spaz.initialize = function() {
 
 	sch.debug('root init begin');
 	
-	window.htmlLoader.navigateInSystemBrowser = false;
+	/* @TODO find equivalent */
+	// window.htmlLoader.navigateInSystemBrowser = false;
 
-	air.NativeApplication.nativeApplication.autoExit = true;
+	/* @TODO find equivalent */
+	// air.NativeApplication.nativeApplication.autoExit = true;
 	
 	// create user themes and plugins dirs if necessary
 	Spaz.createUserDirs();
@@ -160,17 +163,8 @@ Spaz.initialize = function() {
 
 	
 	
-	window.htmlLoader.manageCookies = false;
-	window.htmlLoader.paintsDefaultBackground = false;
-	window.htmlLoader.cacheResponse = true;
-	window.htmlLoader.useCache = true;
-	window.htmlLoader.authenticate = Spaz.Prefs.get('network-airhandlehttpauth');
 	Spaz.Sys.initUserAgentString();
-
-	air.URLRequestDefaults.manageCookies = false;
-	air.URLRequestDefaults.cacheResponse = true;
-	air.URLRequestDefaults.useCache = true;
-
+	
 
 	Spaz.Windows.makeSystrayIcon();
 

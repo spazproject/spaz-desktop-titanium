@@ -15,18 +15,21 @@ Spaz.Sys.getVersion = function() {
 
 
 Spaz.Sys.initUserAgentString = function() {
-	window.htmlLoader.userAgent = 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X; en) AppleWebKit/420+ (KHTML, like Gecko) Spaz/' + Spaz.Sys.getVersion();
-	// air.URLRequestDefaults.userAgent = air.HTMLLoader.userAgent
-	sch.dump(window.htmlLoader.userAgent)
-	return window.htmlLoader.userAgent
+	sch.error('Spaz.Sys.initUserAgentString NYI');
+	// window.htmlLoader.userAgent = 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X; en) AppleWebKit/420+ (KHTML, like Gecko) Spaz/' + Spaz.Sys.getVersion();
+	// // air.URLRequestDefaults.userAgent = air.HTMLLoader.userAgent
+	// sch.dump(window.htmlLoader.userAgent)
+	// return window.htmlLoader.userAgent
 };
 Spaz.Sys.getUserAgent = function() {
-	return window.htmlLoader.userAgent
+	sch.error('Spaz.Sys.getUserAgent NYI');
+	// return window.htmlLoader.userAgent
 };
 Spaz.Sys.setUserAgent = function(uastring) {
-	window.htmlLoader.userAgent = uastring
-	// air.URLRequestDefaults.userAgent = uastring
-	return window.htmlLoader.userAgent
+	sch.error('Spaz.Sys.setUserAgent NYI');
+	// window.htmlLoader.userAgent = uastring
+	// // air.URLRequestDefaults.userAgent = uastring
+	// return window.htmlLoader.userAgent
 };
 
 Spaz.Sys.isWindows = function() {

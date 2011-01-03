@@ -1160,7 +1160,7 @@ Spaz.Prefs.setFromUI = function(event) {
 Spaz.Prefs.setSoundFileLocations = function() {
 	sch.debug("Setting sound file locations");
 
-	var soundFileUpdate = air.File.applicationStorageDirectory;
+	var soundFileUpdate = sch.getFileObject(sch.getAppStorageDir());
 	soundFileUpdate = soundFileUpdate.resolvePath('usersounds/Csnd.mp3');
 
 	var soundFileStartup = air.File.applicationStorageDirectory;
@@ -1175,27 +1175,27 @@ Spaz.Prefs.setSoundFileLocations = function() {
 	var soundFileWilhelm = air.File.applicationStorageDirectory;
 	soundFileWilhelm = soundFileWilhelm.resolvePath('usersounds/wilhelm.mp3');
 
-	if (soundFileUpdate.exists) {
+	if (soundFileUpdate.exists()) {
 		Spaz.Prefs._prefs.get('sound-url-update') = soundFileUpdate.url;
 	}
 	sch.debug('sound-url-update is: ' + Spaz.Prefs._prefs.get('sound-url-update'));
 
-	if (soundFileStartup.exists) {
+	if (soundFileStartup.exists()) {
 		Spaz.Prefs._prefs.get('sound-url-startup') = soundFileStartup.url;
 	}
 	sch.debug('sound-url-startup is: ' + Spaz.Prefs._prefs.get('sound-url-startup'));
 
-	if (soundFileShutdown.exists) {
+	if (soundFileShutdown.exists()) {
 		Spaz.Prefs._prefs.get('sound-url-shutdown') = soundFileShutdown.url;
 	}
 	sch.debug('sound-url-shutdown is: ' + Spaz.Prefs._prefs.get('sound-url-shutdown'));
 
-	if (soundFileNew.exists) {
+	if (soundFileNew.exists()) {
 		Spaz.Prefs._prefs.get('sound-url-new') = soundFileNew.url;
 	}
 	sch.debug('sound-url-new is: ' + Spaz.Prefs._prefs.get('sound-url-new'));
 
-	if (soundFileWilhelm.exists) {
+	if (soundFileWilhelm.exists()) {
 		Spaz.Prefs._prefs.get('sound-url-wilhelm') = soundFileWilhelm.url;
 	}
 	sch.debug('sound-url-wilhelm is: ' + Spaz.Prefs._prefs.get('sound-url-wilhelm'));
@@ -1277,13 +1277,13 @@ Spaz.Prefs.setHandleHTTPAuth = function(state) {
 	sch.debug(state);
 	if (state) {
 		Spaz.Prefs.handleHTTPAuth = 1
-		window.htmlLoader.shouldAuthenticate = true;
+		window.htmlLoader.authenticate = true;
 	} else {
 		Spaz.Prefs.handleHTTPAuth = 0;
-		window.htmlLoader.shouldAuthenticate = false;
+		window.htmlLoader.authenticate = false;
 	}
 	sch.debug(Spaz.Prefs.handleHTTPAuth);
-	sch.debug(window.htmlLoader.shouldAuthenticate);
+	sch.debug(window.htmlLoader.authenticate);
 }
 
 Spaz.Prefs.setDebugEnable = function(state) {

@@ -418,17 +418,6 @@ Spaz.Controller.initIntercept = function() {
 	// end intercept
 
 
-
-	/*
-		Set-up invoke event for command-line processing
-	*/
-	air.NativeApplication.nativeApplication.addEventListener(air.InvokeEvent.INVOKE, invokeHandler);
-
-	function invokeHandler (e) {
-		sch.dump('Invoke args: '+e.arguments);
-	}
-
-
 	/*
 		Set-up drag and drop events
 	*/
