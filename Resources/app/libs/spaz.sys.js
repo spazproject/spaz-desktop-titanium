@@ -5,11 +5,7 @@ if (!Spaz.Sys) Spaz.Sys = {};
 
 
 Spaz.Sys.getVersion = function() {
-		var appXML = air.NativeApplication.nativeApplication.applicationDescriptor
-		var domParser = new DOMParser();
-		appXML = domParser.parseFromString(appXML, "text/xml");
-		var version = appXML.getElementsByTagName("versionNumber")[0].firstChild.nodeValue;
-		return version;
+	return Titanium.App.getVersion();
 };
 
 
@@ -17,9 +13,6 @@ Spaz.Sys.getVersion = function() {
 Spaz.Sys.initUserAgentString = function() {
 	sch.error('Spaz.Sys.initUserAgentString NYI');
 	// window.htmlLoader.userAgent = 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X; en) AppleWebKit/420+ (KHTML, like Gecko) Spaz/' + Spaz.Sys.getVersion();
-	// // air.URLRequestDefaults.userAgent = air.HTMLLoader.userAgent
-	// sch.dump(window.htmlLoader.userAgent)
-	// return window.htmlLoader.userAgent
 };
 Spaz.Sys.getUserAgent = function() {
 	sch.error('Spaz.Sys.getUserAgent NYI');
@@ -31,17 +24,6 @@ Spaz.Sys.setUserAgent = function(uastring) {
 	// // air.URLRequestDefaults.userAgent = uastring
 	// return window.htmlLoader.userAgent
 };
-
-Spaz.Sys.isWindows = function() {
-	return (air.Capabilities.os.search(/Windows/gi) > -1);
-};
-Spaz.Sys.isMac = function() {
-	return (air.Capabilities.os.search(/Mac OS/gi) > -1);
-};
-Spaz.Sys.isLinux = function() {
-	return (air.Capabilities.os.search(/Linux/gi) > -1);
-};
-
 
 Spaz.Sys.initNetworkConnectivityCheck = function() {
 	sch.debug('initNetworkConnectivityCheck disabled');
@@ -112,16 +94,7 @@ Spaz.Sys.setClipboardText = function(text) {
 
 
 Spaz.Sys.getFileContents = function(path) {
-	var f = new air.File(path);
-	if (f.exists) {
-		var fs = new air.FileStream();
-		fs.open(f, air.FileMode.READ);
-		var str = fs.readMultiByte(f.size, air.File.systemCharset);
-		fs.close();
-		return str;
-	} else {
-		return false;
-	}
+	return sch.getFileContents(path);
 
 };
 
@@ -131,26 +104,15 @@ Spaz.Sys.getFileContents = function(path) {
 */
 Spaz.Sys.setFileContents = function(path, content, serialize) {
 	
-	if (serialize) {
-		content = JSON.stringify(content);
-	}
-	
-	sch.debug('setFileContents for '+path+ ' to "' +content+ '"');
-	
-	var f = new air.File(path);
-	var fs = new air.FileStream();
-	fs.open(f, air.FileMode.WRITE);
-	fs.writeUTFBytes(content);
-	fs.close();
+	return sch.setFileContents(path, content, serialize);
 };
 
 
 
 Spaz.Sys.openInBrowser = function(url) {
 	sch.debug('opening '+url);
-	var request = new air.URLRequest(url);
 	try {            
-	    air.navigateToURL(request);
+	    Titanium.Platform.openURL(url);
 	}
 	catch (e) {
 	    sch.debug(e.errorMsg)
@@ -160,20 +122,8 @@ Spaz.Sys.openInBrowser = function(url) {
 
 
 Spaz.Sys.openAppStorageFolder = function() {
-	air.File.applicationStorageDirectory.openWithDefaultApplication(); 
+	sch.getFileObject(sch.getAppStorageDir()).openApplication(); 
 };
 
 
-Spaz.Sys.loadChildInterface = function() {
-	Spaz.Sys.ClassicSB = $("#classicSB")[0].contentWindow.childSandboxBridge;
-	// sch.debug(classicSB)
-	// eval = Spaz.Sys.ClassicSB.eval;
-	
-	// eval('alert("Funky!")');
-};
-
-/***********
-Spaz.Bridge
-************/
-if (!Spaz.Bridge) Spaz.Bridge = {};
 

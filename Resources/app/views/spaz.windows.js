@@ -7,12 +7,15 @@ if (!Spaz.Windows) Spaz.Windows = {};
 
 Spaz.Windows.windowExitCalled = false;
 
+Spaz.Windows.getCurrentWindow = function() {
+	return Titanium.UI.getCurrentWindow();
+};
 
 Spaz.Windows.onWindowActive = function (event) {
 	sch.debug('Window ACTIVE');
   // if ($('body').focus()) {}
   $('body').addClass('active');
-}
+};
 
 
 Spaz.Windows.onWindowDeactivate = function(event) {
@@ -22,17 +25,18 @@ Spaz.Windows.onWindowDeactivate = function(event) {
 
 
 Spaz.Windows.windowMinimize = function() {
-	window.nativeWindow.minimize();
+	Spaz.Windows.getCurrentWindow().minimize();
 	if (Spaz.Prefs.get('window-minimizetosystray') && air.NativeApplication.supportsSystemTrayIcon) {
-		window.nativeWindow.visible = false;
+		Spaz.Windows.getCurrentWindow().hide();
 	}
 	return false;
 };
 
 
 Spaz.Windows.windowRestore = function() {
+	var thisWin = Spaz.Windows.getCurrentWindow();
 	sch.debug('restoring window');
-	sch.debug('current window state:'+window.nativeWindow.displayState);
+	// sch.debug('current window state:'+window.nativeWindow.displayState);
 	//sch.debug('id:'+air.NativeApplication.nativeApplication.id);
 
 
@@ -41,21 +45,21 @@ Spaz.Windows.windowRestore = function() {
 	//  		nativeWindow.restore();
 	//  	}
 	sch.debug('restoring window');
-	window.nativeWindow.restore();
+	if (thisWin.isMaximized()) {
+		thisWin.unmaximize();
+	}
+	if (thisWin.isMinimized()) {
+		thisWin.unminimize();
+	}
 
 	sch.debug('activating window');
-	window.nativeWindow.activate();
-	// sch.debug('ordering-to-front window');
-	// window.nativeWindow.orderToFront();
-	if (air.NativeApplication) {
-		sch.debug('activating application');
-		air.NativeApplication.nativeApplication.activate();
-	}
+	thisWin.focus();
 };
 
 
-Spaz.Windows.onAppExit = function(event) 
-{
+Spaz.Windows.onAppExit = function(event) {
+	var thisWin = Spaz.Windows.getCurrentWindow();
+	
 	sch.dump('Spaz.Windows.windowExitCalled is '+Spaz.Windows.windowExitCalled);
 	// 
 	// if (Spaz.Windows.windowExitCalled == false) {
@@ -72,8 +76,8 @@ Spaz.Windows.onAppExit = function(event)
 		// event.stopImmediatePropagation();
 	}
 	
-	window.nativeWindow.removeEventListener(air.Event.CLOSING, Spaz.Windows.onWindowClose);
-	window.nativeWindow.removeEventListener(air.Event.EXITING, Spaz.Windows.windowClose);
+	// window.nativeWindow.removeEventListener(air.Event.CLOSING, Spaz.Windows.onWindowClose);
+	// window.nativeWindow.removeEventListener(air.Event.EXITING, Spaz.Windows.windowClose);
 	// air.NativeApplication.nativeApplication.removeEventListener(air.Event.EXITING, Spaz.Windows.onAppExit); 
 	sch.dump("i'm exiting the app!");
 
@@ -83,14 +87,14 @@ Spaz.Windows.onAppExit = function(event)
 
 	if (Spaz.Prefs.get('sound-enabled')) {
 		Spaz.Sounds.playSoundShutdown(function() {
-			air.NativeApplication.nativeApplication.exit();
+			Titanium.App.exit();
 		});
 	} else {
 		sch.dump('sound not playing');
-		air.NativeApplication.nativeApplication.exit();
+		Titanium.App.exit();
 	}
 	
-}
+};
 
 
 Spaz.Windows.onWindowClose = function(event) {
@@ -110,23 +114,19 @@ Spaz.Windows.windowClose = function() {
 	Spaz.Windows.onAppExit();
 };
 
-
+/**
+ * 
+ */
 Spaz.Windows.makeSystrayIcon = function() {
-	if(air.NativeApplication.supportsSystemTrayIcon) { // system tray on windows
-		sch.debug('Making Windows system tray menu')
-		air.NativeApplication.nativeApplication.icon.tooltip = "Spaz loves you";
-		// air.NativeApplication.nativeApplication.icon.menu = Spaz.Menus.createRootMenu();
-		var systrayIconLoader = new air.Loader();
-		systrayIconLoader.contentLoaderInfo.addEventListener(air.Event.COMPLETE,
-		                                                       Spaz.Menus.iconLoadComplete);
-		systrayIconLoader.load(new air.URLRequest("images/spaz-icon-alpha_16.png"));
-		air.NativeApplication.nativeApplication.icon.addEventListener('click', Spaz.Windows.onSystrayClick);
-	}
+	sch.debug('Making Windows system tray menu')
+	// air.NativeApplication.nativeApplication.icon.menu = Spaz.Menus.createRootMenu();
+	var tray = Titanium.UI.addTray("images/spaz-icon-alpha_16.png", Spaz.Windows.onSystrayClick);
+	tray.setHint($L("Spaz loves you"));
 };
-
 
 Spaz.Windows.onSystrayClick = function(event) {
 	Spaz.Windows.windowRestore();
+	
 	// // TODO replace this with call to Spaz.Windows.windowRestore()
 	// sch.debug('clicked on systray');
 	// sch.debug(nativeWindow.displayState);
@@ -142,29 +142,21 @@ Spaz.Windows.onSystrayClick = function(event) {
 	// nativeWindow.activate();
 	// sch.debug('ordering-to-front window');
 	// nativeWindow.orderToFront();
-}
+};
 
-
-Spaz.Windows.openHTMLUtilityWindow = function(url) {
-	
-	var options = new air.NativeWindowInitOptions();
-	options.systemChrome = air.NativeWindowSystemChrome.STANDARD;
-	options.type = air.NativeWindowType.UTILITY;
-
-	var windowBounds = new air.Rectangle(200,250,300,400);
-	var newWindow = air.HTMLLoader.createRootWindow(true, options, true, windowBounds);
-	newWindow.load(new runtime.flash.net.URLRequest(url));
-	
-}
 
 Spaz.Windows.makeWindowVisible = function(){
 	sch.debug("making window visible");
-	window.nativeWindow.visible = true;
-}
+	Spaz.Windows.getCurrentWindow().show();
+};
+
+
 Spaz.Windows.makeWindowHidden = function(){
 	sch.debug("making window hidden");
-	window.nativeWindow.visible = false;
-}
+	Spaz.Windows.getCurrentWindow().hide();
+};
+
+
 Spaz.Windows.setWindowOpacity = function(value) {
     percentage = parseInt(value);
     if (isNaN(percentage)) {
@@ -181,85 +173,142 @@ Spaz.Windows.setWindowOpacity = function(value) {
     } else if (val <= 0) {
         val = 1;
     }
-	window.htmlLoader.alpha = val;
-}
-Spaz.Windows.windowMove = function(){
-	nativeWindow.startMove();
-}
+	Spaz.Windows.getCurrentWindow().setTransparency(val);
+};
+
+
+
 Spaz.Windows.windowResize = function(){
 	nativeWindow.startResize(air.NativeWindowResize.BOTTOM_RIGHT);
-}
+};
+
+
+Spaz.Windows.listenForMove = function() {
+	Spaz.Windows._dragging = false;
+	
+	var xstart, ystart;
+	
+	jQuery('h1#header')
+		.mousemove(function(event) {
+			if (!Spaz.Windows._dragging) {
+				return;
+			}
+
+			Titanium.UI.currentWindow.setX(Titanium.UI.currentWindow.getX() + event.clientX - xstart);
+			Titanium.UI.currentWindow.setY(Titanium.UI.currentWindow.getY() + event.clientY - ystart);
+		})
+		.mousedown(function(event) {
+			Spaz.Windows._dragging = true;
+			xstart = event.clientX;
+			ystart = event.clientY;
+		})
+		.mouseup(function(event) {
+			Spaz.Windows._dragging = false;
+			Spaz.Windows.onWindowMove();
+		});
+
+
+};
+
+
+Spaz.Windows.listenForResize = function() {
+	jQuery('#resize-sw')
+		.mousemove(function(event) {
+			if (!Spaz.Windows._resizing) {
+				return;
+			}
+
+			Titanium.UI.currentWindow.setWidth(Titanium.UI.currentWindow.getWidth() + event.clientX - xstart);
+			Titanium.UI.currentWindow.setHeight(Titanium.UI.currentWindow.setHeight() + event.clientY - ystart);
+		})
+		.mousedown(function(event) {
+			Spaz.Windows._resizing = true;
+			xstart = event.clientX;
+			ystart = event.clientY;
+		})
+		.mouseup(function(event) {
+			Spaz.Windows._resizing = false;
+			Spaz.Windows.onWindowResize();
+		});
+};
+
 
 
 Spaz.Windows.resetPosition = function() {
-	nativeWindow.x = Spaz.Prefs.defaultPreferences['window-x'];
-	nativeWindow.y = Spaz.Prefs.defaultPreferences['window-y'];
+	var thisWin = Spaz.Windows.getCurrentWindow();
+	thisWin.setX(Spaz.Prefs.defaultPreferences['window-x']);
+	thisWin.setY(Spaz.Prefs.defaultPreferences['window-y']);
 	sch.dump(Spaz.Prefs.defaultPreferences['window-x'] +"x"+Spaz.Prefs.defaultPreferences['window-y']);
-	sch.dump(nativeWindow.x +"x"+nativeWindow.y);
+	sch.dump(thisWin.getX() +"x"+thisWin.getY());
 	Spaz.Windows.onWindowMove();
 	
-	nativeWindow.width  = Spaz.Prefs.defaultPreferences['window-width'];
-	nativeWindow.height = Spaz.Prefs.defaultPreferences['window-height'];
+	thisWin.setWidth(Spaz.Prefs.defaultPreferences['window-width']);
+	thisWin.setHeight(Spaz.Prefs.defaultPreferences['window-height']);
 	sch.dump(Spaz.Prefs.defaultPreferences['window-width'] +"x"+Spaz.Prefs.defaultPreferences['window-height']);
-	sch.dump(nativeWindow.width +"x"+nativeWindow.height);
+	sch.dump(thisWin.getWidth() +"x"+thisWin.getHeight());
 	Spaz.Windows.onWindowResize();
-}
+};
 
 
 Spaz.Windows.onWindowResize = function() {
+	var thisWin = Spaz.Windows.getCurrentWindow();
+	
 	if(Spaz.Windows.onWindowResize.prefsTimeout){
 		clearTimeout(Spaz.Windows.onWindowResize.prefsTimeout);
 		delete Spaz.Windows.onWindowResize.prefsTimeout;
 	}
 	Spaz.Windows.onWindowResize.prefsTimeout = setTimeout(function(){
-		Spaz.Prefs.set('window-width',  nativeWindow.width);
-		Spaz.Prefs.set('window-height', nativeWindow.height);
+		Spaz.Prefs.set('window-width',  thisWin.getWidth());
+		Spaz.Prefs.set('window-height', thisWin.getHeight());
 	}, 500);
 };
 
+
 Spaz.Windows.onWindowMove = function() {
+	var thisWin = Spaz.Windows.getCurrentWindow();
+	
 	if(Spaz.Windows.onWindowMove.prefsTimeout){
 		clearTimeout(Spaz.Windows.onWindowMove.prefsTimeout);
 		delete Spaz.Windows.onWindowMove.prefsTimeout;
 	}
 	Spaz.Windows.onWindowMove.prefsTimeout = setTimeout(function(){
-		Spaz.Prefs.set('window-x', nativeWindow.x);
-		Spaz.Prefs.set('window-y', nativeWindow.y);
+		Spaz.Prefs.set('window-x', thisWin.getX());
+		Spaz.Prefs.set('window-y', thisWin.getY());
 	}, 500);
 };
 
 /**
  * turns the drop shadow on if passed truthy val, else turns it off
  * @param {Boolean} state true or false 
+ * @TODO decide if we support this in Titanium
  */
 Spaz.Windows.enableDropShadow = function(state) {
-	if (state) { // && !Spaz.Sys.isLinux()) {
-	    window.htmlLoader.filters = window.runtime.Array(
-			new window.runtime.flash.filters.DropShadowFilter(3, 90, 0, .8, 6, 6)
-	    );
-	} else {
-		window.htmlLoader.filters = null;
-	}
+	sch.error("Spaz.Windows.enableDropShadow NYI!");
 };
 
 
 /**
  * turns on restore on activate if passed truthy val, else turns it off
  * @param {Boolean} state true or false 
+ * @TODO decide if we support this in Titanium
  */
 Spaz.Windows.enableRestoreOnActivate = function(state) {
-	if (state) {
-		air.NativeApplication.nativeApplication.addEventListener('activate', Spaz.Windows.windowRestore);
-	} else {
-		air.NativeApplication.nativeApplication.removeEventListener('activate', Spaz.Windows.windowRestore);
-	}
+	sch.error("Spaz.Windows.enableRestoreOnActivate NYI!");
+	// if (state) {
+	// 	air.NativeApplication.nativeApplication.addEventListener('activate', Spaz.Windows.windowRestore);
+	// } else {
+	// 	air.NativeApplication.nativeApplication.removeEventListener('activate', Spaz.Windows.windowRestore);
+	// }
 };
 
-
+/**
+ * @TODO decide if we support this in Titanium 
+ */
 Spaz.Windows.enableMinimizeOnBackground = function(state) {
-	if (state) {
-		air.NativeApplication.nativeApplication.addEventListener('deactivate', Spaz.Windows.windowMinimize);
-	} else {
-		air.NativeApplication.nativeApplication.removeEventListener('deactivate', Spaz.Windows.windowMinimize);
-	}
+	sch.error("Spaz.Windows.enableMinimizeOnBackground NYI!");
+	// if (state) {
+	// 	air.NativeApplication.nativeApplication.addEventListener('deactivate', Spaz.Windows.windowMinimize);
+	// } else {
+	// 	air.NativeApplication.nativeApplication.removeEventListener('deactivate', Spaz.Windows.windowMinimize);
+	// }
 };

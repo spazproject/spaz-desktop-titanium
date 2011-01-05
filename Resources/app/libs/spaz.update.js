@@ -171,7 +171,7 @@ Spaz.Update.compareVersions = function(current, newest) {
 
 
 Spaz.Update.deleteExisting = function() {
-	var existingFile = air.File.applicationStorageDirectory.resolvePath("Spaz-Newest.air");
+	var existingFile = sch.getFileObject(sch.getAppStorageDir()).resolve("Spaz-Newest.air");
 	if (existingFile.exists) {
 		sch.dump('Existing file; will now delete')
 		existingFile.deleteFile();
@@ -212,7 +212,7 @@ Spaz.Update.downloadNewest = function(url) {
 		sch.debug("Writing File...");
 		
 		
-		var file = air.File.applicationStorageDirectory.resolvePath("Spaz-Newest.air");
+		var file = sch.getFileObject(sch.getAppStorageDir()).resolve("Spaz-Newest.air");
 		
 		var fileStream = new air.FileStream();
 		fileStream.open(file, air.FileMode.WRITE);

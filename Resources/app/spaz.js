@@ -62,13 +62,14 @@ Spaz.createUserDirs = function() {
  * loads the user.js file, if it exists, and injects it into the script tag with id='userjs' 
  */
 Spaz.loadUserJS = function() {
-	var userjsfile = air.File.applicationStorageDirectory.resolvePath('user.js');
+	var userjsfile = sch.getFileObject(sch.getAppStorageDir()).resolve('user.js');
 	
-	if (userjsfile.exists) {
-		var userJS = Spaz.Sys.getFileContents(userjsfile.url);
+	if (userjsfile.exists()) {
+		var userJS = Spaz.Sys.getFileContents(userjsfile.toString());
 		$('#userjs').text(userJS);
 	} else {
-		Spaz.Sys.setFileContents(userjsfile.url, "/* Edit this file to add your own functionality to Spaz */\n\n");
+		userjsfile.touch();
+		Spaz.Sys.setFileContents(userjsfile.toString(), "/* Edit this file to add your own functionality to Spaz */\n\n");
 	}
 	
 };
@@ -140,10 +141,10 @@ Spaz.initialize = function() {
 	
 	// Database initialization
 	sch.debug("database initialization");
-	Spaz.DB.init();
+	// Spaz.DB.init();
 	
     sch.debug('JazzRecord initialization');
-    JazzRecord.adapter = new JazzRecord.AirAdapter({dbFile: "spaz_jr.db"});
+    JazzRecord.adapter = new JazzRecord.TitaniumAdapter({dbFile: "spaz_jr.db"});
     if (Spaz.Prefs.get('debug-enabled')) {
      JazzRecord.debug = true;
     }
@@ -204,7 +205,6 @@ Spaz.initialize = function() {
 	Spaz.Windows.makeWindowVisible();
 	sch.debug('Made window visible');
 
-	window.nativeWindow.visible = true;
 	Spaz.Windows.setWindowOpacity(Spaz.Prefs.get('window-alpha'));
 	Spaz.Windows.enableDropShadow(Spaz.Prefs.get('window-dropshadow')); 
 	Spaz.Windows.enableRestoreOnActivate(Spaz.Prefs.get('window-restoreonactivate'));
@@ -240,22 +240,25 @@ Spaz.initialize = function() {
 	/*
 		set-up window and app events
 	*/
-	window.nativeWindow.addEventListener(air.Event.EXITING, Spaz.Windows.onWindowClose);
+	Titanium.API.addEventListener(Titanium.EXIT, Spaz.Windows.onWindowClose);
 	// air.NativeApplication.nativeApplication.addEventListener(air.Event.EXITING, Spaz.Windows.onAppExit);
-	window.nativeWindow.addEventListener(air.Event.CLOSING, Spaz.Windows.onWindowClose);
-	window.nativeWindow.addEventListener(air.Event.ACTIVATE, Spaz.Windows.onWindowActive);
-	window.nativeWindow.addEventListener(air.NativeWindowBoundsEvent.RESIZE, Spaz.Windows.onWindowResize);
-	window.nativeWindow.addEventListener(air.NativeWindowBoundsEvent.MOVE, Spaz.Windows.onWindowMove);
-	window.nativeWindow.addEventListener(air.Event.DEACTIVATE, Spaz.Windows.onWindowDeactivate);
-
+	Titanium.API.addEventListener(Titanium.CLOSE, Spaz.Windows.onWindowClose);
+	Titanium.API.addEventListener(Titanium.FOCUSED, Spaz.Windows.onWindowActive);
+	Titanium.API.addEventListener(Titanium.UNFOCUSED, Spaz.Windows.onWindowDeactivate);
+	
+	Spaz.Windows.listenForMove();
+	Spaz.Windows.listenForResize();
+	
 	/*
 		Initialize native menus
 	*/
+	sch.error('Spaz.Menus.initAll()')
 	Spaz.Menus.initAll();
 
 	/*
 		Set up event delegation stuff
 	*/
+	sch.error('Spaz.Controller.initIntercept()')
 	Spaz.Controller.initIntercept();
 
 	/*

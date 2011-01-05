@@ -461,17 +461,16 @@ Spaz.Controller.initIntercept = function() {
  */
 Spaz.Controller.setKeyboardShortcuts = function() {
 	sch.debug("Setting Shortcuts=================================================");
-	sch.debug("os: " + air.Capabilities['os']);
 
 	var Modkey = 'Meta';
 
-	if (air.Capabilities['os'].search(/Windows/i) != -1) {
+	if (sc.helpers.isWindows()) {
 		sch.debug('THIS IS WINDOWS');
 		Modkey = 'Ctrl';
-	} else if (air.Capabilities['os'].search(/Linux/i) != -1) { // thx agolna
+	} else if (sc.helpers.isLinux()) { // thx agolna
 		sch.debug('THIS IS LINUX');
 		Modkey = 'Ctrl';
-	} else if (air.Capabilities['os'].search(/Mac/i) != -1) {
+	} else if (sc.helpers.isMacOS) {
 		sch.debug('THIS IS MACOS');
 		Modkey = 'Meta';
 	}

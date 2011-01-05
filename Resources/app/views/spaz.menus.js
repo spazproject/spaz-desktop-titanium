@@ -8,8 +8,12 @@ if (!Spaz.Menus) Spaz.Menus = {};
 // }
 
 
-
+/**
+ * @TODO NYI for titanium 
+ */
 Spaz.Menus.initAll = function() {
+	sch.error("Spaz.Menus.initAll NYI");
+	return;
 	//For application menu (on MAC OS X)
 	// sch.debug('Init Native Menus');
 	// if(air.NativeApplication.supportsMenu){

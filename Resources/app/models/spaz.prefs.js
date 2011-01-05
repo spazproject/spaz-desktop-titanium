@@ -836,7 +836,7 @@ Spaz.Prefs.changeMethods = {
 		},
 		onChange: function(value) {
 			sch.debug('Setting HTTPAuth handling to ' + value);
-			window.htmlLoader.authenticate = value;
+			// window.htmlLoader.authenticate = value;
 		},
 		onGet: function(key, value) {
 			return !!value;
@@ -1161,42 +1161,42 @@ Spaz.Prefs.setSoundFileLocations = function() {
 	sch.debug("Setting sound file locations");
 
 	var soundFileUpdate = sch.getFileObject(sch.getAppStorageDir());
-	soundFileUpdate = soundFileUpdate.resolvePath('usersounds/Csnd.mp3');
+	soundFileUpdate = soundFileUpdate.resolve('usersounds/Csnd.mp3');
 
 	var soundFileStartup = sch.getFileObject(sch.getAppStorageDir());
-	soundFileStartup = soundFileStartup.resolvePath('usersounds/On.mp3');
+	soundFileStartup = soundFileStartup.resolve('usersounds/On.mp3');
 
 	var soundFileShutdown = sch.getFileObject(sch.getAppStorageDir());
-	soundFileShutdown = soundFileShutdown.resolvePath('usersounds/Off.mp3');
+	soundFileShutdown = soundFileShutdown.resolve('usersounds/Off.mp3');
 
 	var soundFileNew = sch.getFileObject(sch.getAppStorageDir());
-	soundFileNew = soundFileNew.resolvePath('usersounds/New.mp3');
+	soundFileNew = soundFileNew.resolve('usersounds/New.mp3');
 
 	var soundFileWilhelm = sch.getFileObject(sch.getAppStorageDir());
-	soundFileWilhelm = soundFileWilhelm.resolvePath('usersounds/wilhelm.mp3');
+	soundFileWilhelm = soundFileWilhelm.resolve('usersounds/wilhelm.mp3');
 
 	if (soundFileUpdate.exists()) {
-		Spaz.Prefs._prefs.get('sound-url-update') = soundFileUpdate.url;
+		Spaz.Prefs._prefs.get('sound-url-update') = soundFileUpdate.toString();
 	}
 	sch.debug('sound-url-update is: ' + Spaz.Prefs._prefs.get('sound-url-update'));
 
 	if (soundFileStartup.exists()) {
-		Spaz.Prefs._prefs.get('sound-url-startup') = soundFileStartup.url;
+		Spaz.Prefs._prefs.get('sound-url-startup') = soundFileStartup.toString();
 	}
 	sch.debug('sound-url-startup is: ' + Spaz.Prefs._prefs.get('sound-url-startup'));
 
 	if (soundFileShutdown.exists()) {
-		Spaz.Prefs._prefs.get('sound-url-shutdown') = soundFileShutdown.url;
+		Spaz.Prefs._prefs.get('sound-url-shutdown') = soundFileShutdown.toString();
 	}
 	sch.debug('sound-url-shutdown is: ' + Spaz.Prefs._prefs.get('sound-url-shutdown'));
 
 	if (soundFileNew.exists()) {
-		Spaz.Prefs._prefs.get('sound-url-new') = soundFileNew.url;
+		Spaz.Prefs._prefs.get('sound-url-new') = soundFileNew.toString();
 	}
 	sch.debug('sound-url-new is: ' + Spaz.Prefs._prefs.get('sound-url-new'));
 
 	if (soundFileWilhelm.exists()) {
-		Spaz.Prefs._prefs.get('sound-url-wilhelm') = soundFileWilhelm.url;
+		Spaz.Prefs._prefs.get('sound-url-wilhelm') = soundFileWilhelm.toString();
 	}
 	sch.debug('sound-url-wilhelm is: ' + Spaz.Prefs._prefs.get('sound-url-wilhelm'));
 };
@@ -1277,13 +1277,13 @@ Spaz.Prefs.setHandleHTTPAuth = function(state) {
 	sch.debug(state);
 	if (state) {
 		Spaz.Prefs.handleHTTPAuth = 1
-		window.htmlLoader.authenticate = true;
+		// window.htmlLoader.authenticate = true;
 	} else {
 		Spaz.Prefs.handleHTTPAuth = 0;
-		window.htmlLoader.authenticate = false;
+		// window.htmlLoader.authenticate = false;
 	}
 	sch.debug(Spaz.Prefs.handleHTTPAuth);
-	sch.debug(window.htmlLoader.authenticate);
+	// sch.debug(window.htmlLoader.authenticate);
 }
 
 Spaz.Prefs.setDebugEnable = function(state) {
@@ -1323,7 +1323,7 @@ Spaz.Prefs.checkWindowOpacity = function(percentage) {
 		val = 1;
 	}
 
-	window.htmlLoader.alpha = val;
+	Spaz.Windows.getCurrentWindow().setTransparency(val);
 
 	Spaz.Prefs.set('window-alpha', percentage);
 	// Spaz.UI.setPrefsFormVal('prefs-opacity-percentage', Spaz.Prefs.windowOpacity);

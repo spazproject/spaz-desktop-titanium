@@ -63,9 +63,9 @@ Spaz.Debug.logToFile = function(obj, level) {
 		msg += typeof(obj) + ' - ' + sch.enJSON(obj);
 	}
 
-	var cr = air.File.lineEnding;
-	var file   = air.File.documentsDirectory;
-	file       = file.resolvePath("spaz-debug.log");
+	var cr = Titanium.Filesystem.getLineEnding();
+	var file   = Titanium.Filesystem.getDocumentsDirectory();
+	file       = file.resolve("spaz-debug.log");
 	var stream = new air.FileStream();
 	stream.open(file, air.FileMode.APPEND);
 	now = new Date();
@@ -76,10 +76,10 @@ Spaz.Debug.logToFile = function(obj, level) {
 
 
 Spaz.Debug.openLogFile = function() {
-	var file   = air.File.documentsDirectory;
-	file       = file.resolvePath("spaz-debug.log");
+	var file   = Titanium.Filesystem.getDocumentsDirectory();
+	file       = file.resolve("spaz-debug.log");
 	alert('file is:\n'+file.nativePath+"\n\nI'll open the containing directory for you now");
-	air.File.documentsDirectory.openWithDefaultApplication();
+	Titanium.Filesystem.getDocumentsDirectory().openApplication();
 }
 
 
@@ -98,7 +98,7 @@ Spaz.Debug.showProps = function(obj, objName) {
 
 
 Spaz.Debug.dumpHTML = function() {
-	var docsDir = air.File.documentsDirectory;
+	var docsDir = Titanium.Filesystem.getDocumentsDirectory();
 	try {
 		docsDir.browseForSave("Save HTML As");
 		docsDir.addEventListener(air.Event.SELECT, Spaz.Debug.dumpHTMLSelectListener);
@@ -109,7 +109,7 @@ Spaz.Debug.dumpHTML = function() {
 
 Spaz.Debug.dumpHTMLSelectListener = function(event) {
 	var newFile = event.target;
-	sch.debug('got newFile '+newFile.url);
+	sch.debug('got newFile '+newFile.toString());
 	
 	var html = $('html')[0].outerHTML;
 	html = html.replace(/app:\/\//, '');
@@ -120,7 +120,7 @@ Spaz.Debug.dumpHTMLSelectListener = function(event) {
 	var stream = new air.FileStream();
 	sch.debug('made stream ');
 	stream.open(newFile, air.FileMode.UPDATE);
-	sch.debug('opened stream '+newFile.url);
+	sch.debug('opened stream '+newFile.toString());
 	stream.writeUTFBytes(html);
 	sch.debug('write utfbytes '+html);
 	stream.close();

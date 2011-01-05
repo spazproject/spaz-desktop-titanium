@@ -76,15 +76,15 @@ Spaz.Themes.loadUserCSS = function() {
 
 	var usercssfile = Spaz.Themes.getUserCSSFile();
 
-	if (usercssfile.exists) {
-		$('#UserCSSOverride').text(Spaz.Themes.loadUserStylesFromURL(usercssfile.url));
+	if (usercssfile.exists()) {
+		$('#UserCSSOverride').text(Spaz.Themes.loadUserStylesFromURL(usercssfile.nativePath()));
 	}
 
 };
 
 
 Spaz.Themes.getUserCSSFile = function() {
-	return air.File.applicationStorageDirectory.resolvePath('user.css');
+	return sch.getFileObject(sch.getAppStorageDir()).resolve('user.css');
 };
 
 
@@ -93,8 +93,11 @@ Spaz.Themes.loadUserStylesFromURL = function(fileurl) {
 };
 
 
-Spaz.Themes.loadThemeInfo = function(fileurl) {
-	var json = Spaz.Sys.getFileContents(fileurl);
+Spaz.Themes.loadThemeInfo = function(fileobj) {
+	if (!fileobj.exists()) {
+		return;
+	}
+	var json = Spaz.Sys.getFileContents(fileobj.toString());
 	if (json) {
 		return sch.deJSON(json);
 	} else {
@@ -139,35 +142,45 @@ Spaz.Themes.setCurrentTheme = function() {
 
 
 Spaz.Themes.getThemePaths = function() {
-	var appdir    = air.File.applicationDirectory;
-	var themesdir = appdir.resolvePath('themes');
-	var appStore  = air.File.applicationStorageDirectory;
-	var userthemesdir = appStore.resolvePath(USERDIR_THEMES);
+	var appdir    = sch.getFileObject(sch.getAppDir());
+	var themesdir = appdir.resolve('Contents/Resources/themes');
+	var appStore  = sch.getFileObject(sch.getAppStorageDir());
+	var userthemesdir = appStore.resolve(USERDIR_THEMES);
 
 	// we load from both the built-in themes dir and the userthemes dir
-	var list = themesdir.getDirectoryListing().concat(userthemesdir.getDirectoryListing());
+	var list = [];
+	var default_themes = themesdir.getDirectoryListing();	
+	for (var i=0; i < default_themes.length; i++) {
+		list.push(default_themes[i]);
+	}
+	
+	var user_themes    = userthemesdir.getDirectoryListing();
+	for (var i=0; i < user_themes.length; i++) {
+		list.push(user_themes[i]);
+	}
+	
 
 	var themes = new Array();
 	for (i = 0; i < list.length; i++) {
-		if (list[i].isDirectory) {
+		if (list[i].isDirectory()) {
 
 			var thisthemedir = list[i];
-			var thisthemename= thisthemedir.name;
-			var thisthemecss = thisthemedir.resolvePath('theme.css');
-			var thisthemejs  = thisthemedir.resolvePath('theme.js');
-			var thisthemeinfo= thisthemedir.resolvePath('info.js');
+			var thisthemename= thisthemedir.name();
+			var thisthemecss = thisthemedir.resolve(thisthemedir.name()+'/theme.css');
+			var thisthemejs  = thisthemedir.resolve(thisthemedir.name()+'/theme.js');
+			var thisthemeinfo= thisthemedir.resolve(thisthemedir.name()+'/info.js');
 
 
 			var thistheme = {
 				themename: thisthemename,
-				themedir : thisthemedir.url,
-				themecss : thisthemecss.url,
-				themejs  : thisthemejs.url,
-				themeinfo: Spaz.Themes.loadThemeInfo(thisthemeinfo.url)
+				themedir : thisthemedir.toURL(),
+				themecss : thisthemecss.toURL(),
+				themejs  : thisthemejs.toURL(),
+				themeinfo: Spaz.Themes.loadThemeInfo(thisthemeinfo)
 			};
 
 			// sanity check to make sure the themedir actually has something in it
-			if (thisthemecss.exists) {
+			if (thisthemecss.exists()) {
 				themes.push(thistheme);
 			}
 		}

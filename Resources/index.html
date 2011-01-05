@@ -28,9 +28,6 @@
 	<!-- Showdown, the Markdown parser -->
 	<script src="vendors/showdown.js" type="text/javascript" charset="utf-8"></script>
 
-	<!-- Pixel Bender libraries from BlackBookSafe -->
-	<script src="vendors/BlenderEffect.js" type="text/javascript" charset="utf-8"></script>
-	<script src="vendors/Tween.js" type="text/javascript" charset="utf-8"></script>
 
 	<!-- jQuery libs -->
 	<script src="vendors/jquery/jquery-1.4.2.js"				type="text/javascript" charset="utf-8"></script>
@@ -56,17 +53,9 @@
 
 	<!-- HTML notification library -->
 	<script src="vendors/purrjs.js" type="text/javascript" charset="utf-8"></script>
-	<script src="vendors/SpazGrowl.js" type="text/javascript" charset="utf-8"></script>
 
 	<!-- username completion lib -->
 	<script src="vendors/usernameCompleter.js" type="text/javascript" charset="utf-8"></script>
-
-	<!-- Notification popups libs -->
-	<script src="vendors/library.swf" type="application/x-shockwave-flash"></script>
-	<script src="vendors/as3growl.swf" type="application/x-shockwave-flash"></script>
-
-	<!-- Network service monitor -->
-	<script src="vendors/servicemonitor.swf" type="application/x-shockwave-flash"></script>
 
 	<!-- Spry Widgets -->
 	<script language="JavaScript" type="text/javascript" src="vendors/spry/widgets/tabbedpanels/SpryTabbedPanels.js"></script>
@@ -81,7 +70,7 @@
 		/*
 			set your dump level now to get dumps asap
 		*/
-		sc.setDumpLevel(1); // 1 shows errors, nothing else; 5 is everything
+		sc.setDumpLevel(5); // 1 shows errors, nothing else; 5 is everything
 	</script>
 	
 
@@ -128,11 +117,13 @@
 	<script src="app/views/spaz.usermenu.js"   type="text/javascript"></script>
 	<script src="app/views/spaz.sharemenu.js" type="text/javascript" charset="utf-8"></script>
 	<script src="app/views/spaz.replymenu.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app/views/spaz.sounds.js"></script>
 	<script src="app/views/spaz.themes.js"	   type="text/javascript"></script>
 	<script src="app/views/spaz.cssfilters.js" type="text/javascript" charset="utf-8"></script>
 	<script src="app/views/spaz.keyboard.js"   type="text/javascript" charset="utf-8"></script>
 	<script src="app/views/spaz.editor.js"	   type="text/javascript" charset="utf-8"></script>
 	<script src="app/views/spaz.tpl.js"		   type="text/javascript" charset="utf-8"></script>
+	<script src="app/views/spaz.wilhelm.js"></script>
 
 	<script src="app/views/spaz.timelines.js"  type="text/javascript" charset="utf-8"></script>
 	<script src="app/views/timelines/spaz.timelines.friends.js"  type="text/javascript" charset="utf-8"></script>
@@ -190,7 +181,7 @@
 		
 		<img src="images/beta-ribbon.png" id="beta-ribbon">
 		
-		<h1 id="header" onmousedown="Spaz.Windows.windowMove();">
+		<h1 id="header">
 			<div id="window-buttons">
 				<span id="minimize" class="window-button" onclick="Spaz.Windows.windowMinimize()" title="Minimize">&ndash;</span>
 				<span id="close" class="window-button" onclick="Spaz.Windows.windowClose()" title="Close">&times;</span>
@@ -955,7 +946,7 @@
 		</div>
 
 
-		<div id="resize-sw" onmousedown="Spaz.Windows.windowResize()">
+		<div id="resize-sw">
 		</div>
 
 

@@ -14,9 +14,9 @@ var Tweets = function(replace) {
 	    }
 	}
 	
-	this.bucket = new Lawnchair({name:"spaz_tweets", 'adaptor':'air-async', 'onCreate':onCreateBucket});
-	this.dm_bucket = new Lawnchair({name:"spaz_dms", 'adaptor':'air-async', 'onCreate':onCreateBucket});
-	this.user_bucket = new Lawnchair({name:"spaz_users", 'adaptor':'air-async', 'onCreate':onCreateBucket});
+	this.bucket = new Lawnchair({name:"spaz_tweets", 'adaptor':'webkit', 'onCreate':onCreateBucket});
+	this.dm_bucket = new Lawnchair({name:"spaz_dms", 'adaptor':'webkit', 'onCreate':onCreateBucket});
+	this.user_bucket = new Lawnchair({name:"spaz_users", 'adaptor':'webkit', 'onCreate':onCreateBucket});
 	
 	this.user_bucket.each = function(callback, onFinish) {
 		var cb = this.adaptor.terseToVerboseCallback(callback);

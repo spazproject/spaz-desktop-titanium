@@ -14822,10 +14822,12 @@ sc.helpers.dump = function(obj, level, cb) {
 	if (sc.helpers.isString(obj) || sc.helpers.isNumber(obj) || !obj) {
 		dumper = function(str) {
 			tilogger(str);
+			console.log(str);
 		};
 	} else {
 		dumper = function() {
 			tilogger(typeof(obj) + ' - ' + sch.enJSON(obj));
+			console.dir(obj);
 		};
 	}
 	

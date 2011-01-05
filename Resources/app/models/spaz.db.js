@@ -14,7 +14,7 @@ Spaz.DB takes care of persisting a portion of the application state
  * application's runtime.
  */
 Spaz.DB.init = function() {
-	var spazDB = air.File.applicationStorageDirectory.resolvePath(SPAZ_DB_NAME);
+	var spazDB = sch.getFileObject(sch.getAppStorageDir()).resolve(SPAZ_DB_NAME);
 	var conn = new air.SQLConnection();
 	var create;
 
@@ -158,7 +158,7 @@ Spaz.DB.asyncGetAsRead = function(entryId, is_dm, callback) {
  *          if unable to connect.
  */
 Spaz.DB.getSyncConnection = function(mode) {
-	var spazDB = air.File.applicationStorageDirectory.resolvePath(SPAZ_DB_NAME);
+	var spazDB = sch.getFileObject(sch.getAppStorageDir()).resolve(SPAZ_DB_NAME);
 	var conn = new air.SQLConnection();
 
 	try {
