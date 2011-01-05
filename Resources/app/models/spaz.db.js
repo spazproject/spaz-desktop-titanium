@@ -12,8 +12,12 @@ Spaz.DB takes care of persisting a portion of the application state
  * Initialize the runtime of the DB. If the database does not exist it is created
  * and then a global connection is made available for the life time of the
  * application's runtime.
+ * @TODO redo for Titanium
  */
 Spaz.DB.init = function() {
+	
+	return;
+	
 	var spazDB = sch.getFileObject(sch.getAppStorageDir()).resolve(SPAZ_DB_NAME);
 	var conn = new air.SQLConnection();
 	var create;
@@ -47,8 +51,13 @@ Spaz.DB.init = function() {
 /**
  * Mark an entry as read using the provided entry id. The entry id must be
  * an integer which is the value of the id returned by Twitter.
+ * @TODO redo for Titanium
  */
 Spaz.DB.markEntryAsRead = function(entryId, is_dm) {
+	
+	return;
+	
+	
 	var conn = Spaz.DB.conn;
 	var table = TABLE_READ_ENTRIES;	
 
@@ -79,8 +88,12 @@ Spaz.DB.markEntryAsRead = function(entryId, is_dm) {
 };
 
 
-
+/**
+ * @TODO redo for Titanium 
+ */
 Spaz.DB.isRead = function(entryId, is_dm) {
+	
+	return;
 	
 	var table = TABLE_READ_ENTRIES;	
 	var conn = Spaz.DB.getSyncConnection(air.SQLMode.READ);
@@ -118,8 +131,13 @@ Spaz.DB.isRead = function(entryId, is_dm) {
 /* Check against the database if the entry should be marked as read or not. The first argument is the entry id which must
  * be an integer and the second argument is the callback function made once it has been determined if the entry should be marked as
  * read or not. The callback function takes as unique argument a boolean value which is true if the entry should be marked as read.
+ * @TODO redo for Titanium
  */
 Spaz.DB.asyncGetAsRead = function(entryId, is_dm, callback) {
+	
+	return;
+	
+	
 	var table = TABLE_READ_ENTRIES;	
 	if (is_dm) {
 		table = TABLE_READ_DMS;
@@ -156,8 +174,14 @@ Spaz.DB.asyncGetAsRead = function(entryId, is_dm, callback) {
  *          constants defined in the AIR SQLMode class.
  * @returns An active synchronous connection to the database, or false
  *          if unable to connect.
+ * 
+ * @TODO redo for Titanium
  */
 Spaz.DB.getSyncConnection = function(mode) {
+	
+	return;
+	
+	
 	var spazDB = sch.getFileObject(sch.getAppStorageDir()).resolve(SPAZ_DB_NAME);
 	var conn = new air.SQLConnection();
 

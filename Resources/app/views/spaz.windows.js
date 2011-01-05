@@ -193,9 +193,9 @@ Spaz.Windows.listenForMove = function() {
 			if (!Spaz.Windows._dragging) {
 				return;
 			}
-
-			Titanium.UI.currentWindow.setX(Titanium.UI.currentWindow.getX() + event.clientX - xstart);
-			Titanium.UI.currentWindow.setY(Titanium.UI.currentWindow.getY() + event.clientY - ystart);
+			var newX = Titanium.UI.currentWindow.getX() + event.clientX - xstart;
+			var newY = Titanium.UI.currentWindow.getY() + event.clientY - ystart;
+			Titanium.UI.getMainWindow().moveTo(newX, newY)
 		})
 		.mousedown(function(event) {
 			Spaz.Windows._dragging = true;
@@ -212,6 +212,10 @@ Spaz.Windows.listenForMove = function() {
 
 
 Spaz.Windows.listenForResize = function() {
+	Spaz.Windows._resizing = false;
+	
+	var xstart, ystart;
+	
 	jQuery('#resize-sw')
 		.mousemove(function(event) {
 			if (!Spaz.Windows._resizing) {

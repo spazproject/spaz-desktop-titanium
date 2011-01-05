@@ -13,9 +13,9 @@
 		<id>main</id>
 		<title>Spaz</title>
 		<url>app://index.html</url>
-		<width>350</width>
+		<width>360</width>
 		<max-width>3000</max-width>
-		<min-width>310</min-width>
+		<min-width>320</min-width>
 		<height>580</height>
 		<max-height>3000</max-height>
 		<min-height>200</min-height>
@@ -25,6 +25,7 @@
 		<maximizable>true</maximizable>
 		<minimizable>true</minimizable>
 		<closeable>true</closeable>
+		<chrome>false</chrome>
 		<transparent-background>true</transparent-background>
 	</window>
 </ti:app>
