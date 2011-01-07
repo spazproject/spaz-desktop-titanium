@@ -122,7 +122,7 @@ Spaz.Sys.openInBrowser = function(url) {
 
 
 Spaz.Sys.openAppStorageFolder = function() {
-	sch.getFileObject(sch.getAppStorageDir()).openApplication(); 
+	Titanium.Platform.openApplication(sch.getAppStorageDir()); 
 };
 
 
