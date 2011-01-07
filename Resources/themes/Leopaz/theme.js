@@ -14,6 +14,7 @@
 // Make #entryform resizable
 // TODO: Remember height in prefs
 (function(){
+  var thisWin = Titanium.UI.getCurrentWindow();
   var $body             = $('body'),
       $timeline         = $('#timeline-tabs-content, .TabbedPanelsContentGroup'),
       $entryForm        = $('#entryform'),
@@ -22,7 +23,7 @@
       $resize           = $('<div id="leopaz-entryform-resize"></div>'),
       resizing          = false,
       maxEntryFormHeight = function(){
-        return nativeWindow.height - 96;
+        return thisWin.getHeight() - 96;
       },
       setEntryFormHeight = function(newHeight){
         $timeline.css('bottom', newHeight + 28);
@@ -32,7 +33,7 @@
       onMouseMove = function(ev){
         if(!resizing){ return; }
 
-        var newHeight = nativeWindow.height - ev.pageY - entryFormBottom;
+        var newHeight = thisWin.getHeight() - ev.pageY - entryFormBottom;
 
         // Set max height: don't overlap header
         newHeight = Math.min(maxEntryFormHeight(), newHeight);
@@ -60,7 +61,9 @@
         .mousemove(onMouseMove);
     }).mouseup(onMouseUp);
 
-  window.nativeWindow.addEventListener(air.NativeWindowBoundsEvent.RESIZE, function(){
+
+  
+  Titanium.API.addEventListener(Titanium.RESIZED, function(){
     var max = maxEntryFormHeight();
     if($entryForm.height() > max){ setEntryFormHeight(max); }
   });
