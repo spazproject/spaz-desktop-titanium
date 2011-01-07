@@ -5,9 +5,12 @@ means themes must set display:block on the <body> element */
 @import url("timeline-filters.css");
 @import url("popbox-content.css");
 
+body {
+	display:none;
+}
+
 #container {
 	opacity:1.0;
-	display:block;
 	-webkit-animation-name: body-fade-in;
 	-webkit-animation-duration: 1s;
 	-webkit-animation-iteration-count: 1;
@@ -45,6 +48,7 @@ means themes must set display:block on the <body> element */
 	beta ribbon image that appears inside the #container
 */
 #beta-ribbon {
+	display:none;
 	position: absolute;
 	top:     -1px;
 	right:    0px;
