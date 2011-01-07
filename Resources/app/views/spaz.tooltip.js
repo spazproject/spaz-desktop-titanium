@@ -8,8 +8,7 @@ var Spaz_Tooltip_hideTimeout = {};
 
 function Spaz_Tooltip(content, opts) {
 
-	sch.dump('OPTS:');
-	sch.dump(opts);
+	sch.debug('OPTS:');
 	
 	this.opts = opts || {};
 	
@@ -18,9 +17,8 @@ function Spaz_Tooltip(content, opts) {
 	this.event   = this.opts.e       || null;
 	this.jqtt    = $('#tooltip');
 	
-	sch.dump('CONTENT:"'+content+'"');
-	sch.dump('OPTS:');
-	sch.dump(this.opts);
+	sch.debug('CONTENT:"'+content+'"');
+
 	
 	/*
 	   append code if missing
@@ -56,7 +54,7 @@ Spaz_Tooltip.prototype.show = function(opts) {
 	
 	
 	
-	sch.dump('SHOW!!!');
+	sch.debug('SHOW!!!');
 	
 	this.hide();
 	
@@ -73,7 +71,7 @@ Spaz_Tooltip.prototype.show = function(opts) {
 	 * a wrapped function to show the tooltip after a timeout 
 	 */
 	function delayedShow() {
-		sch.dump('showing tooltip "' + thisTT.content + '"');
+		sch.debug('showing tooltip "' + thisTT.content + '"');
 
 		if (!thisTT.event) {
 			sch.debug('No event found in Spaz_Tooltip.show; returning');
