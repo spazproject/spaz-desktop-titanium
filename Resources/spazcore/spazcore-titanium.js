@@ -1,4 +1,4 @@
-/*********** Built 2010-12-30 17:23:27 EST ***********/
+/*********** Built 2011-01-06 22:14:41 EST ***********/
 /*jslint 
 browser: true,
 nomen: false,
@@ -8740,7 +8740,7 @@ var sc, Titanium, air, jQuery, Mojo;
 /**
  * @constant 
  */
-var SPAZCORE_PREFS_TI_KEY = 'preferences_json';
+var SPAZCORE_PREFS_TI_KEY = 'preferences.json';
 
 /**
  * @constant 
@@ -14822,12 +14822,10 @@ sc.helpers.dump = function(obj, level, cb) {
 	if (sc.helpers.isString(obj) || sc.helpers.isNumber(obj) || !obj) {
 		dumper = function(str) {
 			tilogger(str);
-			console.log(str);
 		};
 	} else {
 		dumper = function() {
 			tilogger(typeof(obj) + ' - ' + sch.enJSON(obj));
-			console.dir(obj);
 		};
 	}
 	
@@ -14878,10 +14876,13 @@ var sc, Titanium;
 SpazPrefs.prototype.load = function() {
 	
 	var thisPrefs = this;
-	
-	
-	if (Titanium.App.Properties.hasProperty(SPAZCORE_PREFS_TI_KEY)) {
-		var prefs_json = Titanium.App.Properties.getString(SPAZCORE_PREFS_TI_KEY);
+	var prefs_file = sch.getFileObject(sch.getAppStorageDir()).resolve(SPAZCORE_PREFS_TI_KEY);
+		
+	if (prefs_file.exists() && (prefs_file.size() > 0)) {
+		alert('opening for read:'+prefs_file.toString());
+		var fs = prefs_file.open(Titanium.Filesystem.MODE_READ);
+		var prefs_json = fs.read();
+		fs.close();
 		try {
 			var loaded_prefs = sc.helpers.deJSON(prefs_json);
 		} catch (e) {
@@ -14899,12 +14900,41 @@ SpazPrefs.prototype.load = function() {
 		this.save();
 	}
 	// jQuery().trigger('spazprefs_loaded');
-}
+	
+	// if (Titanium.App.Properties.hasProperty(SPAZCORE_PREFS_TI_KEY)) {
+	// 	var prefs_json = Titanium.App.Properties.getString(SPAZCORE_PREFS_TI_KEY);
+	// 	try {
+	// 		var loaded_prefs = sc.helpers.deJSON(prefs_json);
+	// 	} catch (e) {
+	// 		sch.error('Could not load prefs JSON… using defaults');
+	// 		this.save();
+	// 		return;
+	// 	}
+	// 
+	// 	for (var key in loaded_prefs) {
+	// 		sc.helpers.dump('Copying loaded pref "' + key + '":"' + this._prefs[key] + '" (' + typeof(this._prefs[key]) + ')');
+	// 		this._prefs[key] = loaded_prefs[key];
+	// 	}
+	// } else {
+	// 	// save the defaults if this is the first time
+	// 	this.save();
+	// }
+	// // jQuery().trigger('spazprefs_loaded');
+};
 
 SpazPrefs.prototype.save = function() {
 	// save the file to a default place
 	var prefs_json = sc.helpers.enJSON(this._prefs);
+	var prefs_file = sch.getFileObject(sch.getAppStorageDir()).resolve(SPAZCORE_PREFS_TI_KEY);
+	
 	Titanium.App.Properties.setString(SPAZCORE_PREFS_TI_KEY, prefs_json);
+	
+	if (!prefs_file.exists()) {
+		prefs_file.touch();
+	}
+	var fs = prefs_file.open(Titanium.Filesystem.MODE_WRITE);
+	fs.write(prefs_json);
+	fs.close();
 };
 
 
