@@ -35,7 +35,6 @@ Spaz.Themes.init = function() {
 	// load theme JS files
 	var themeObj = Spaz.Themes.getThemeObject(Spaz.Prefs.get('theme-basetheme'));
 	if (themeObj) {
-		$('#themeinfo').attr('src', themeObj.themeinfo);
 		$('#themejs').attr('src', themeObj.themejs);
 	}
 	

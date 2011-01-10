@@ -278,7 +278,8 @@ Spaz.initialize = function() {
 		'hashtags':Spaz.Autocomplete.getHashTags(),
 		'displayDiv':'#suggestions',
 		'textarea':'#entrybox',
-		'maxMatches':15
+		'maxMatches':15,
+		'timeout':100 // timeout in ms before it kicks in
 	});
 	
 	/*
