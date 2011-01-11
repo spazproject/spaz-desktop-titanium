@@ -1,4 +1,4 @@
-/*********** Built 2011-01-06 22:14:41 EST ***********/
+/*********** Built 2011-01-11 09:51:37 EST ***********/
 /*jslint 
 browser: true,
 nomen: false,
@@ -9739,6 +9739,10 @@ var SPAZCORE_SHORTURL_SERVICE_BITLY	  = 'bit.ly';
  * @constant 
  */
 var SPAZCORE_SHORTURL_SERVICE_JMP     = 'j.mp';
+/**
+ * @constant 
+ */
+var SPAZCORE_SHORTURL_SERVICE_GOOGLE  = 'goo.gl';
 
 /**
  * @constant 
@@ -9943,6 +9947,13 @@ SpazShortURL.prototype.getAPIObj = function(service) {
 		'url'	  : 'http://is.gd/api.php',
 		'getData' : function(longurl, opts) {
 			return { 'longurl':longurl };
+		}
+	};
+	
+	apis[SPAZCORE_SHORTURL_SERVICE_GOOGLE] = {
+		'url'	  : 'https://www.googleapis.com/urlshortener/v1/url',
+		'getData' : function(longurl, opts) {
+			return { 'longurl':longurl, 'key':'AIzaSyBMFTY7VjWGoXeFwbiY7vXoqAssjTr0od0' };
 		}
 	};
 	
@@ -14768,6 +14779,19 @@ sc.helpers.getAppStoreDir = sc.helpers.getAppStorageDir;
  */
 sc.helpers.getAppDir = function() {
 	return Titanium.Filesystem.getApplicationDirectory().toString();
+};
+
+/**
+ * build a filesystem path from an array of strings 
+ */
+sc.helpers.joinPaths = function(path_arr) {
+	var path = '';
+	var sep  = Titanium.Filesystem.getSeparator();
+	for (var i=0; i < path_arr.length; i++) {
+		if (i != 0) { path += sep; }
+		path += path_arr[i];
+	}
+	return path;
 };/*jslint 
 browser: true,
 nomen: false,
@@ -14876,10 +14900,9 @@ var sc, Titanium;
 SpazPrefs.prototype.load = function() {
 	
 	var thisPrefs = this;
-	var prefs_file = sch.getFileObject(sch.getAppStorageDir()).resolve(SPAZCORE_PREFS_TI_KEY);
-		
+	var prefs_file = sch.getFileObject(sch.joinPaths([sch.getAppStorageDir(), SPAZCORE_PREFS_TI_KEY]));
+		alert(prefs_file.toString());
 	if (prefs_file.exists() && (prefs_file.size() > 0)) {
-		alert('opening for read:'+prefs_file.toString());
 		var fs = prefs_file.open(Titanium.Filesystem.MODE_READ);
 		var prefs_json = fs.read();
 		fs.close();
