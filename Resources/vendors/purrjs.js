@@ -6,6 +6,9 @@ PurrJS = {};
  */
 PurrJS.modal = function(title, msg, icon, duration, position) {
 	
+	console.log('PurrJS.modal NYI');
+	return;
+	
 	var width  = 400;
 	var height = 300;
 	
@@ -91,6 +94,11 @@ PurrJS.modal = function(title, msg, icon, duration, position) {
    notify
 */
 PurrJS.notify = function(opts) {
+	
+	console.log('PurrJS.notify NYI');
+	return;
+	
+	
 	opts = sch.defaults({
 		'title':   'opts.title',
 		'message': 'opts.message',
