@@ -18,7 +18,8 @@ Spaz.DB.init = function() {
 	
 	return;
 	
-	var spazDB = sch.getFileObject(sch.getAppStorageDir()).resolve(SPAZ_DB_NAME);
+	
+	var spazDB = sch.getFileObject(sch.joinPaths([sch.getAppStorageDir(), SPAZ_DB_NAME]));
 	var conn = new air.SQLConnection();
 	var create;
 
@@ -182,7 +183,7 @@ Spaz.DB.getSyncConnection = function(mode) {
 	return;
 	
 	
-	var spazDB = sch.getFileObject(sch.getAppStorageDir()).resolve(SPAZ_DB_NAME);
+	var spazDB = sch.getFileObject(sch.joinPaths([sch.getAppStorageDir(), SPAZ_DB_NAME]));
 	var conn = new air.SQLConnection();
 
 	try {
