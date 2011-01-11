@@ -138,7 +138,7 @@ Spaz.UI.openPopboxURL = function(url) {
 	});
 
 	jQuery('#DOMWindow').outerWidth( cont_width-30 );
-}
+};
 
 
 /**
@@ -161,14 +161,14 @@ Spaz.UI.openPopboxInline = function(content_id) {
 	$domWindow.outerHeight(cont_height - 30);
 
 	return false;
-}
+};
 
 /**
  * closes the open popbox 
  */
 Spaz.UI.closePopbox = function() {
 	jQuery.closeDOMWindow();
-}
+};
 
 
 Spaz.UI.showAbout = function() {
@@ -218,7 +218,7 @@ Spaz.UI.setCurrentPage = function(tabEl, newpage) {
 };
 Spaz.UI.showEntryboxTip = function() {
     Spaz.UI.statusBar('Logged in as <span class="statusbar-username">' + Spaz.Prefs.getUsername() + '@'+Spaz.Prefs.getAccountType()+'</span>. ENTER sends.');
-}
+};
 
 Spaz.UI.showLocationOnMap = function(location) {
     if (location.length > 0) {
@@ -275,7 +275,7 @@ Spaz.UI.centerPopup = function(windowid) {
     sch.debug("top		 :" + jqWin.css('top'));
     sch.debug("left		 :" + jqWin.css('left'));
 
-}
+};
 
 
 
@@ -338,7 +338,7 @@ Spaz.UI.prepPhotoPost = function(url) {
 	// 
 	// Spaz.UI.clearPostIRT();
 
-}
+};
 
 Spaz.UI.prepReply = function(username, irt_id) {
 	//     var eb = $('#entrybox');
@@ -430,7 +430,7 @@ Spaz.UI.sendUpdate = function() {
 		// 
 		//         // entrybox.val('');
 		//     }
-}
+};
 
 
 
@@ -442,7 +442,7 @@ Spaz.UI.decodeSourceLinkEntities = function(str) {
     str = str.replace(/&gt;/gi, '>');
     str = str.replace(/&lt;/gi, '<');
     return str;
-}
+};
 
 
 Spaz.UI.setSelectedTab = function(tab) {
@@ -475,23 +475,23 @@ Spaz.UI.setSelectedTab = function(tab) {
  */
 Spaz.UI.getSelectedTab = function() {
     return Spaz.UI.selectedTab;
-}
+};
 
 
 Spaz.UI.reloadCurrentTab = function(force, reset) {
     sch.debug('reloading the current tab');
     Spaz.Data.loadDataForTab(Spaz.UI.getSelectedTab(), force, reset);
-}
+};
 
 
 Spaz.UI.autoReloadCurrentTab = function() {
     sch.debug('auto-reloading the current tab');
     Spaz.Data.loadDataForTab(Spaz.UI.getSelectedTab(), true);
-}
+};
 
 Spaz.UI.clearCurrentTimeline = function() {
     sch.debug('clearing the current timeline');
-    var tl = Spaz.Timelines.getTimelineFromTab(Spaz.UI.getSelectedTab())
+    var tl = Spaz.Timelines.getTimelineFromTab(Spaz.UI.getSelectedTab());
 
     // reset the lastcheck b/c some timelines will use "since" parameters
 	section.lastcheck = 0;
@@ -514,7 +514,7 @@ Spaz.UI.clearCurrentTimeline = function() {
     } else {
         sch.debug('timeline not clearable');
     }
-}
+};
 
 
 Spaz.UI.markCurrentTimelineAsRead = function() {
@@ -547,12 +547,12 @@ Spaz.UI.showTooltip = function(el, str, previewurl) {
 
     var opts = {
         'el': el,
-        'previewurl': previewurl,
-    }
+        'previewurl': previewurl
+    };
 
     // if (e) { opts['e'] = e }
     if (event) {
-        opts.e = event
+        opts.e = event;
     }
 
     var tt = new Spaz_Tooltip(str, opts);
@@ -569,12 +569,12 @@ Spaz.UI.hideTooltips = function() {
     var tt = $('#tooltip');
 
     sch.debug('clearing show and hide tooltip timeouts');
-    clearTimeout(Spaz_Tooltip_Timeout)
+    clearTimeout(Spaz_Tooltip_Timeout);
     clearTimeout(Spaz_Tooltip_hideTimeout);
     tt.stop();
     $('#tooltip .preview').hide();
     tt.hide();
-}
+};
 
 
 Spaz.UI.getViewport = function() {
@@ -584,7 +584,7 @@ Spaz.UI.getViewport = function() {
         cx: $('#container').width(),
         cy: $('#container').height()
     };
-}
+};
 
 
 
@@ -725,44 +725,14 @@ Spaz.UI.showLinkContextMenu = function(jq, url) {
 
 
 
-// Spaz.UI.showUserContextMenu = function(jq, screen_name) {
-//     if (!screen_name) {
-//         return false;
-//     }
-// 
-//     sch.dump(screen_name)
-// 
-//     var el = jq[0];
-// 
-//     sch.debug(el);
-// 
-//     // hide any showing tooltips
-//     // sch.dump('hiding tooltip');
-//     $('#tooltip').hide();
-// 
-//     // show the link context menu
-//     // sch.dump('opening context menu for user '+screen_name);
-//     $('#userContextMenu').css('left', event.pageX)
-//     .css('top', event.pageY)
-//     .show();
-// 
-//     $('#userContextMenu .menuitem').attr('user-screen_name', screen_name);
-// 
-// 
-//     // sch.dump('Set one-time click event on #userContextMenu');
-//     $(document).one('click',
-//     function() {
-//         $('#userContextMenu').hide();
-//     });
-// 
-// };
+
 
 
 
 Spaz.UI.selectEntry = function(el) {
 
     sch.debug('unselected tweets');
-    Spaz.UI.deselectAllEntries()
+    Spaz.UI.deselectAllEntries();
 
 
     sch.debug('selecting tweet');
@@ -782,12 +752,12 @@ Spaz.UI.selectEntry = function(el) {
 
     $(document).trigger('UNREAD_COUNT_CHANGED');
 
-}
+};
 
 
 Spaz.UI.deselectAllEntries = function() {
     $('div.timeline-entry.ui-selected').removeClass('ui-selected');
-}
+};
 
 
 Spaz.UI.getStatusIdFromElement = function(el) {
@@ -809,7 +779,7 @@ Spaz.UI.getElementFromStatusId = function(id) {
 	var element = $('div.timeline-entry[data-status-id="'+id+'"]').get()[0];
 	if (element) {
 		sch.dump(element.id);
-		return element
+		return element;
 	}
 	return false;
 };
@@ -822,7 +792,7 @@ Spaz.UI.markEntryAsRead = function(el) {
 
     $(document).trigger('UNREAD_COUNT_CHANGED');
 
-}
+};
 
 
 Spaz.UI.removeEntry = function(id, is_dm) {
@@ -834,7 +804,7 @@ Spaz.UI.removeEntry = function(id, is_dm) {
 		$('div.timeline-entry[data-status-id="'+id+'"]').not('.dm').remove();
 	}
 	
-}
+};
 
 
 Spaz.UI.markFavorite = function(postid) {
@@ -881,13 +851,13 @@ Spaz.UI.sortTimeline = function(timelineid, reverse, sort_all) {
         // sch.debug('done sorting');
     }
 
-}
+};
 
 
 
 Spaz.UI.sortTweetElements = function(a, b) {
-    var inta = parseInt($(a).find('.entry-timestamp').text())
-    var intb = parseInt($(b).find('.entry-timestamp').text())
+    var inta = parseInt($(a).find('.entry-timestamp').text());
+    var intb = parseInt($(b).find('.entry-timestamp').text());
     var diff =  inta - intb;
     return diff;
 };
@@ -897,13 +867,13 @@ Spaz.UI.sortTweetElements = function(a, b) {
 Spaz.UI.reverseTimeline = function(timelineid) {
     var cells = $('#' + timelineid + ' .timeline-entry');
     cells.reverse(true).remove().appendTo('#' + timelineid);
-}
+};
 
 
 Spaz.UI.getUnreadCount = function() {
 	var timelineid = Spaz.Timelines.friends.timeline.timeline_container_selector;
 
-	var selector = timelineid + ' div.timeline-entry:visible'
+	var selector = timelineid + ' div.timeline-entry:visible';
 
     // // unread count depends on whether or not we're showing everything, or just replies/dms
     // if ($('#' + timelineid).is('.dm-replies')) {
@@ -924,9 +894,9 @@ Spaz.UI.getNewEntrySelector = function() {
 
     // we change the selector so that messages not showing do not trigger notifications
     if ($(timeline_container_selector).is('.dm-replies')) {
-        var selector = timeline_container_selector + ' .new.dm, ' + timeline_container_selector + ' .new.reply:visible'
+        var selector = timeline_container_selector + ' .new.dm, ' + timeline_container_selector + ' .new.reply:visible';
     } else {
-        var selector = timeline_container_selector + ' .new:visible'
+        var selector = timeline_container_selector + ' .new:visible';
     }
 
     return selector;
@@ -1083,15 +1053,15 @@ Spaz.UI.notifyOfNewEntries = function(new_entries) {
         Spaz.UI.statusBar('No new messages');
     }
 
-}
+};
 
 
 Spaz.UI.alert = function(message, title) {
     if (!title) {
-        title = "Alert"
+        title = "Alert";
     }
-    Spaz.UI.notify(message, title, null, Spaz.Prefs.get('window-notificationhidedelay'), 'app:/images/spaz-icon-alpha_48.png');
-}
+    Spaz.UI.notify(message, title, null, Spaz.Prefs.get('window-notificationhidedelay'), sch.joinPaths([sch.getAppDir(), 'images/spaz-icon-alpha_48.png']));
+};
 
 
 
@@ -1103,8 +1073,7 @@ Spaz.UI.notify = function(opts) {
 		title:    'title',
 		position: null,
 		duration: Spaz.Prefs.get('window-notificationhidedelay')*1000,
-		icon:     new air.File(new air.File(
-		          	'app:/images/spaz-icon-alpha.png').nativePath).url,
+		icon:     sch.getFileObject(sch.joinPaths([sch.getAppDir(), 'images/spaz-icon-alpha.png'])).toURL(),
 		force:    false,
 		data:     null,
 		template: null,
@@ -1118,7 +1087,7 @@ Spaz.UI.notify = function(opts) {
 		if (Spaz.Prefs.get('window-notificationmethod') === 'growl') {
 
 			if (!Spaz.Growl) {
-				Spaz.Growl = new SpazGrowl('Spaz', new air.File(new air.File("app:/images/spaz-icon-alpha.png").nativePath).url);
+				Spaz.Growl = new SpazGrowl('Spaz', sch.getFileObject(sch.joinPaths([sch.getAppDir(), 'images/spaz-icon-alpha.png'])).toURL());
 			}
 
 			Spaz.Growl.notify(opts.title, opts.message, opts.icon);
@@ -1139,308 +1108,7 @@ Spaz.UI.notify = function(opts) {
     } else {
         sch.debug('not showing notification popup - window-shownotificationpopups disabled');
     }
-}
-
-
-
-
-
-
-// cleans up and parses stuff in timeline's tweets
-Spaz.UI.cleanupTimeline = function(timelineid, suppressNotify, suppressScroll, skip_sort) {
-
-	/*
-		record some values so we can adjust the scrollTop if necessary
-	*/
-	var oldFirst  = $('#'+timelineid+" div.timeline-entry:first");
-	var $timeline = $('#'+timelineid);
-	var offset_before = oldFirst.offset().top;
-	sch.dump("oldFirst BEFORE top: " + oldFirst.offset().top + "\nscrollTop: " + $timeline.parent().scrollTop());
-
-
-
-	// alert('Spaz.UI.cleanupTimeline');
-
-    /*
-        Make this non-blocking
-    */
-    Spaz.Timers.add(function() {
-        var numentries = $('#' + timelineid + ' div.timeline-entry').length;
-        time.start('sortTimeline');
-        if (numentries > 1 && !skip_sort) {
-            sch.debug('Sorting timeline numentries:'+numentries);
-            Spaz.UI.sortTimeline(timelineid, true);
-        } else {
-            sch.debug('not sorting - skip_sort:'+skip_sort+' numentries:'+numentries);
-        }
-        time.stop('sortTimeline');
-        return false;
-    });
-
-
-    /*
-        remove extra entries
-    */
-    Spaz.Timers.add(function() {
-        time.start('removeExtras');
-
-		var tl_selector = '#' + timelineid + ' div.timeline-entry';
-
-		// alert(tl_selector);
-
-		function removeExtraItems(type) {
-			switch (type) {
-				case 'reply':
-					var tweets  = $(tl_selector).is('reply');
-					var prefkey = "timeline-replies-pager-count";
-					break;
-
-				case 'dm':
-					var tweets  = $(tl_selector).is('dm');
-					var prefkey = "timeline-direct-pager-count";
-					break;
-
-				default:
-					var tweets  = $(tl_selector).not('.reply, .dm');
-					var prefkey = "timeline-home-pager-count";
-			}
-
-			var numEntries = tweets.length
-	        if (numEntries > Spaz.Prefs.get(prefkey)) {
-	            var diff = numEntries - Spaz.Prefs.get(prefkey);
-	            sch.dump("numEntries "+type+"is " + numEntries + " > " + Spaz.Prefs.get(prefkey) + "; removing last " + diff + " entries");
-	            tweets.slice(diff * -1).remove();
-	        }
-		}
-
-
-		removeExtraItems();
-		removeExtraItems('reply');
-		removeExtraItems('dm');
-
-        time.stop('removeExtras');
-        return false;
-    });
-
-
-    /*
-        Make this non-blocking
-    */
-    Spaz.Timers.add(function() {
-        time.start('convertPostTimes');
-
-        $("#" + timelineid + ' a.status-created-at').each(function(i) {
-            $(this).text(sch.get_relative_time($(this).attr('data-created-at')));
-        });
-        time.stop('convertPostTimes');
-        return false;
-    });
-
-
-
-    /*
-        Make this non-blocking
-    */
-    Spaz.Timers.add(function() {
-        time.start('scrollTimeline');
-        if (!suppressScroll) {
-            if ($("#" + timelineid + ' .timeline-entry.new:not(.read)').length > 0) {
-                // scroll to top
-                sch.debug('scrolling to .timeline-entry.new:not(.read) in #' + timelineid);
-
-				/*
-
-				*/
-                if (Spaz.Prefs.get('timeline-scrollonupdate') && $timeline.parent().scrollTop() > 0) {
-                    try {
-						sch.dump('scrolliong thee timeline '+timelineid);
-                        $('#'+timelineid).parent().scrollTo('.timeline-entry.new:not(.read):last', {
-                            speed: 400,
-                            easing: 'swing'
-                        })
-                    } catch(e) {
-                        sch.debug('Error doing scrollTo first new entry - probably switched tabs in the middle of loading. No sweat!');
-                    }
-                }
-
-            }
-        }
-        time.stop('scrollTimeline');
-        return false;
-    });
-
-    /*
-        Make this non-blocking
-    */
-    Spaz.Timers.add(function() {
-
-
-        var cleanupTweets = $("div.needs-cleanup", "#" + timelineid);
-
-        time.start('bindOnceFadein');
-        cleanupTweets.find('img.user-image').one('load',
-        function() {
-            // alert('fadingIn');
-            $(this).fadeTo('500', '1.0');
-        });
-        time.stop('bindOnceFadein');
-
-        time.start('highlightReplies');
-        // highlight all messages that mention @username
-        cleanupTweets.find(".status-text").each(function(i) {
-            var re = new RegExp('@' + Spaz.Prefs.getUsername() + '\\b', 'i');
-            if (re.test($(this).html())) {
-                // sch.debug("found reply in "+$(this).text());
-                $(this).parents('div.needs-cleanup').addClass('reply');
-            }
-        })
-        time.stop('highlightReplies');
-
-
-        /* clean up the .status-text */
-
-        // make it here so we don't instantiate on every loopthrough
-        var md = new Showdown.converter();
-
-        time.start('cleanupStatusText');
-        cleanupTweets.find("div.status-text").each(function(i) {
-
-            // ******************************
-            // Support for shortened URL rewriting
-            // ******************************
-            // We save this as it will be used in the response status callback
-            var divElt = this;
-
-            // We save the text as it could change in the loop due to async callbacks
-            var txt = divElt.innerHTML;
-
-            var domains = ["short.ie", "tinyurl.com", "is.gd", "snipr.com", "snurl.com", "moourl.com", "url.ie", "snipurl.com", "xrl.us", "bit.ly", "ping.fm", "urlzen.com", "revcanonical" ];
-            var stream = new air.URLStream();
-
-            // time.start('lookingForShortDomains');
-            for (var i in domains)
-            {
-                // Get domain
-                var domain = domains[i];
-
-                // Iterate over URL pattern
-                var urlRE = new RegExp("http:\\/\\/" + domain + "([\\w\\-_+\\/]*)", "g");
-                var matchArray = null;
-                while (matchArray = urlRE.exec(txt)) {
-                    // sch.dump("Getting content of URL " + matchArray[1]);
-                    sch.debug("Getting content of URL " + matchArray[1]);
-
-                    // Get the URL
-                    var url = matchArray[0];
-
-                    // Now we make a request to obtain the response URL
-                    stream.addEventListener(air.HTTPStatusEvent.HTTP_RESPONSE_STATUS, onHTTPResponseStatus, false, 0, true);
-                    stream.addEventListener(air.IOErrorEvent.IO_ERROR, onIOError);
-
-					// make the URLRequest and set some properties
-					url_req = new air.URLRequest(url);
-					url_req.manageCookies = false;
-					url_req.authenticate  = false;
-					url_req.cacheResponse = true;
-					url_req.userAgent = Spaz.Sys.getUserAgent();
-
-					// Perform load
-                    stream.load(url_req);
-                    // sch.dump("Decoding " + domain + " URL " + url);
-                    sch.dump("Decoding " + domain + " URL " + url);
-                }
-
-            }
-            // time.stop('lookingForShortDomains');
-
-            function onHTTPResponseStatus(event) {
-                // sch.dump('onHTTPResponseStatus');
-                if (event.status == 200) {
-                    // Here we get the value to rewrite
-                    var targetURL = event.responseURL;
-                    var slicerRE = /(?:(\s|^|\.|\:|\())(?:http:\/\/)((?:[^\W_]((?:[^\W_]|-){0,61}[^\W_])?\.)+([a-z]{2,6}))((?:\/[\w\.\/\?=%&_-]*)*)/;
-                    var targetDomain = targetURL.replace(slicerRE, "$2");
-                    sch.debug("Got a response status event for url " + url + ": " + targetURL);
-                    $(divElt).find("a[href*=" + url + "]").html(targetDomain + "&raquo;").attr("href", targetURL);
-                }
-                stream.removeEventListener(air.HTTPStatusEvent.HTTP_RESPONSE_STATUS, onHTTPResponseStatus);
-                stream.removeEventListener(air.IOErrorEvent.IO_ERROR, onIOError);
-            }
-
-            function onIOError(event) {
-                // sch.dump('onIOError');
-                var targetURL = event.responseURL;
-                sch.debug('Request to ' + event.responseURL + ' returned an IOErrorEvent');
-                sch.debug(event);
-                stream.removeEventListener(air.HTTPStatusEvent.HTTP_RESPONSE_STATUS, onHTTPResponseStatus);
-                stream.removeEventListener(air.IOErrorEvent.IO_ERROR, onIOError);
-            }
-
-        });
-
-        time.start('removeCleanupClass');
-        // remove the needs-cleanup and show
-        cleanupTweets.css('display', '').removeClass('needs-cleanup');
-        time.stop('removeCleanupClass');
-
-        time.stop('cleanupStatusText');
-
-        // Spaz.Timers.stop();
-
-
-		/*
-			this is a helper to fadeIn any user avatars that didn't see the load event properly
-		*/
-		function fadeInStragglers() {
-			$("img.user-image").each( function() {
-				if ($(this).css('opacity') < 1) {
-					// sch.dump('fadingIn: '+this.outerHTML);
-					$(this).fadeTo('500', '1.0');
-				}
-			});
-		};
-
-		/*
-			run the helper after 5 seconds
-		*/
-		setTimeout(fadeInStragglers, 5000);
-
-		/*
-			if necessary, adjust the scrollTop
-		*/
-		var offset_after = oldFirst.offset().top;
-		var offset_diff = Math.abs(offset_before - offset_after);
-		sch.dump("oldFirst AFTER top: " + oldFirst.offset().top + "\nscrollTop: " + $timeline.parent().scrollTop() + "\noffset_diff: "+offset_diff);
-
-		if ($timeline.parent().scrollTop() > 0) {
-			$timeline.parent().scrollTop( $timeline.parent().scrollTop() + offset_diff );
-		}
-
-		sch.dump($timeline.parent().scrollTop());
-        return false;
-    });
-
-    /*
-        Make this non-blocking
-    */
-    Spaz.Timers.add(function() {
-        //sch.debug($("#"+timelineid).html());
-        time.start('setNotificationTimeout');
-        // we delay on notification of new entries because stuff gets
-        // really confused and wonky if you fire it off right away
-        if (!suppressNotify) {
-            sch.debug('Set timeout for notifications');
-            Spaz.UI.notifyOfNewEntries();
-            // remove "new" indicators
-            $("#" + Spaz.Section.friends.timeline + ' .new').removeClass('new');
-        }
-        time.stop('setNotificationTimeout');
-
-        return false;
-    });
-
-
-}
+};
 
 
 
@@ -1457,7 +1125,7 @@ Spaz.UI.showTab = function(index) {
 	} else if (typeof index === 'string') {
 	    Spaz.UI.tabbedPanels.showPanel(index);		
 	}
-}
+};
 
 /**
  * show preferences section 
@@ -1466,7 +1134,7 @@ Spaz.UI.showPrefs = function() {
 	var tabid = 'tab-prefs';
 	Spaz.UI.setSelectedTab(tabid);
 	Spaz.UI.tabbedPanels.showPanel(tabid);
-}
+};
 
 /**
  * Open the Accounts panel in the Prefs section
