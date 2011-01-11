@@ -65,7 +65,7 @@ Spaz.Debug.logToFile = function(obj, level) {
 
 	var cr = Titanium.Filesystem.getLineEnding();
 	var file   = Titanium.Filesystem.getDocumentsDirectory();
-	file       = file.resolve("spaz-debug.log");
+	file       = sch.joinPaths([file.toString(), "spaz-debug.log"]);
 	var stream = new air.FileStream();
 	stream.open(file, air.FileMode.APPEND);
 	now = new Date();
