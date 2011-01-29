@@ -237,19 +237,11 @@ Spaz.Windows.listenForResize = function() {
 		}, false);
 
 
-        var timeout_id;
 		function drag(event) {
-		    if (timeout_id) {
-		        clearTimeout(timeout_id);
-		    }
-	        timeout_id = setTimeout(function() {
-	            console.log("firing drag", event.clientX, event.clientY);
-    			var wnd = Titanium.UI.currentWindow;
-    			wnd.setBounds({'x':wnd.getX(), 'y':wnd.getY(), 'width':event.clientX, 'height':event.clientY});
-                // wnd.setWidth(event.clientX);
-                // wnd.setHeight(event.clientY);
-                Spaz.Windows.onWindowResize();
-	        }, 10);
+            // console.log("firing drag", event.clientX, event.clientY);
+			var wnd = Titanium.UI.currentWindow;
+			wnd.setBounds({'x':wnd.getX(), 'y':wnd.getY(), 'width':event.clientX, 'height':event.clientY});
+            Spaz.Windows.onWindowResize();
 	        return;
 		}
         event.stopPropagation();
