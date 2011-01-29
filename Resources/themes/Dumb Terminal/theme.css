@@ -954,12 +954,12 @@ input[type='text']#dock-refreshinterval {
 
 
 
-#resize-sw {
+#resize-se {
 	position:absolute;
 	bottom: 3px;
 	right:  3px;
 	font-size:12px;
-	background-image:url('images/resize-sw.png');
+	background-image:url('images/resize-se.png');
 	background-color:006600;
 	cursor: sw-resize;
 	text-align:center;

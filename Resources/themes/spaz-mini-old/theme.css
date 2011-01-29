@@ -592,12 +592,12 @@ div.timeline-entry:nth-child(even){
 			The little resizing widget. This is totally misnamed (it should be "se" and not "sw")
 			but I'm kind of an idiot.
 		*/
-		#resize-sw {
+		#resize-se {
 			position:absolute;
 			bottom:0px;
 			right:0px;
 			font-size:12px;
-			background-image:url('images/resize-sw.png');
+			background-image:url('images/resize-se.png');
 			cursor: sw-resize;
 			text-align:center;
 			width: 13px;
