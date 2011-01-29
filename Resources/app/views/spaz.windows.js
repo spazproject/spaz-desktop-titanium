@@ -41,9 +41,9 @@ Spaz.Windows.windowRestore = function() {
 
 
 	// if (window.nativeWindow.displayState == air.NativeWindowDisplayState.MINIMIZED) {
-	// 	sch.debug('restoring window');
-	//  		nativeWindow.restore();
-	//  	}
+	//	sch.debug('restoring window');
+	//			nativeWindow.restore();
+	//		}
 	sch.debug('restoring window');
 	if (thisWin.isMaximized()) {
 		thisWin.unmaximize();
@@ -63,9 +63,9 @@ Spaz.Windows.onAppExit = function(event) {
 	sch.dump('Spaz.Windows.windowExitCalled is '+Spaz.Windows.windowExitCalled);
 	// 
 	// if (Spaz.Windows.windowExitCalled == false) {
-	// 	sch.dump('windowClose was not called');
-	// 	Spaz.Windows.windowClose();
-	// 	return;
+	//	sch.dump('windowClose was not called');
+	//	Spaz.Windows.windowClose();
+	//	return;
 	// }
 
 	Spaz.Prefs.savePrefs();
@@ -133,11 +133,11 @@ Spaz.Windows.onSystrayClick = function(event) {
 	// sch.debug('id:'+air.NativeApplication.nativeApplication.id);
 	// 
 	// if (nativeWindow.displayState == air.NativeWindowDisplayState.MINIMIZED) {
-	// 	sch.debug('restoring window');
-	//  		nativeWindow.restore();
-	//  	}
-	//  	sch.debug('activating application');
-	//  	air.NativeApplication.nativeApplication.activate() // bug fix by Mako
+	//	sch.debug('restoring window');
+	//			nativeWindow.restore();
+	//		}
+	//		sch.debug('activating application');
+	//		air.NativeApplication.nativeApplication.activate() // bug fix by Mako
 	// sch.debug('activating window');
 	// nativeWindow.activate();
 	// sch.debug('ordering-to-front window');
@@ -158,21 +158,21 @@ Spaz.Windows.makeWindowHidden = function(){
 
 
 Spaz.Windows.setWindowOpacity = function(value) {
-    percentage = parseInt(value);
-    if (isNaN(percentage)) {
-        percentage = 100;
-    }
-    if (percentage < 25) {
-        percentage = 25;
-    }
-    var val = parseInt(percentage) / 100;
-    if (isNaN(val)) {
-        val = 1;
-    } else if (val >= 1) {
-        val = 1;
-    } else if (val <= 0) {
-        val = 1;
-    }
+	percentage = parseInt(value);
+	if (isNaN(percentage)) {
+		percentage = 100;
+	}
+	if (percentage < 25) {
+		percentage = 25;
+	}
+	var val = parseInt(percentage) / 100;
+	if (isNaN(val)) {
+		val = 1;
+	} else if (val >= 1) {
+		val = 1;
+	} else if (val <= 0) {
+		val = 1;
+	}
 	Spaz.Windows.getCurrentWindow().setTransparency(val);
 };
 
@@ -184,56 +184,76 @@ Spaz.Windows.windowResize = function(){
 
 
 Spaz.Windows.listenForMove = function() {
-	Spaz.Windows._dragging = false;
-	
-	var xstart, ystart;
-	
-	jQuery('h1#header')
-		.mousemove(function(event) {
-			if (!Spaz.Windows._dragging) {
-				return;
-			}
-			var newX = Titanium.UI.currentWindow.getX() + event.clientX - xstart;
-			var newY = Titanium.UI.currentWindow.getY() + event.clientY - ystart;
-			Titanium.UI.getMainWindow().moveTo(newX, newY)
-		})
-		.mousedown(function(event) {
-			Spaz.Windows._dragging = true;
-			xstart = event.clientX;
-			ystart = event.clientY;
-		})
-		.mouseup(function(event) {
-			Spaz.Windows._dragging = false;
-			Spaz.Windows.onWindowMove();
-		});
+	/*
+	* See https://gist.github.com/785158
+	Bullet Proof window drag
 
+	This is the most performant window dragging code
+	I could come up with. All the example on
+	developer.appcelerator.com we laggy
+
+	Version 2: More contained version
+	*/
+
+	var toolbarHandle = document.getElementById('header');
+
+	toolbarHandle.addEventListener('mousedown', function (e){
+		var isDragging = true;
+		var mousePosition = {x:event.clientX, y:event.clientY};
+
+		document.addEventListener('mousemove', drag, false);
+		document.addEventListener('mouseup', function (e){
+			document.removeEventListener('mousemove', drag, false);
+			document.removeEventListener('mouseup', arguments.callee, false);
+		}, false);
+
+
+		function drag(event) {
+			var wnd = Titanium.UI.currentWindow;
+			var curentPosition = {x:wnd.getX(), y:wnd.getY()};
+
+			curentPosition.x += event.clientX - mousePosition.x;
+			curentPosition.y += event.clientY - mousePosition.y;
+			wnd.moveTo(curentPosition.x, curentPosition.y);
+			Spaz.Windows.onWindowMove();
+		}
+		event.stopPropagation();
+	}, false);
 
 };
 
 
 Spaz.Windows.listenForResize = function() {
-	Spaz.Windows._resizing = false;
-	
-	var xstart, ystart;
-	
-	jQuery('#resize-sw')
-		.mousemove(function(event) {
-			if (!Spaz.Windows._resizing) {
-				return;
-			}
+	var resizeHandle = document.getElementById('resize-se');
 
-			Titanium.UI.currentWindow.setWidth(Titanium.UI.currentWindow.getWidth() + event.clientX - xstart);
-			Titanium.UI.currentWindow.setHeight(Titanium.UI.currentWindow.setHeight() + event.clientY - ystart);
-		})
-		.mousedown(function(event) {
-			Spaz.Windows._resizing = true;
-			xstart = event.clientX;
-			ystart = event.clientY;
-		})
-		.mouseup(function(event) {
-			Spaz.Windows._resizing = false;
-			Spaz.Windows.onWindowResize();
-		});
+	resizeHandle.addEventListener('mousedown', function (e){
+		var isDragging = true;
+		var mousePosition = {x:event.clientX, y:event.clientY};
+
+		document.addEventListener('mousemove', drag, false);
+		document.addEventListener('mouseup', function (e){
+			document.removeEventListener('mousemove', drag, false);
+			document.removeEventListener('mouseup', arguments.callee, false);
+		}, false);
+
+
+        var timeout_id;
+		function drag(event) {
+		    if (timeout_id) {
+		        clearTimeout(timeout_id);
+		    }
+	        timeout_id = setTimeout(function() {
+	            console.log("firing drag", event.clientX, event.clientY);
+    			var wnd = Titanium.UI.currentWindow;
+    			wnd.setBounds({'x':wnd.getX(), 'y':wnd.getY(), 'width':event.clientX, 'height':event.clientY});
+                // wnd.setWidth(event.clientX);
+                // wnd.setHeight(event.clientY);
+                Spaz.Windows.onWindowResize();
+	        }, 10);
+	        return;
+		}
+        event.stopPropagation();
+	}, false);
 };
 
 
@@ -262,7 +282,7 @@ Spaz.Windows.onWindowResize = function() {
 		delete Spaz.Windows.onWindowResize.prefsTimeout;
 	}
 	Spaz.Windows.onWindowResize.prefsTimeout = setTimeout(function(){
-		Spaz.Prefs.set('window-width',  thisWin.getWidth());
+		Spaz.Prefs.set('window-width',	thisWin.getWidth());
 		Spaz.Prefs.set('window-height', thisWin.getHeight());
 	}, 500);
 };
@@ -299,9 +319,9 @@ Spaz.Windows.enableDropShadow = function(state) {
 Spaz.Windows.enableRestoreOnActivate = function(state) {
 	sch.error("Spaz.Windows.enableRestoreOnActivate NYI!");
 	// if (state) {
-	// 	air.NativeApplication.nativeApplication.addEventListener('activate', Spaz.Windows.windowRestore);
+	//	air.NativeApplication.nativeApplication.addEventListener('activate', Spaz.Windows.windowRestore);
 	// } else {
-	// 	air.NativeApplication.nativeApplication.removeEventListener('activate', Spaz.Windows.windowRestore);
+	//	air.NativeApplication.nativeApplication.removeEventListener('activate', Spaz.Windows.windowRestore);
 	// }
 };
 
@@ -311,8 +331,8 @@ Spaz.Windows.enableRestoreOnActivate = function(state) {
 Spaz.Windows.enableMinimizeOnBackground = function(state) {
 	sch.error("Spaz.Windows.enableMinimizeOnBackground NYI!");
 	// if (state) {
-	// 	air.NativeApplication.nativeApplication.addEventListener('deactivate', Spaz.Windows.windowMinimize);
+	//	air.NativeApplication.nativeApplication.addEventListener('deactivate', Spaz.Windows.windowMinimize);
 	// } else {
-	// 	air.NativeApplication.nativeApplication.removeEventListener('deactivate', Spaz.Windows.windowMinimize);
+	//	air.NativeApplication.nativeApplication.removeEventListener('deactivate', Spaz.Windows.windowMinimize);
 	// }
 };
