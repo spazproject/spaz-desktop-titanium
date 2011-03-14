@@ -119,29 +119,12 @@ Spaz.Windows.windowClose = function() {
  */
 Spaz.Windows.makeSystrayIcon = function() {
 	sch.debug('Making Windows system tray menu')
-	// air.NativeApplication.nativeApplication.icon.menu = Spaz.Menus.createRootMenu();
 	var tray = Titanium.UI.addTray("images/spaz-icon-alpha_16.png", Spaz.Windows.onSystrayClick);
 	tray.setHint($L("Spaz loves you"));
 };
 
 Spaz.Windows.onSystrayClick = function(event) {
 	Spaz.Windows.windowRestore();
-	
-	// // TODO replace this with call to Spaz.Windows.windowRestore()
-	// sch.debug('clicked on systray');
-	// sch.debug(nativeWindow.displayState);
-	// sch.debug('id:'+air.NativeApplication.nativeApplication.id);
-	// 
-	// if (nativeWindow.displayState == air.NativeWindowDisplayState.MINIMIZED) {
-	//	sch.debug('restoring window');
-	//			nativeWindow.restore();
-	//		}
-	//		sch.debug('activating application');
-	//		air.NativeApplication.nativeApplication.activate() // bug fix by Mako
-	// sch.debug('activating window');
-	// nativeWindow.activate();
-	// sch.debug('ordering-to-front window');
-	// nativeWindow.orderToFront();
 };
 
 

@@ -96,7 +96,6 @@ PurrJS.modal = function(title, msg, icon, duration, position) {
 PurrJS.notify = function(opts) {
 	
 	console.log('PurrJS.notify NYI');
-	return;
 	
 	
 	opts = sch.defaults({
@@ -113,7 +112,19 @@ PurrJS.notify = function(opts) {
 		'onClick' :null,
 		'onHover' :null
 	}, opts);
-	
+
+	var not = Titanium.Notification.createNotification();
+	not.setMessage(opts.message);
+	not.setIcon(opts.icon);
+	not.setTimeout(opts.duration);
+	not.setTitle(opts.title);
+	not.setCallback(function () {
+		if (opts.onClick) {
+			opts.onClick();
+		}
+	});
+	not.show();
+	return;
 	
 	/*
 	  Size of window
