@@ -38,11 +38,14 @@ Spaz.Debug.dump = function(msg, type) {
 			type = 'info';
 		}
 
-		if (air.Introspector && air.Introspector.Console && air.Introspector.Console[type]) {
+		if (window.air && air.Introspector && air.Introspector.Console && air.Introspector.Console[type]) {
 			air.Introspector.Console[type](msg);
 		}
+		if (window.console) {
+			console.log(msg);
+		}
 
-		window.runtime.trace(msg);
+//		window.runtime.trace(msg);
 	
 		Spaz.Debug.logToFile(msg);
 	}
@@ -50,7 +53,8 @@ Spaz.Debug.dump = function(msg, type) {
 
 
 Spaz.Debug.logToFile = function(obj, level) {
-	
+	return;
+
 	var msg = ''
 	
 	if (!level) { level = SPAZCORE_DUMPLEVEL_DEBUG; }
@@ -98,6 +102,7 @@ Spaz.Debug.showProps = function(obj, objName) {
 
 
 Spaz.Debug.dumpHTML = function() {
+	return;
 	var docsDir = Titanium.Filesystem.getDocumentsDirectory();
 	try {
 		docsDir.browseForSave("Save HTML As");
@@ -108,6 +113,7 @@ Spaz.Debug.dumpHTML = function() {
 };
 
 Spaz.Debug.dumpHTMLSelectListener = function(event) {
+	return;
 	var newFile = event.target;
 	sch.debug('got newFile '+newFile.toString());
 	
@@ -130,6 +136,7 @@ Spaz.Debug.dumpHTMLSelectListener = function(event) {
 
 
 Spaz.Debug.insertInspectorScripts = function() {
+	return;
 	sch.dump("INSERT DEBUGGING SCRIPTS");
 	var e = document.createElement("script");
 	e.src = "vendors/air/AIRIntrospector.js";

@@ -53,11 +53,11 @@ Spaz.Prefs.defaultPreferences = {
 	'debug-enabled': false,
 	'inspector-enabled': false,
 
-	'sound-url-update':	 'app:/sounds/TokyoTrainStation/CSnd.mp3',
-	'sound-url-startup': 'app:/sounds/TokyoTrainStation/On.mp3',
-	'sound-url-shutdown':'app:/sounds/TokyoTrainStation/Off.mp3',
-	'sound-url-new':	 'app:/sounds/TokyoTrainStation/New.mp3',
-	'sound-url-wilhelm': 'app:/sounds/wilhelm.mp3',
+	'sound-url-update':	 'app://sounds/TokyoTrainStation/CSnd.mp3',
+	'sound-url-startup': 'app://sounds/TokyoTrainStation/On.mp3',
+	'sound-url-shutdown':'app://sounds/TokyoTrainStation/Off.mp3',
+	'sound-url-new':	 'app://sounds/TokyoTrainStation/New.mp3',
+	'sound-url-wilhelm': 'app://sounds/wilhelm.mp3',
 
 	'timeline-scrollonupdate': false,
 	'timeline-maxentries': 325,

@@ -194,8 +194,6 @@ Spaz.initialize = function() {
 		sch.debug('Ending check for update');
 	}
 
-
-
 	/************************
 	 * Other stuff to do when document is ready
 	 ***********************/
@@ -261,18 +259,11 @@ Spaz.initialize = function() {
 	sch.error('Spaz.Controller.initIntercept()')
 	Spaz.Controller.initIntercept();
 
-	/*
-		if we have a username and password set, trigger an "account_switched" event
-		to kick things off
-	*/
-	if (Spaz.Prefs.getUsername() && Spaz.Prefs.getAccountType()) {
-		sch.trigger('account_switched', document, Spaz.Prefs.getCurrentAccount());
-	}
-
 
 	/*
 		set-up usernameCompleter
 	*/
+	sch.error("new usernameCompleter");
 	Spaz.uc = new usernameCompleter({
 		'usernames':Spaz.Autocomplete.getScreenNames(),
 		'hashtags':Spaz.Autocomplete.getHashTags(),
@@ -285,6 +276,7 @@ Spaz.initialize = function() {
 	/*
 		set-up post panel
 	*/
+	sch.error("new SpazPostPanel");
 	Spaz.postPanel = new SpazPostPanel({
 		on_submit:function() {
 			this.disable();
@@ -337,16 +329,6 @@ Spaz.initialize = function() {
 		Set up timeline calls to action
 	*/
 	Spaz.Timelines.toggleNewUserCTAs();
-
-	/*
-		Initialize indicators of current account
-	*/
-	(function(){
-		var account = Spaz.Prefs.getCurrentAccount();
-		if(account){
-			Spaz.AccountPrefs.updateWindowTitleAndToolsMenu(account.id);
-		}
-	})();
 
 	/*
 		About popbox
@@ -425,6 +407,24 @@ Spaz.initialize = function() {
 		load news popup
 	*/
 	setTimeout(Spaz.Newspopup.build, 3000);
+	/*
+		if we have a username and password set, trigger an "account_switched" event
+		to kick things off
+	*/
+	if (Spaz.Prefs.getUsername() && Spaz.Prefs.getAccountType()) {
+		sch.trigger('account_switched', document, Spaz.Prefs.getCurrentAccount());
+	}
+
+	/*
+		Initialize indicators of current account
+	(function(){
+		var account = Spaz.Prefs.getCurrentAccount();
+		if(account){
+			Spaz.AccountPrefs.updateWindowTitleAndToolsMenu(account.id);
+		}
+	})();
+	*/
+
 	
 	sch.debug('ended document.ready()');
 };
