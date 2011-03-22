@@ -12,7 +12,7 @@ Spaz.Prefs.defaultPreferences = {
 
 	'window-x': 50,
 	'window-y': 50,
-	'window-width': 297,
+	'window-width': 320,
 	'window-height': 600,
 	'window-alpha': 100,
 	'window-hideafterdelay': true,
@@ -25,7 +25,7 @@ Spaz.Prefs.defaultPreferences = {
 
 	'window-notificationposition': 'topRight',
 	'window-notificationhidedelay': 6,
-	'window-notificationmethod': 'internal', // 'system' or 'internal'
+	'window-notificationmethod': 'system', // 'system' or 'internal'
 	'window-notificationmax': 10, // how many notifications can be raised at once (for messages)
 
 	'window-showcontextmenus': true,
