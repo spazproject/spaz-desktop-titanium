@@ -34,11 +34,6 @@ PurrJS.modal = function(title, msg, icon, duration, position) {
 	notifyLoader.alpha = 0.6;
 
 
-	 // air.Introspector.Console.info(notifyLoader);
-
-	 // notifyLoader.window.document.getElementById('container').innerHTML = msg;
-	
-
 	fadeIn();
 	var fadeOutTimeout = setTimeout(fadeOut, 8000);
 	
@@ -113,18 +108,6 @@ PurrJS.notify = function(opts) {
 		'onHover' :null
 	}, opts);
 
-	var not = Titanium.Notification.createNotification();
-	not.setMessage(opts.message);
-	not.setIcon(opts.icon);
-	not.setTimeout(opts.duration);
-	not.setTitle(opts.title);
-	not.setCallback(function () {
-		if (opts.onClick) {
-			opts.onClick();
-		}
-	});
-	not.show();
-	return;
 	
 	/*
 	  Size of window
@@ -140,10 +123,10 @@ PurrJS.notify = function(opts) {
 	/*
 	  get dimensions
 	*/
-	var farRight  = air.Screen.mainScreen.visibleBounds.right;
-	var farTop    = air.Screen.mainScreen.visibleBounds.top;
-	var farLeft   = air.Screen.mainScreen.visibleBounds.left;
-	var farBottom = air.Screen.mainScreen.visibleBounds.bottom;
+	var farRight  = screen.availWidth-20;
+	var farTop    = 20;
+	var farLeft   = 20;
+	var farBottom = screen.availHeight-20;
 	
 	/*
 	  Calculate position
@@ -174,32 +157,23 @@ PurrJS.notify = function(opts) {
 	/*
 	  Create window
 	*/
-	var winopts = new air.NativeWindowInitOptions();
-	winopts.transparent = true;
-	winopts.type = air.NativeWindowType.LIGHTWEIGHT;
-	winopts.systemChrome = air.NativeWindowSystemChrome.NONE;
-	winopts.resizable = false;
-	winopts.minimizable = false;
-	winopts.maximizable = false;
+	var notify_url = "app://html/notify.html?json="+encodeURIComponent(sch.enJSON(opts));
+	var winopts = {
+		'transparentBackground' : true,
+		'chrome' : false,
+		'resizable' : false,
+		'minimizable' : false,
+		'maximizable' : false,
+		'width'       : width,
+		'height'       : height,
+		'x'       : winX,
+		'y'       : winY,
+		'topmost'   : true,
+		'visible': true,
+		'url': notify_url
+	};
 	
-	var winBounds = new air.Rectangle(winX, winY, width, height);
-	
-	// window is initially not visible to keep it from stealing focus
-	var notifyLoader = air.HTMLLoader.createRootWindow(false, winopts, false, winBounds);
-	
-	notifyLoader.paintsDefaultBackground = false;
-	notifyLoader.alpha = 1; // make the loader object transparent
-	notifyLoader.stage.nativeWindow.alwaysInFront = true; // make the notify window a non-blocking modal
-	
-	/*
-		bind notifyLoader.window.opener to this window
-	*/
-	notifyLoader.addEventListener(air.Event.HTML_DOM_INITIALIZE, function(){
-		notifyLoader.window.opener = window;
-	});
-	
-	var notify_url = "html/notify.html?json="+encodeURIComponent(sch.enJSON(opts));
+	var notifyWin = Titanium.UI.createWindow(winopts);
+	notifyWin.open();
 
-	notifyLoader.load(new air.URLRequest(notify_url));
-		
 };
