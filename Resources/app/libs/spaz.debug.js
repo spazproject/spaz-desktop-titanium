@@ -50,7 +50,6 @@ Spaz.Debug.dump = function(msg, type) {
 
 
 Spaz.Debug.logToFile = function(obj, level) {
-	return;
 
 	var msg = ''
 	
@@ -66,11 +65,13 @@ Spaz.Debug.logToFile = function(obj, level) {
 
 	var cr = Titanium.Filesystem.getLineEnding();
 	var file   = Titanium.Filesystem.getDocumentsDirectory();
-	file       = sch.joinPaths([file.toString(), "spaz-debug.log"]);
-	var stream = new air.FileStream();
-	stream.open(file, air.FileMode.APPEND);
+	file       = Titanium.Filesystem.getFile(file, "spaz-debug.log");
+	if (!file.exists()) {
+		file.touch();
+	}
+	var stream = file.open(Titanium.Filesystem.MODE_APPEND);
 	now = new Date();
-	stream.writeUTFBytes(now.toString() + ' : ' + msg + cr);
+	stream.write(now.toString() + ' : ' + msg + cr);
 	stream.close();
 }
 
@@ -78,9 +79,9 @@ Spaz.Debug.logToFile = function(obj, level) {
 
 Spaz.Debug.openLogFile = function() {
 	var file   = Titanium.Filesystem.getDocumentsDirectory();
-	file       = file.resolve("spaz-debug.log");
-	alert('file is:\n'+file.nativePath+"\n\nI'll open the containing directory for you now");
-	Titanium.Filesystem.getDocumentsDirectory().openApplication();
+	file       = Titanium.Filesystem.getFile(file, "spaz-debug.log");
+	alert('file is:\n'+file.toString()+"\n\nI'll open the containing directory for you now");
+	Titanium.Platform.openApplication(Titanium.Filesystem.getDocumentsDirectory().toString());
 }
 
 
@@ -132,13 +133,8 @@ Spaz.Debug.dumpHTMLSelectListener = function(event) {
 }
 
 
-Spaz.Debug.insertInspectorScripts = function() {
-	return;
-	sch.dump("INSERT DEBUGGING SCRIPTS");
-	var e = document.createElement("script");
-	e.src = "vendors/air/AIRIntrospector.js";
-	e.type= "text/javascript";
-	document.getElementsByTagName("head")[0].appendChild(e);
-	//<base href="app:/"/>
-	//<script src="vendors/jquery/jquery-profile.js" type="text/javascript" charset="utf-8"></script>
+Spaz.Debug.openInspector = function() {
+
+	Titanium.UI.getCurrentWindow().showInspector(true);
+	
 };

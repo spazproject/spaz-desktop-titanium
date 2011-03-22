@@ -115,7 +115,7 @@ Spaz.initialize = function() {
 	
 	// turn on inspector
 	if (Spaz.Prefs.get('inspector-enabled')) {
-		Spaz.Debug.insertInspectorScripts();
+		Spaz.Debug.openInspector();
 	}
 	
 	// turn on debugging
