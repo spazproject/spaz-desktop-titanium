@@ -40,22 +40,22 @@ Spaz.restartReloadTimer = function() {
 Spaz.createUserDirs = function() {
 	var appStore = sch.getFileObject(sch.getAppStorageDir());
 	
-	var userThemesDir = appStore.resolve(USERDIR_THEMES);
+	var userThemesDir = Titanium.Filesystem.getFile(appStore, USERDIR_THEMES);
 	userThemesDir.createDirectory();
 
-	var userPluginsDir = appStore.resolve(USERDIR_PLUGINS);
+	var userPluginsDir = Titanium.Filesystem.getFile(appStore, USERDIR_PLUGINS);
 	userPluginsDir.createDirectory();
 
-	var userSmileysDir = appStore.resolve(USERDIR_SMILEYS);
+	var userSmileysDir = Titanium.Filesystem.getFile(appStore, USERDIR_SMILEYS);
 	userSmileysDir.createDirectory();
 
-	var userSoundsDir = appStore.resolve(USERDIR_SOUND);
+	var userSoundsDir = Titanium.Filesystem.getFile(appStore, USERDIR_SOUND);
 	userSoundsDir.createDirectory();
 
-	sch.debug(userThemesDir.toString());
-	sch.debug(userPluginsDir.toString());
-	sch.debug(userSmileysDir.toString());
-	sch.debug(userSoundsDir.toString());
+	sch.error(userThemesDir.toString());
+	sch.error(userPluginsDir.toString());
+	sch.error(userSmileysDir.toString());
+	sch.error(userSoundsDir.toString());
 };
 
 
