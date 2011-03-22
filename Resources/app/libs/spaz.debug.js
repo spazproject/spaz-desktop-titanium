@@ -38,9 +38,6 @@ Spaz.Debug.dump = function(msg, type) {
 			type = 'info';
 		}
 
-		if (window.air && air.Introspector && air.Introspector.Console && air.Introspector.Console[type]) {
-			air.Introspector.Console[type](msg);
-		}
 		if (window.console) {
 			console.log(msg);
 		}
