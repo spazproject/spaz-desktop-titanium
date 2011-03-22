@@ -249,7 +249,7 @@ Spaz.AccountPrefs.init = function(){
 		 if "custom" is set for type, showthe api-base-url row
 		 */
 		$accountType.change(function(){
-			$('#twitter-api-base-url-row').toggle($accountType.val() === 'custom');
+			$('#twitter-api-base-url-row').toggle($accountType.val() === 'custom' || $accountType.val() === SPAZCORE_ACCOUNT_STATUSNET);
 		});
 
 		sch.debug('LOADED USERS:');
