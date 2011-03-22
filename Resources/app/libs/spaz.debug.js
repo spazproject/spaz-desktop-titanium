@@ -100,6 +100,7 @@ Spaz.Debug.showProps = function(obj, objName) {
 
 
 Spaz.Debug.dumpHTML = function() {
+	sch.error('Spaz.Debug.dumpHTML NYI');
 	return;
 	var docsDir = Titanium.Filesystem.getDocumentsDirectory();
 	try {
@@ -111,7 +112,9 @@ Spaz.Debug.dumpHTML = function() {
 };
 
 Spaz.Debug.dumpHTMLSelectListener = function(event) {
+	sch.error('Spaz.Debug.dumpHTMLSelectListener NYI');
 	return;
+	
 	var newFile = event.target;
 	sch.debug('got newFile '+newFile.toString());
 	
