@@ -57,9 +57,9 @@ var FriendsTimeline = function() {
 	});
 
 	var maxFT = {
-		'home':    500,
+		'home':    800,
 		'direct':  100,
-		'replies': 100
+		'replies': 200
 	};
 	
 	
