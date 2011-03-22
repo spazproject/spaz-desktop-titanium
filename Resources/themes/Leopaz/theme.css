@@ -959,7 +959,7 @@ div.followers-row:nth-child(even){
           #entrybox-attach span{
             display:block;
             width:16px;
-            background:url(../../../images/glyphish/photos.png) center center no-repeat;
+            background:url(../../images/glyphish/photos.png) center center no-repeat;
             pointer-events:none;
             text-indent:-9999em;
           }
@@ -2304,7 +2304,7 @@ div.popbox-content div.controls button:active{
 
 div.popbox-content.info h1{
   padding:10px;
-  background:transparent url(../../../images/spaz-icon-alpha-half.png) right 40% no-repeat;
+  background:transparent url(../../images/spaz-icon-alpha-half.png) right 40% no-repeat;
   border-top:1px solid rgba(255, 255, 255, 0.15);
   border-bottom:1px solid rgb(38, 38, 38);
   text-align:center;

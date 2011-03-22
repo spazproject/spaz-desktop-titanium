@@ -101,7 +101,7 @@ div.popbox-content div.controls button:active {
 
 div.popbox-content.info h1 {
 	padding: 10px;
-	background: transparent url(../../../../images/spaz-icon-alpha-half.png) right 40% no-repeat;
+	background: transparent url(../../../images/spaz-icon-alpha-half.png) right 40% no-repeat;
 	text-align: center;
 }
 div.popbox-content.info div.content {
