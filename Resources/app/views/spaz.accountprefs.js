@@ -96,6 +96,9 @@ Spaz.AccountPrefs.init = function(){
 				var auth  = new SpazAuth($accountType.val());
 				
 				if (auth.authorize($username.val(), $password.val())) { // check credentials first
+
+					Spaz.UI.closePopbox();
+					
 					var newaccid = Spaz.AccountPrefs.add($username.val(), auth.save(), $accountType.val()).id;
 					var val;
 					
@@ -111,7 +114,7 @@ Spaz.AccountPrefs.init = function(){
 
 					$accountList.val(newaccid);
 					Spaz.AccountPrefs.setAccount(newaccid);
-					Spaz.UI.closePopbox();
+
 
 				} else { // failed!!
 					$('#current-account-id').val(newaccid);
