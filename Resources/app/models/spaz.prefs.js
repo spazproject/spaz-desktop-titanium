@@ -25,7 +25,7 @@ Spaz.Prefs.defaultPreferences = {
 
 	'window-notificationposition': 'topRight',
 	'window-notificationhidedelay': 6,
-	'window-notificationmethod': 'internal', // 'growl' or 'internal'
+	'window-notificationmethod': 'internal', // 'system' or 'internal'
 	'window-notificationmax': 10, // how many notifications can be raised at once (for messages)
 
 	'window-showcontextmenus': true,
@@ -244,22 +244,22 @@ Spaz.Prefs.changeMethods = {
 			$('#window-notificationmethod').val(value);
 		},
 		onGet: function(key, value) {
-			if (value !== 'growl') {
+			if (value !== 'system') {
 				return 'internal';
 			}
 			return value;
 		},
 		onSet: function(key, value) {
-			if (value !== 'growl') {
+			if (value !== 'system') {
 				return 'internal';
 			}
 			return value;
 		},
 		check: function() {
-			if (Spaz.Prefs.get('window-notificationmethod') !== 'growl') {
+			if (Spaz.Prefs.get('window-notificationmethod') !== 'system') {
 				Spaz.Prefs.set('window-notificationmethod', 'internal');
 				$('#window-notificationposition').removeAttr("disabled");
-			} else { // is growl
+			} else { // is system
 				$('#window-notificationposition').attr("disabled","disabled");;
 			}
 	   }

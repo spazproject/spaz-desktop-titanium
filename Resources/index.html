@@ -24,6 +24,9 @@
 
 	<!-- Showdown, the Markdown parser -->
 	<script src="vendors/showdown.js" type="text/javascript" charset="utf-8"></script>
+	
+	<!-- SpazGrowl -->
+	<script src="vendors/SpazGrowl.js" type="text/javascript" charset="utf-8"></script>
 
 
 	<!-- jQuery libs -->
@@ -702,7 +705,7 @@
 													<label for="window-notificationmethod">Method</label>
 													<select id="window-notificationmethod" name="window-notificationmethod">
 														<option value="internal">Internal</option>
-														<!-- <option value="growl" >Growl (OS X-only –&nbsp;experimental)</option> -->
+														<option value="system" >System (Growl et al)</option>
 													</select>
 												</div>
 												<div class="formrow">
@@ -936,9 +939,9 @@
 		</form>
 
 		<!-- STATUSBAR -->
-		<div id="statusbar" onmousedown="Spaz.Windows.windowMove();">
+		<div id="statusbar">
 			<!-- LOADING -->
-			<span id='loading'><!-- <img src='{theme-dir}/images/loading.gif' /> --></span>
+			<span id='loading'></span>
 			<span id='statusbar-text'>Ready</span>
 		</div>
 
