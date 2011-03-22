@@ -6,8 +6,9 @@
 <version>1.0</version>
 <publisher>Funkatron Productions</publisher>
 <url>http://getspaz.com</url>
-<icon>images/spaz-icon-alpha.png</icon>
+<icon>spaz-icon-flat-512.png</icon>
 <copyright>© Funkatron Productions</copyright>
+<analytics>false</analytics>
 	<!-- Window Definition - these values can be edited -->
 	<window>
 		<id>main</id>
