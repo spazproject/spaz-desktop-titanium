@@ -87,7 +87,7 @@ Spaz.Prefs.defaultPreferences = {
 
 	'url-shortener': 'short.ie',
 
-	'file-uploader': 'drippic',
+	'file-uploader': 'twitpic',
 
 	'services-twitpic-sharepassword': false,
 
@@ -96,9 +96,6 @@ Spaz.Prefs.defaultPreferences = {
 	'services-pingfm-sendreplies': false,
 	'services-pingfm-updatetype': 'default',
 
-	'services-shortie-email': '',
-	'services-shortie-secretkey' : '',
-    
 	'services-bitly-login': '',
 	'services-bitly-apikey' : '',
 
@@ -630,54 +627,6 @@ Spaz.Prefs.changeMethods = {
 		}
 	},
 
-	'services-shortie-secretkey': {
-		setUI: function(value) {
-			if (value || value == '') {
-				$('#services-shortie-secretkey').val(value);
-				sch.debug('Shortie secretkey set...');
-			} else {
-				$('#services-shortie-secretkey').attr('value', '');
-				sch.debug('Shortie secret key');
-			}
-		},
-		onGet: function(key, value) {
-			if (!value) {
-				return null;
-			}
-			return value;
-		},
-		onSet: function(key, value) {
-			if (!value) {
-				return null;
-			}
-			return value;
-		}
-	},
-
-
-	'services-shortie-email': {
-		setUI: function(value) {
-			if (value && value !== '') {
-				$('#services-shortie-email').val(value);
-				sch.debug('Shortie email set...');
-			} else {
-				$('#services-shortie-email').attr('value', '');
-				sch.debug('Shortie secret key');
-			}
-		},
-		onGet: function(key, value) {
-			if (!value) {
-				return null;
-			}
-			return value;
-		},
-		onSet: function(key, value) {
-			if (!value) {
-				return null;
-			}
-			return value;
-		}
-	},
     
 	'services-bitly-login': {
 		setUI: function(value) {
@@ -1100,8 +1049,6 @@ Spaz.Prefs.initUI = function() {
 	$('#services-pingfm-userappkey').bind('change', Spaz.Prefs.setFromUI);
 	$('#services-pingfm-enabled').bind('change', Spaz.Prefs.setFromUI);
 	$('#services-pingfm-sendreplies').bind('change', Spaz.Prefs.setFromUI);
-	$('#services-shortie-email').bind('change', Spaz.Prefs.setFromUI);
-	$('#services-shortie-secretkey').bind('change', Spaz.Prefs.setFromUI);
 	$('#services-bitly-login').bind('change', Spaz.Prefs.setFromUI);
 	$('#services-bitly-apikey').bind('change', Spaz.Prefs.setFromUI);
 	$('#dock-refreshinterval').bind('change', Spaz.Prefs.setFromUI);
