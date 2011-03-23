@@ -2,6 +2,8 @@ Spaz.ImageUploader = function() {
 	
 	var that = this;
 	
+	this.fileobj = null;
+	
 	this.SIU = new SpazImageUploader();
 	
 	this.init = function() {
@@ -10,10 +12,10 @@ Spaz.ImageUploader = function() {
 		
 		jQuery('#imageupload-loading').hide();
 		
-		var target = jQuery('.content', container).get(0);
-		target.addEventListener("dragenter", that.dragEnterOverHandler);
-		target.addEventListener("dragover", that.dragEnterOverHandler);
-		target.addEventListener("drop", that.dropHandler);
+		// var target = jQuery('.content', container).get(0);
+		// target.addEventListener("dragenter", that.dragEnterOverHandler);
+		// target.addEventListener("dragover", that.dragEnterOverHandler);
+		// target.addEventListener("drop", that.dropHandler);
 
 		// get the pref
 		var sharepass = Spaz.Prefs.get('services-twitpic-sharepassword');
@@ -50,9 +52,8 @@ Spaz.ImageUploader = function() {
 
 		// bind click to upload
 		jQuery('#imageupload-button').bind('click', function() {
-			var fileUrl = jQuery('#imageupload-file-url').val();
-			if (fileUrl) {
-				that.uploadDraggedImage(fileUrl);
+			if (that.fileobj) {
+				that.uploadDraggedImage(that.fileobj);
 			} else {
 				that.browseForImage();
 			}
@@ -75,6 +76,10 @@ Spaz.ImageUploader = function() {
 		Browse for the image!
 	*/
 	this.browseForImage = function() {
+		
+		alert('you have to drop a picture on the window for now');
+		return;
+		
 		var imageFilter = new air.FileFilter("Images", "*.jpg;*.jpeg;*.gif;*.png");
 		var userFile = new air.File();
 		userFile.browseForOpen("Choose an image file", [imageFilter]);
@@ -115,46 +120,55 @@ Spaz.ImageUploader = function() {
 		handle dropped file
 	*/
 	this.displayChosenFile = function(fileUrl) {
-		jQuery('#imageupload-droplet').html('<img src="'+fileUrl+'" />');
+		
+		this.fileobj = Titanium.Filesystem.getFile(fileUrl);
+		fileUrl = this.fileobj.toURL();
+		
+		jQuery('#imageupload-droplet').html('<img src="'+this.fileobj.toURL()+'" />');
 		jQuery('#imageupload-droplet>img').css('width', jQuery('#imageupload-droplet').width());
 		jQuery('#imageupload-droplet>img').css('height', jQuery('#imageupload-droplet').height());
 		jQuery('#imageupload-file-url').val(fileUrl);
 	};
 
-	/*
-		prevent default happening
-	*/
-	this.dragEnterOverHandler = function(event){
-	    event.preventDefault();
-	};
+	// /*
+	// 	prevent default happening
+	// */
+	// this.dragEnterOverHandler = function(event){
+	//     event.preventDefault();
+	// };
 
 	
-	this.dropHandler = function(event){
-
-		event.preventDefault();
-
-		if (!Spaz.Prefs.get('services-twitpic-sharepassword') ) {
-			if ( !confirm('Uploading requires that you share your Twitter username and password with the service. Are you sure you want to do this?') ) {
-				return false;
-			}
-		}
-
-		var fileUrl = event.dataTransfer.getData("text/uri-list");
-
-		sch.debug(fileUrl);
-
-		if (fileUrl.match(/^(.+)\.(jpg|jpeg|gif|png)$/i)<1) {
-			alert("File must be one of the following:\n .jpg, .jpeg, .gif, .png");
-			return false;
-		}
-		that.displayChosenFile(fileUrl);
-		return true;
-	};
+	// this.dropHandler = function(event){
+	// 
+	// 	event.preventDefault();
+	// 
+	// 	if (!Spaz.Prefs.get('services-twitpic-sharepassword') ) {
+	// 		if ( !confirm('Uploading requires that you share your Twitter username and password with the service. Are you sure you want to do this?') ) {
+	// 			return false;
+	// 		}
+	// 	}
+	// 
+	// 	var fileUrl = event.dataTransfer.getData("text/uri-list");
+	// 
+	// 	sch.debug(fileUrl);
+	// 
+	// 	if (fileUrl.match(/^(.+)\.(jpg|jpeg|gif|png)$/i)<1) {
+	// 		alert("File must be one of the following:\n .jpg, .jpeg, .gif, .png");
+	// 		return false;
+	// 	}
+	// 	
+	// 	fileUrl.replace(/^file:\/\/localhost/i, '');
+	// 	
+	// 	that.fileobj = Titanium.Filesystem.getFile(fileUrl);
+	// 	
+	// 	that.displayChosenFile(that.fileobj.toString());
+	// 	return true;
+	// };
 
 	/*
 		Upload the dragged image to the service
 	*/
-	this.uploadDraggedImage = function(fileUrl) {
+	this.uploadDraggedImage = function(fileobj) {
 		var service = Spaz.Prefs.get('file-uploader');
 		
 		if (this.SIU.getServiceLabels().indexOf(service) === -1 ) {
@@ -169,9 +183,10 @@ Spaz.ImageUploader = function() {
 		
 		image_uploader_opts = {
 			'auth_obj': auth,
-			'service' : Spaz.Prefs.get('file-uploader') || 'drippic',
-			'file_url': fileUrl,
+			'service' : Spaz.Prefs.get('file-uploader') || 'twitpic',
+			'file_url': this.fileobj.toString(),
 			'onSuccess':function(event_data) { // onSuccess
+				
 				jQuery('#imageupload-loading').hide();
 				if (event_data.url) {
 					that.prepPhotoPost(event_data.url);
@@ -183,7 +198,7 @@ Spaz.ImageUploader = function() {
 					jQuery('#imageupload-status-text').html($L("Posting image failed"));
 				}
 			},
-			'onFailure':function(event_obj) { // onFailure
+			'onFailure':function(responseText, xhr) { // onFailure
 				sch.error('Posting image FAILED');
 				ech.error("Error!");
 				ech.error(event_obj);
