@@ -439,8 +439,10 @@ Spaz.Controller.initIntercept = function() {
 		*/
 		function uploadDraggedImage(event) {
 			var fileUrl = event.dataTransfer.getData("text/uri-list");
-
-			sch.dump(fileUrl);
+			
+			fileUrl = fileUrl.replace("file://localhost", "");
+			
+			sch.debug(fileUrl);
 
 			if (fileUrl.match(/^(.+)\.(jpg|jpeg|gif|png)$/i)<1) {
 				alert("File must be one of the following:\n .jpg, .jpeg, .gif, .png");
