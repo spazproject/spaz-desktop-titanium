@@ -338,64 +338,6 @@ Spaz.initialize = function() {
 
 
 	/*
-		initialinze URL shortener
-	*/
-	var initUrlShortener = function() {
-		
-		var method;
-		
-		// get the pref
-		var service = Spaz.Prefs.get('url-shortener');
-		sch.debug("service is "+ service);
-	
-			if (service == 'shortie') {
-				$('#shorten-custom-hidden').css({display: 'block', visibility: 'visible'});
-			}
-	
-		// populate the dropdown
-		for (method in Spaz.Shortlink.services) {
-			sch.debug(method);
-	
-			if (method[0] != '$') {
-				if (method == service) {
-					$('#url-shortener').append('<option value="'+method+'" selected="selected">'+method+'</option>');
-				} else {
-					$('#url-shortener').append('<option value="'+method+'">'+method+'</option>');
-				}
-			}
-		}
-		
-		
-		$('#url-shortener').bind('change', function() {
-	
-			sch.debug($('#url-shortener').val());
-			Spaz.Prefs.set('url-shortener', $('#url-shortener').val());
-			if ($('#url-shortener').val() != 'shortie') {
-				$('#shorten-custom-hidden').css({display: 'none', visibility: 'hidden'});
-			} else {
-				$('#shorten-custom-hidden').css({display: 'block', visibility: 'visible'});
-			}
-		});
-		
-		$('#shorten-original-link').focus();
-		$('#shorten-original-link').val('http://');
-		$('#shortenLink-form').bind('submit', function() {
-		var service = Spaz.Prefs.get('url-shortener');
-			sch.debug("service is "+ service);
-				var custom = $('#shorten-custom-link').val();
-				if (custom != '') {
-				Spaz.Shortlink.services[service]($('#shorten-original-link').val(), custom);
-				} else {
-				Spaz.Shortlink.services[service]($('#shorten-original-link').val());
-				}
-		});
-		
-		// sch.debug(air.NativeApplication.nativeApplication.spazPrefs);
-	};
-
-	initUrlShortener();
-
-	/*
 		initialize Image uploader popbox
 	*/
 	window.SpazImgUpl = new Spaz.ImageUploader();
