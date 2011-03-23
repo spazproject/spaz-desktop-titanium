@@ -131,8 +131,7 @@ Spaz.Debug.dumpHTMLSelectListener = function(event) {
 	stream.writeUTFBytes(html);
 	sch.debug('write utfbytes '+html);
 	stream.close();
-	sch.debug('close stream')
-
+	sch.debug('close stream');
 }
 
 
