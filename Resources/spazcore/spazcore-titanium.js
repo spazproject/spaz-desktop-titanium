@@ -1,4 +1,4 @@
-/*********** Built 2011-03-14 23:07:27 EDT ***********/
+/*********** Built 2011-03-22 21:23:11 EDT ***********/
 /*jslint 
 browser: true,
 nomen: false,
@@ -7449,6 +7449,25 @@ SpazAccounts.prototype.get = function(id) {
 };
 
 
+SpazAccounts.prototype.getLabel = function(id) {
+	
+	var index = this._findUserIndex(id);
+	var label = '';
+	
+	if (index !== false) {
+		label = this._accounts[i].username+'@'+this._accounts[i].type;
+		if (this._accounts[i].type === SPAZCORE_ACCOUNT_STATUSNET
+			|| this._accounts[i].type === SPAZCORE_ACCOUNT_CUSTOM) {
+			
+		}
+		return label;
+	}
+
+	return false;
+	
+};
+
+
 /**
  * a private function to find the user's array index by their UUID
  * @param {string} id the user's UUID
@@ -14785,6 +14804,138 @@ sc.helpers.joinPaths = function(path_arr) {
 	}
 	return path;
 };/*jslint 
+browser: true,
+nomen: false,
+debug: true,
+forin: true,
+undef: true,
+white: false,
+onevar: false 
+ */
+var sc, air;
+
+ 
+/**
+ * This really only supports image uploads right now (jpg, gif, png) 
+ * 
+ * opts = {
+ *	content_type:'', // optional
+ *	field_name:'', //optional, default to 'media;
+ *	file_url:'',
+ *	url:'',
+ *	extra:{...}
+ *	headers:{...}
+ * 
+ * 
+ * }
+ */
+sc.helpers.HTTPUploadFile = function(opts, onSuccess, onFailure) {
+
+	function callback_for_upload_progress(event) { 
+		var pct;
+		console.log(events);
+		if (event.bytesLoaded && event.bytesTotal) {
+			pct = Math.ceil( ( event.bytesLoaded / event.bytesTotal ) * 100 ); 
+			sch.error('Uploaded ' + pct.toString() + '%');
+		}
+		
+		StatusNet.debug('onsendstream', e.progress);
+		StatusNet.debug(http.dataSent());
+		if (opts.onProgress) { opts.onProgress(e, pct); }
+		
+		// 
+		// if (opts.onProgress) {
+		//	opts.onProgress({
+		//		'bytesLoaded':event.bytesLoaded,
+		//		'bytesLoaded':event.bytesTotal,
+		//		'percentage':pct
+		//	});
+		// }
+	}
+
+	function callback_for_upload_finish(event) {
+		console.log('File upload complete');
+		sch.error('http.responseText:');
+		sch.error(http.responseText);
+		if (onSuccess) {
+			onSuccess(http.responseText, http);
+		}
+	}
+	
+	function callback_for_error(event) {
+		sch.error('IOError!', event);
+		console.log(http.responseText);
+		if (onFailure) {
+			onFailure(http.responseText, http);
+		}
+	}
+
+	opts = sch.defaults({
+		'method':'POST',
+		'content_type':'multipart/form-data',
+		'field_name':'media',
+		'file_url':null,
+		'url':null,
+		'extra':null,
+		'headers':null,
+		'username':null,
+		'password':null
+	}, opts);
+
+	
+	
+	
+	var http = Titanium.Network.createHTTPClient();
+	var uploading_fs = Titanium.Filesystem.getFileStream(opts.file_url);
+	uploading_fs.open(Titanium.Filesystem.MODE_READ);
+	var file_data = uploading_fs.read();
+	uploading_fs.close();
+	
+	
+	http.onsendstream = function(e) {
+		console.log('onsendstream', e.progress);
+		console.log(http.dataSent());
+	};
+	http.onerror = callback_for_error;
+	http.onload = callback_for_upload_finish;
+
+	http.open(opts.method, opts.url, true);
+
+	
+	// build data hash
+	var data = {};
+
+	if (opts.username) {
+		data.username = opts.username;
+	}
+
+	if (opts.password) {
+		data.password = opts.password;
+	}
+
+	var key;	
+	if (opts.extra) {
+		for(key in opts.extra) {
+			data[key] = opts.extra[key];
+		}
+	}
+	
+	// set uploading file data
+	data[opts.field_name] = file_data;
+	
+	// set headers
+	http.setRequestHeader("content-type", opts.content_type);
+	if (opts.headers) {
+		for(key in opts.headers) {
+			http.setRequestHeader( key, opts.headers[key] );
+		}
+	}
+
+	http.send(data);	
+
+};
+
+/*jslint 
 browser: true,
 nomen: false,
 debug: true,
