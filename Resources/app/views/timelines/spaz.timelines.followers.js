@@ -10,6 +10,10 @@ var FollowersTimeline = function() {
 		$timelineWrapper = $timeline.parent();
 	this.twit = new SpazTwit();
 	
+	var auth = Spaz.Prefs.getAuthObject();
+	this.twit = new SpazTwit({auth: auth});
+	Spaz.Data.setAPIUrl(this.twit);
+	
 	this.mode = 'friends';
 	
 	this.followers_more_cursor = -1;
