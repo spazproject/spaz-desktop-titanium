@@ -1,4 +1,4 @@
-/*********** Built 2011-03-22 21:23:11 EDT ***********/
+/*********** Built 2011-03-25 22:31:43 EDT ***********/
 /*jslint 
 browser: true,
 nomen: false,
@@ -11412,11 +11412,11 @@ SpazTwit.prototype.getAPIURL = function(key, urldata) {
 	urls.retweets_of_me		= "statuses/retweets_of_me.json";
 	
 	// search
-	if (this.baseurl === SPAZCORE_SERVICEURL_TWITTER) {
-		urls.search				= "http://search.twitter.com/search.json";
-	} else {
+	// if (this.baseurl === SPAZCORE_SERVICEURL_TWITTER) {
+	// 	urls.search				= "http://search.twitter.com/search.json";
+	// } else {
 		urls.search				= "search.json";
-	}
+	// }
 
 	// misc
 	urls.test 			  	= "help/test.json";
@@ -11453,11 +11453,11 @@ SpazTwit.prototype.getAPIURL = function(key, urldata) {
 			urldata = '';
 		}
 		
-		if (this.baseurl === SPAZCORE_SERVICEURL_TWITTER && (key === 'search')) {
-			return this._postProcessURL(urls[key] + urldata);
-		} else {
+		// if (this.baseurl === SPAZCORE_SERVICEURL_TWITTER && (key === 'search')) {
+		// 	return this._postProcessURL(urls[key] + urldata);
+		// } else {
 			return this._postProcessURL(this.baseurl + urls[key] + urldata);
-		}
+		// }
         
     } else {
         return false;
