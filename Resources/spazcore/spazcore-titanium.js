@@ -1,4 +1,4 @@
-/*********** Built 2011-03-25 22:31:43 EDT ***********/
+/*********** Built 2011-03-26 15:29:12 EDT ***********/
 /*jslint 
 browser: true,
 nomen: false,
@@ -10973,7 +10973,6 @@ var SPAZCORE_SERVICEURL_WORDPRESS_TWITTER = 'https://twitter-api.wordpress.com/'
 var SPAZCORE_SERVICEURL_TUMBLR_TWITTER = 'http://www.tumblr.com/';
 
 
-
 /**
  * A Twitter API library for Javascript
  * 
@@ -11317,6 +11316,34 @@ SpazTwit.prototype.setBaseURLByService= function(service) {
 };
 
 
+SpazTwit.prototype.getServiceFromBaseURL = function(baseurl) {
+	var service;
+
+	if (!baseurl) { baseurl = this.baseurl; }
+	
+	switch (baseurl) {
+		case SPAZCORE_SERVICEURL_TWITTER:
+			service = SPAZCORE_SERVICE_TWITTER;
+			break;
+		case SPAZCORE_SERVICEURL_IDENTICA:
+			service = SPAZCORE_SERVICE_IDENTICA;
+			break;
+		case SPAZCORE_SERVICEURL_WORDPRESS_TWITTER:
+			service = SPAZCORE_SERVICE_WORDPRESS_TWITTER;
+			break;
+		case SPAZCORE_SERVICEURL_TUMBLR_TWITTER:
+			service = SPAZCORE_SERVICE_TUMBLR_TWITTER;
+			break;
+		default:
+			service = SPAZCORE_SERVICE_CUSTOM;
+			break;
+	}
+	
+	return service;
+	
+};
+
+
 SpazTwit.prototype.setCredentials = function(auth_obj) {
 	this.auth = auth_obj;
 	this.username = this.auth.username;
@@ -11351,7 +11378,7 @@ SpazTwit.prototype.getAPIURL = function(key, urldata) {
 	urls.user_timeline      = "statuses/user_timeline.json";
 	urls.replies_timeline   = "statuses/replies.json";
 	urls.show		= "statuses/show/{{ID}}.json";
-	urls.show_related	= "related_results/show/{{ID}}.json"
+	urls.show_related	= "related_results/show/{{ID}}.json";
 	urls.favorites          = "favorites.json";
 	urls.user_favorites     = "favorites/{{ID}}.json"; // use this to retrieve favs of a user other than yourself
 	urls.dm_timeline        = "direct_messages.json";
@@ -11411,12 +11438,7 @@ SpazTwit.prototype.getAPIURL = function(key, urldata) {
 	urls.retweeted_to_me	= "statuses/retweeted_to_me.json";
 	urls.retweets_of_me		= "statuses/retweets_of_me.json";
 	
-	// search
-	// if (this.baseurl === SPAZCORE_SERVICEURL_TWITTER) {
-	// 	urls.search				= "http://search.twitter.com/search.json";
-	// } else {
-		urls.search				= "search.json";
-	// }
+	urls.search				= "search.json";
 
 	// misc
 	urls.test 			  	= "help/test.json";
@@ -11452,13 +11474,9 @@ SpazTwit.prototype.getAPIURL = function(key, urldata) {
 		} else {
 			urldata = '';
 		}
+
+		return this._postProcessURL(this.baseurl + urls[key] + urldata);
 		
-		// if (this.baseurl === SPAZCORE_SERVICEURL_TWITTER && (key === 'search')) {
-		// 	return this._postProcessURL(urls[key] + urldata);
-		// } else {
-			return this._postProcessURL(this.baseurl + urls[key] + urldata);
-		// }
-        
     } else {
         return false;
     }
@@ -12057,6 +12075,10 @@ SpazTwit.prototype._processSearchItem = function(item, section_name) {
 	// remove snowflakeyness
 	item = this.deSnowFlake(item);
 	
+	// set service data
+	item.SC_service_baseurl = this.baseurl;
+	item.SC_service = this.getServiceFromBaseURL(this.baseurl);
+	
 	
 	item.SC_timeline_from = section_name;
 	if (this.username) {
@@ -12510,6 +12532,10 @@ SpazTwit.prototype._processItem = function(item, section_name) {
 	// remove snowflakeyness
 	item = this.deSnowFlake(item);
 	
+	// set service data
+	item.SC_service_baseurl = this.baseurl;
+	item.SC_service = this.getServiceFromBaseURL(this.baseurl);
+	
 	item.SC_timeline_from = section_name;
 	if (this.username) {
 		item.SC_user_received_by = this.username;
@@ -12545,11 +12571,25 @@ SpazTwit.prototype._processItem = function(item, section_name) {
 		item.SC_is_reply = true;
 	}
 	
+	if (item.user) {
+		item.user = this._processUser(item.user);
+	}
+	
+	
 	/*
 		is dm?
 	*/
 	if (item.recipient_id && item.sender_id) {
 		item.SC_is_dm = true;
+		
+		if (item.sender) {
+			item.sender = this._processUser(item.sender);
+		}
+		if (item.recipient) {
+			item.recipient = this._processUser(item.recipient);
+		}
+		
+		
 	}
 	
 	
@@ -12598,6 +12638,10 @@ SpazTwit.prototype._processUser = function(item, section_name) {
 	
 	// remove snowflakeyness
 	item = this.deSnowFlake(item);
+	
+	// set service data
+	item.SC_service_baseurl = this.baseurl;
+	item.SC_service = this.getServiceFromBaseURL(this.baseurl);
 	
 	
 	item.SC_timeline_from = section_name;
@@ -12789,7 +12833,14 @@ SpazTwit.prototype.getUser = function(user_id, onSuccess, onFailure) {
 		'data':data,
 		'success_event_type':'get_user_succeeded',
 		'failure_event_type':'get_user_failed',
-		'success_callback':onSuccess,
+		'success_callback': function(data) {
+			sch.error('BEFORE PROCESSING');
+			sch.error(data);
+			data = this._processUser(data, SPAZCORE_SECTION_HOME);
+			sch.error('AFTER PROCESSING');
+			sch.error(data);
+			onSuccess(data);
+		},
 		'failure_callback':onFailure,
 		'method':'GET'
 	};
@@ -12885,7 +12936,7 @@ SpazTwit.prototype._processFollowersList = function(ret_items, opts, processing_
 
 
 /**
- * general processor for timeline data. results are not sorted
+ * general processor for userlist data. results are not sorted
  * @private
  */
 SpazTwit.prototype._processUserList = function(section_name, ret_items, opts, processing_opts) {
@@ -13293,7 +13344,7 @@ SpazTwit.prototype.sendDirectMessage = function(user_id, text, onSuccess, onFail
 		Perform a request and get true or false back
 	*/
 	var xhr = this._callMethod(opts);
-}
+};
 
 
 /**
@@ -14593,7 +14644,7 @@ SpazTwit.prototype.deSnowFlake = function(obj) {
 	}
 	
 	return obj;
-}
+};
 
 
 /**
@@ -14839,8 +14890,8 @@ sc.helpers.HTTPUploadFile = function(opts, onSuccess, onFailure) {
 			sch.error('Uploaded ' + pct.toString() + '%');
 		}
 		
-		StatusNet.debug('onsendstream', e.progress);
-		StatusNet.debug(http.dataSent());
+		sch.debug('onsendstream', e.progress);
+		sch.debug(http.dataSent());
 		if (opts.onProgress) { opts.onProgress(e, pct); }
 		
 		// 
@@ -14894,7 +14945,7 @@ sc.helpers.HTTPUploadFile = function(opts, onSuccess, onFailure) {
 	
 	http.onsendstream = function(e) {
 		console.log('onsendstream', e.progress);
-		console.log(http.dataSent());
+		console.log(http.dataReceived);
 	};
 	http.onerror = callback_for_error;
 	http.onload = callback_for_upload_finish;
