@@ -91,7 +91,7 @@ SpazPostPanel.prototype.prepPhotoPost = function(url) {
 		return false;
 	}
 
-	var text = url + ' ';
+	var text = this.getMessageText(text) + ' ' + url + ' ';
 
 	this.setMessageText(text);
 	return text;
