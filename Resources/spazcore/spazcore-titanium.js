@@ -1,4 +1,4 @@
-/*********** Built 2011-03-26 15:29:12 EDT ***********/
+/*********** Built 2011-04-03 00:02:32 EDT ***********/
 /*jslint 
 browser: true,
 nomen: false,
@@ -101,6 +101,40 @@ var sch = sc.helpers;
 sc.events = {};
 
 
+
+/**
+ * various constant definitions that aren't specific to a single library
+ */
+
+/**
+ * @constant 
+ */
+var SPAZCORE_SERVICE_TWITTER = 'twitter';
+/**
+ * @constant 
+ */
+var SPAZCORE_SERVICE_IDENTICA = 'identi.ca';
+/**
+ * @constant 
+ */
+var SPAZCORE_SERVICE_WORDPRESS_TWITTER = 'wordpress-twitter';
+/**
+ * @constant 
+ */
+var SPAZCORE_SERVICE_TUMBLR_TWITTER = 'tumblr-twitter';
+/**
+ * @constant 
+ */
+var SPAZCORE_SERVICE_CUSTOM = 'custom';
+
+/**
+ * @constant 
+ */
+var SPAZCORE_BASEURL_TWITTER = 'https://twitter.com/';
+/**
+ * @constant 
+ */
+var SPAZCORE_BASEURL_IDENTICA = 'https://identi.ca/';
 
 
 
@@ -7028,6 +7062,84 @@ sc.helpers.isLinux = function() {
 sc.helpers.isMacOS = function() {
 	return sc.helpers.isOS(SPAZCORE_OS_MACOS);
 };
+/**
+ * Takes a key/val pair object and returns a query string 
+ * @member sc.helpers 
+ */
+sc.helpers.objectToQueryString = function(object) {
+	var query_string, key, val, pieces = [];
+	
+	for(key in object) {
+		val = object[key];
+		pieces.push(encodeURIComponent(key)+'='+encodeURIComponent(val));
+	}
+	query_string = pieces.join('&');
+	return query_string;
+};
+
+
+
+/**
+ * takes a username and service, and returns the profile URL on that service 
+ */
+sc.helpers.getServiceBaseUrl = function(service) {
+	
+	var url = null;
+	
+	switch(service) {
+		case SPAZCORE_SERVICE_TWITTER:
+			url = SPAZCORE_BASEURL_TWITTER;
+			break;
+		case SPAZCORE_SERVICE_IDENTICA:
+			url = SPAZCORE_BASEURL_IDENTICA;
+			break;
+	}
+	
+	return url;
+	
+};
+
+
+/**
+ * takes a username and service, and returns the profile URL on that service 
+ */
+sc.helpers.getServiceProfileUrl = function(username, service) {
+	
+	var url = null;
+	
+	switch(service) {
+		case SPAZCORE_SERVICE_TWITTER:
+			url = SPAZCORE_BASEURL_TWITTER+"/"+username;
+			break;
+		case SPAZCORE_SERVICE_IDENTICA:
+			url = SPAZCORE_BASEURL_IDENTICA+"/"+username;
+			break;
+	}
+	
+	return url;
+	
+};
+
+
+/**
+ * takes a status id, username and service, and returns the status URL on that service 
+ */
+sc.helpers.getStatusUrl = function(id, username, service) {
+	
+	var url = null;
+
+	switch(service) {
+		case SPAZCORE_SERVICE_TWITTER:
+			url = SPAZCORE_BASEURL_TWITTER+username+'/statuses/'+id;
+			break;
+		case SPAZCORE_SERVICE_IDENTICA:
+			url = SPAZCORE_BASEURL_IDENTICA+'notice/'+id;
+			break;
+	}
+	
+	return url;
+	
+};
 /*jslint 
 browser: true,
 nomen: false,
@@ -10938,26 +11050,6 @@ var SPAZCORE_SECTION_USERLISTS = 'userlists';
 /**
  * @constant 
  */
-var SPAZCORE_SERVICE_TWITTER = 'twitter';
-/**
- * @constant 
- */
-var SPAZCORE_SERVICE_IDENTICA = 'identi.ca';
-/**
- * @constant 
- */
-var SPAZCORE_SERVICE_WORDPRESS_TWITTER = 'wordpress-twitter';
-/**
- * @constant 
- */
-var SPAZCORE_SERVICE_TUMBLR_TWITTER = 'tumblr-twitter';
-/**
- * @constant 
- */
-var SPAZCORE_SERVICE_CUSTOM = 'custom';
-/**
- * @constant 
- */
 var SPAZCORE_SERVICEURL_TWITTER = 'https://api.twitter.com/1/';
 /**
  * @constant 
@@ -10971,6 +11063,7 @@ var SPAZCORE_SERVICEURL_WORDPRESS_TWITTER = 'https://twitter-api.wordpress.com/'
  * @constant 
  */
 var SPAZCORE_SERVICEURL_TUMBLR_TWITTER = 'http://www.tumblr.com/';
+
 
 
 /**
