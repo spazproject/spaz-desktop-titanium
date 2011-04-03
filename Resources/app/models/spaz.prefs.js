@@ -99,9 +99,6 @@ Spaz.Prefs.defaultPreferences = {
 	'services-bitly-login': '',
 	'services-bitly-apikey' : '',
 
-	'twitter-api-base-url': 'https://twitter.com/',
-	'twitter-base-url': 'http://twitter.com/',
-
 	'twitter-source': 'spaz',
 
 	'twitter-disable-direct-posting':false,
@@ -570,36 +567,38 @@ Spaz.Prefs.changeMethods = {
 
 				switch (value) {
 
-				case 'identica':
-					var baseurl = 'http://identi.ca/';
-					var apiurl = 'http://identi.ca/api/';
-					break;
+					case SPAZCORE_SERVICE_IDENTICA:
+						var baseurl = SPAZCORE_BASEURL_IDENTICA;
+						var apiurl = SPAZCORE_SERVICEURL_IDENTICA;
+						break;
 
-				default:
-					var baseurl = 'http://twitter.com/';
-					var apiurl = 'https://twitter.com/';
-					break;
+					default:
+						var baseurl = SPAZCORE_BASEURL_TWITTER;
+						var apiurl = SPAZCORE_SERVICEURL_TWITTER;
+						break;
 				}
+				
 				Spaz.Prefs.set('twitter-api-base-url', apiurl);
 				Spaz.Prefs.changeMethods['twitter-api-base-url'].setUI(apiurl);
 				Spaz.Prefs.set('twitter-base-url', baseurl);
 				Spaz.Prefs.changeMethods['twitter-base-url'].setUI(baseurl);
+				
 			}
 		}
 	},
-	'twitter-api-base-url': {
-		setUI: function(value) {
-			sch.debug('value:' + value);
-			$('#twitter-api-base-url').val(value);
-		}
-	},
-	'twitter-base-url': {
-		setUI: function(value) {
-			sch.debug('value:' + value);
-			$('#twitter-base-url').val(value);
-		}
-
-	},
+	// 'twitter-api-base-url': {
+	// 	setUI: function(value) {
+	// 		sch.debug('value:' + value);
+	// 		$('#twitter-api-base-url').val(value);
+	// 	}
+	// },
+	// 'twitter-base-url': {
+	// 	setUI: function(value) {
+	// 		sch.debug('value:' + value);
+	// 		$('#twitter-base-url').val(value);
+	// 	}
+	// 
+	// },
 
 	'twitter-disable-direct-posting': {
 		setUI: function(value) {
@@ -970,7 +969,7 @@ Spaz.Prefs.init = function() {
 	Spaz.Prefs._accounts = new SpazAccounts(Spaz.Prefs._prefs);
 
 	sch.debug('THIS IS THE USERNAME:');
-	sch.debug(Spaz.Prefs.getUsername()+'@'+Spaz.Prefs.getAccountType());
+	sch.debug(Spaz.Prefs.getUsername()+'@'+Spaz.Prefs.getCurrentAccountType());
 
 	sch.debug('SETTING SOUND FILE LOCATIONS');
 	Spaz.Prefs.setSoundFileLocations();
@@ -1041,8 +1040,8 @@ Spaz.Prefs.initUI = function() {
 	$('#usemarkdown').bind('change', Spaz.Prefs.setFromUI);
 	$('#timeline-scrollonupdate').bind('change', Spaz.Prefs.setFromUI);
 	$('#twitter-base-urls').bind('change', Spaz.Prefs.setFromUI);
-	$('#twitter-api-base-url').bind('change', Spaz.Prefs.setFromUI);
-	$('#twitter-base-url').bind('change', Spaz.Prefs.setFromUI);
+	// $('#twitter-api-base-url').bind('change', Spaz.Prefs.setFromUI);
+	// $('#twitter-base-url').bind('change', Spaz.Prefs.setFromUI);
 	$('#twitter-disable-direct-posting').bind('change', Spaz.Prefs.setFromUI);
 	$('#twitter-enable-userstream').bind('change', Spaz.Prefs.setFromUI);
 	$('#services-twitpic-sharepassword').bind('change', Spaz.Prefs.setFromUI);
@@ -1352,7 +1351,7 @@ Spaz.Prefs.getAuthObject = function() {
 	var authkey = Spaz.Prefs.getAuthKey();
 	sch.debug('getAuthObject authkey:'+authkey);
 	if (authkey) {
-		var auth = new SpazAuth(Spaz.Prefs.getAccountType());
+		var auth = new SpazAuth(Spaz.Prefs.getCurrentAccountType());
 		auth.load(authkey);
 		return auth;
 	} else {
@@ -1363,7 +1362,7 @@ Spaz.Prefs.getAuthObject = function() {
 /**
  * Returns the current account's type 
  */
-Spaz.Prefs.getAccountType = function() {
+Spaz.Prefs.getCurrentAccountType = function() {
 	var currentAccountId = Spaz.Prefs.getCurrentAccountId();
 	if (currentAccountId) {
 		var accobj = Spaz.Prefs._accounts.get(currentAccountId);

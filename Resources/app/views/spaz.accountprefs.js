@@ -6,7 +6,7 @@ Spaz.AccountPrefs.init = function(){
 	this.spaz_acc = Spaz.Prefs._accounts;
 	
 	
-	this.metavals = ['twitter-api-accesskey', 'twitter-api-base-url', 'twitter-disable-direct-posting', 'services-pingfm-userappkey', 'services-pingfm-enabled', 'services-pingfm-sendreplies', 'services-shortie-email', 'services-shortie-secretkey', 'services-twitpic-sharepassword'];
+	this.metavals = ['twitter-api-accesskey', 'twitter-api-base-url', 'twitter-base-url', 'twitter-disable-direct-posting', 'services-pingfm-userappkey', 'services-pingfm-enabled', 'services-pingfm-sendreplies', 'services-shortie-email', 'services-shortie-secretkey', 'services-twitpic-sharepassword'];
 	
 	this.checkboxes = ['twitter-disable-direct-posting', 'twitter-enable-userstream', 'services-pingfm-enabled', 'services-pingfm-sendreplies', 'services-twitpic-sharepassword'];
 	
@@ -249,10 +249,11 @@ Spaz.AccountPrefs.init = function(){
 		});
 		
 		/*
-		 if "custom" is set for type, showthe api-base-url row
+		 if "custom" or "statusnet" is set for type, showthe api-base-url && base-url row
 		 */
 		$accountType.change(function(){
-			$('#twitter-api-base-url-row').toggle($accountType.val() === 'custom' || $accountType.val() === SPAZCORE_ACCOUNT_STATUSNET);
+			$('#twitter-api-base-url-row').toggle($accountType.val() === SPAZCORE_ACCOUNT_CUSTOM || $accountType.val() === SPAZCORE_ACCOUNT_STATUSNET);
+			$('#twitter-base-url-row').toggle($accountType.val() === SPAZCORE_ACCOUNT_CUSTOM || $accountType.val() === SPAZCORE_ACCOUNT_STATUSNET);
 		});
 
 		sch.debug('LOADED USERS:');
@@ -282,6 +283,7 @@ Spaz.AccountPrefs.init = function(){
 
 		// Clean up UI
 		$accountDetails.hide();
+		$('#twitter-base-url-row').hide();
 		$('#twitter-api-base-url-row').hide();
 		Spaz.AccountPrefs.toggleCTA();
 

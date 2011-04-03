@@ -208,7 +208,7 @@ Spaz.ImageUploader = function() {
 		};
 		
 		// force pikchur uploading if using identi.ca
-		if (Spaz.Prefs.getAccountType() == SPAZCORE_ACCOUNT_IDENTICA) {
+		if (Spaz.Prefs.getCurrentAccountType() == SPAZCORE_ACCOUNT_IDENTICA) {
 			image_uploader_opts['service'] = 'pikchur';
 			image_uploader_opts['extra']['service'] = 'identi.ca';
 		}

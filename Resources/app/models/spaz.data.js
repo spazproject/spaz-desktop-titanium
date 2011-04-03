@@ -16,6 +16,7 @@ $.ajaxSetup(
 
 
 
+
 Spaz.Data.getBaseURL = function() {
 	var base_url = Spaz.Prefs.get('twitter-api-base-url');
 	if (!base_url) {
@@ -873,8 +874,8 @@ Spaz.Data.getUser = function(user_id, target_el, onSuccess) {
 			twit.getUser(
 				user_id,
 				function(data) {
-					sch.debug('DATA FROM twit.getUser');
-					sch.debug(data.screen_name);
+					sch.error('DATA FROM twit.getUser');
+					sch.error(data.screen_name);
 					if (onSuccess) {
 						onSuccess(data);
 					}
@@ -988,10 +989,10 @@ Spaz.Data.getLists = function(userId, targetEl, onSuccess, onFailure){
  * This sets the API url for the passed SpazTwit object to the current user's settings
  */
 Spaz.Data.setAPIUrl = function(twit_obj) {
-    if (Spaz.Prefs.getAccountType() === SPAZCORE_ACCOUNT_CUSTOM) {
+    if (Spaz.Prefs.getCurrentAccountType() === SPAZCORE_ACCOUNT_CUSTOM || Spaz.Prefs.getCurrentAccountType() === SPAZCORE_ACCOUNT_STATUSNET) {
 	    twit_obj.setBaseURL(Spaz.Prefs.getCustomAPIUrl());
 	} else {
-	    twit_obj.setBaseURLByService(Spaz.Prefs.getAccountType());
+	    twit_obj.setBaseURLByService(Spaz.Prefs.getCurrentAccountType());
 	}
 };
 

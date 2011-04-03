@@ -120,7 +120,7 @@ Spaz.Drafts.destroyAll = function(){
 /*** Helpers > Model ***/
 
 Spaz.Drafts.currentAccountId = function(){
-	return Spaz.Prefs.getUsername() + '@' + Spaz.Prefs.getAccountType();
+	return Spaz.Prefs.getUsername() + '@' + Spaz.Prefs.getCurrentAccountType();
 };
 
 Spaz.Drafts.count = function(){

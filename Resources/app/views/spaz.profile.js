@@ -46,7 +46,8 @@ Spaz.Profile.build = function(username){
 
 	var $profileWrapper = $('#popbox-content-profile'),
 	    $profile = $profileWrapper.children('.content'),
-	    baseURL  = Spaz.Prefs.get('twitter-base-url');
+		baseURL  = sch.getServiceBaseUrl(Spaz.Prefs.getCurrentAccountType());
+	
 
 	$profileWrapper.attr('data-username', username);
 
@@ -64,6 +65,14 @@ Spaz.Profile.build = function(username){
 	}
 
 	function onUserDataLoad(data){
+		
+		console.log(data);
+		
+		if (data.SC_service !== SPAZCORE_SERVICE_TWITTER) {
+			$profile.find('.counts .listed').hide();
+		}
+		
+		
 		$profileWrapper.toggleClass('following', !!data.following);
 
 		// Build image view
@@ -136,7 +145,7 @@ Spaz.Profile.build = function(username){
 		$profile.find('.counts .tweets em').
 			text(numberWithCommas(data.statuses_count)).
 			siblings('.label').
-			html(+data.statuses_count === 1 ? 'tweet' : 'tweets');
+			html(+data.statuses_count === 1 ? 'status' : 'statuses');
 		$profile.find('.counts .following em').
 			text(numberWithCommas(data.friends_count));
 		$profile.find('.counts .followers em').
@@ -150,40 +159,51 @@ Spaz.Profile.build = function(username){
 		Spaz.Profile.buildToolsMenu(data);
 
 		Spaz.Profile.hideLoading();
+		
+		
+		// Add listeners
+		$profile.undelegate();
+		if (baseURL) { // we may not have a valid baseURL
+			$profile.delegate('.name', 'click', function(ev){
+				sch.openInBrowser(baseURL + '/' + username);
+			});
+			$profile.delegate('.tweets', 'click', function(ev){
+				sch.openInBrowser(baseURL + '/' + username);
+			});
+			
+			
+			if (data.SC_service === SPAZCORE_SERVICE_TWITTER) {
+				$profile.delegate('ul.counts .following', 'click', function(ev){
+					sch.openInBrowser(baseURL + '/' + username + '/following');
+				});
+				$profile.delegate('ul.counts .followers', 'click', function(ev){
+					sch.openInBrowser(baseURL + '/' + username + '/followers');
+				});
+				$profile.delegate('ul.counts .listed', 'click', function(ev){
+					sch.openInBrowser(baseURL + '/' + username + '/lists/memberships');
+				});
+				$profile.delegate('.profile-user-image', 'click', function(ev){
+					sch.openInBrowser(baseURL + 'account/profile_image/' + username);
+				});
+			}
+			
+			$profile.delegate('.faves', 'click', function(ev){
+				sch.openInBrowser(baseURL + '/' + username + '/favorites');
+			});		
+		}
+		$profile.delegate('.bio .username.clickable', 'click', function(ev){
+			Spaz.Profile.show($(ev.target).attr('data-username'));
+		});
+		$profile.delegate('.bio .hashtag.clickable', 'click', function(ev){
+			Spaz.Profile.hide();
+		});
+		
 	}
 
 	// Request data
 	Spaz.Data.getUser('@' + username, document, onUserDataLoad);
 
-	// Add listeners
-	$profile.undelegate();
-	$profile.delegate('.profile-user-image', 'click', function(ev){
-		sch.openInBrowser(baseURL + 'account/profile_image/' + username);
-	});
-	$profile.delegate('.name', 'click', function(ev){
-		sch.openInBrowser(baseURL + '#!/' + username);
-	});
-	$profile.delegate('.tweets', 'click', function(ev){
-		sch.openInBrowser(baseURL + '#!/' + username);
-	});
-	$profile.delegate('ul.counts .following', 'click', function(ev){
-		sch.openInBrowser(baseURL + '#!/' + username + '/following');
-	});
-	$profile.delegate('ul.counts .followers', 'click', function(ev){
-		sch.openInBrowser(baseURL + '#!/' + username + '/followers');
-	});
-	$profile.delegate('ul.counts .listed', 'click', function(ev){
-		sch.openInBrowser(baseURL + '#!/' + username + '/lists/memberships');
-	});
-	$profile.delegate('.faves', 'click', function(ev){
-		sch.openInBrowser(baseURL + '#!/' + username + '/favorites');
-	});
-	$profile.delegate('.bio .username.clickable', 'click', function(ev){
-		Spaz.Profile.show($(ev.target).attr('data-username'));
-	});
-	$profile.delegate('.bio .hashtag.clickable', 'click', function(ev){
-		Spaz.Profile.hide();
-	});
+
 	Spaz.Profile.buildFollowButton(username);
 };
 

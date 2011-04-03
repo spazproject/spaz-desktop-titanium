@@ -206,7 +206,7 @@
 				</li>
 
 				<!-- SENT STATUSES -->
-				<li class="TabbedPanelsTab" tabindex="3" title="Tweets you've sent"
+				<li class="TabbedPanelsTab" tabindex="3" title="Statuses you've sent"
 					onmouseover="Spaz.UI.showTooltip(this, this.title)"
 					onmouseout="Spaz.UI.hideTooltips()"
 					id="tab-user" onclick="Spaz.UI.setSelectedTab(this)">
@@ -485,10 +485,15 @@
 															</select>
 														</div>
 												
-														<div class="formrow" id='twitter-api-base-url-row'>
-															<label for="twitter-api-base-url">Base API URL </label>
-															<input type="text" name="twitter-api-base-url" id="twitter-api-base-url" value="" />
-														</div>
+                                                        <div class="formrow" id='twitter-base-url-row'>
+                                                            <label for="twitter-base-url">Base Web URL </label>
+                                                            <input type="text" name="twitter-base-url" id="twitter-base-url" value="" />
+                                                        </div>
+
+                                                        <div class="formrow" id='twitter-api-base-url-row'>
+                                                            <label for="twitter-api-base-url">Base API URL </label>
+                                                            <input type="text" name="twitter-api-base-url" id="twitter-api-base-url" value="" />
+                                                        </div>
 												
 														<div class="formrow">
 															<input type="checkbox" name="twitter-disable-direct-posting" id="twitter-disable-direct-posting" value="1" />
@@ -625,12 +630,12 @@
 											<fieldset>
 												<legend>Message Load Counts</legend>
 												<div class="formrow">
-													<label for="timeline-home-pager-count">Home Tweets</label>
+													<label for="timeline-home-pager-count">Home Statuses</label>
 													<select id="timeline-home-pager-count" name="timeline-home-pager-count">
 													</select>
 												</div>
 												<div class="formrow">
-													<label for="timeline-direct-pager-count">Direct Tweets</label>
+													<label for="timeline-direct-pager-count">Direct Messages</label>
 													<select id="timeline-direct-pager-count" name="timeline-direct-pager-count">
 													</select>
 												</div>

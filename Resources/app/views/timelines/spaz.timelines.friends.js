@@ -19,7 +19,7 @@ var FriendsTimeline = function() {
 		}
 		
 		var refresh_time = Spaz.Prefs.get('network-refreshinterval');
-		if (Spaz.Prefs.getAccountType() == SPAZCORE_ACCOUNT_TWITTER && stream_enabled) {
+		if (Spaz.Prefs.getCurrentAccountType() == SPAZCORE_ACCOUNT_TWITTER && stream_enabled) {
 			refresh_time = -1;
 		}
 		return refresh_time;
@@ -35,8 +35,8 @@ var FriendsTimeline = function() {
 	sch.listen(document, 'pref_user_stream_changed', function(e, stream_enabled) {
 		sch.debug('user stream changed ===========================================');
 		sch.debug("stream_enabled: "+ stream_enabled);
-		if ( (Spaz.Prefs.getAccountType() == SPAZCORE_ACCOUNT_TWITTER) && stream_enabled ) {
-			sch.debug('Spaz.Prefs.getAccountType():'+Spaz.Prefs.getAccountType());
+		if ( (Spaz.Prefs.getCurrentAccountType() == SPAZCORE_ACCOUNT_TWITTER) && stream_enabled ) {
+			sch.debug('Spaz.Prefs.getCurrentAccountType():'+Spaz.Prefs.getCurrentAccountType());
 			sch.debug('stream_enabled:'+stream_enabled);
 			sch.debug('opening user stream');
 			thisFT.twit.openUserStream(function(data) {
@@ -103,7 +103,7 @@ var FriendsTimeline = function() {
 			thisFT.twit.setCredentials(Spaz.Prefs.getAuthObject());
 			sch.debug('thisFT.twit.username:'+thisFT.twit.username);
 			sch.debug('thisFT.twit.auth:'+sch.enJSON(thisFT.twit.auth));
-			sch.debug('Account Type:'+Spaz.Prefs.getAccountType());
+			sch.debug('Account Type:'+Spaz.Prefs.getCurrentAccountType());
 			sch.debug(Spaz.Prefs.getCustomAPIUrl());
             Spaz.Data.setAPIUrl(thisFT.twit);
 			
@@ -112,7 +112,7 @@ var FriendsTimeline = function() {
 			if (Spaz.Prefs.get('twitter-enable-userstream')) {
 				sch.debug("Spaz.Prefs.get('twitter-enable-userstream'): "+Spaz.Prefs.get('twitter-enable-userstream'));
 				sch.debug("typeof Spaz.Prefs.get('twitter-enable-userstream'): "+ typeof Spaz.Prefs.get('twitter-enable-userstream'));
-				if ( (Spaz.Prefs.getAccountType() == SPAZCORE_ACCOUNT_TWITTER) && !thisFT.twit.userStreamExists() ) {
+				if ( (Spaz.Prefs.getCurrentAccountType() == SPAZCORE_ACCOUNT_TWITTER) && !thisFT.twit.userStreamExists() ) {
 					sch.debug('opening user stream in request_data');
 					thisFT.twit.openUserStream(function(data) {
 						sch.debug('new stream data received');

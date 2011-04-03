@@ -52,10 +52,10 @@ Spaz.createUserDirs = function() {
 	var userSoundsDir = Titanium.Filesystem.getFile(appStore, USERDIR_SOUND);
 	userSoundsDir.createDirectory();
 
-	sch.error(userThemesDir.toString());
-	sch.error(userPluginsDir.toString());
-	sch.error(userSmileysDir.toString());
-	sch.error(userSoundsDir.toString());
+	sch.debug(userThemesDir.toString());
+	sch.debug(userPluginsDir.toString());
+	sch.debug(userSmileysDir.toString());
+	sch.debug(userSoundsDir.toString());
 };
 
 
@@ -251,20 +251,20 @@ Spaz.initialize = function() {
 	/*
 		Initialize native menus
 	*/
-	sch.error('Spaz.Menus.initAll()')
+	sch.debug('Spaz.Menus.initAll()');
 	Spaz.Menus.initAll();
 
 	/*
 		Set up event delegation stuff
 	*/
-	sch.error('Spaz.Controller.initIntercept()')
+	sch.debug('Spaz.Controller.initIntercept()');
 	Spaz.Controller.initIntercept();
 
 
 	/*
 		set-up usernameCompleter
 	*/
-	sch.error("new usernameCompleter");
+	sch.debug("new usernameCompleter");
 	Spaz.uc = new usernameCompleter({
 		'usernames':Spaz.Autocomplete.getScreenNames(),
 		'hashtags':Spaz.Autocomplete.getHashTags(),
@@ -277,7 +277,7 @@ Spaz.initialize = function() {
 	/*
 		set-up post panel
 	*/
-	sch.error("new SpazPostPanel");
+	sch.debug("new SpazPostPanel");
 	Spaz.postPanel = new SpazPostPanel({
 		on_submit:function() {
 			this.disable();
@@ -354,20 +354,15 @@ Spaz.initialize = function() {
 		if we have a username and password set, trigger an "account_switched" event
 		to kick things off
 	*/
-	if (Spaz.Prefs.getUsername() && Spaz.Prefs.getAccountType()) {
+	if (Spaz.Prefs.getUsername() && Spaz.Prefs.getCurrentAccountType()) {		
+		
+		console.log(Spaz.Prefs.getUsername(), Spaz.Prefs.getCurrentAccountType(), Spaz.Prefs.getCurrentAccount());
+		
+		Spaz.AccountPrefs.updateWindowTitleAndToolsMenu(Spaz.Prefs.getCurrentAccount().id); 	// Initialize indicators of current account
+		
 		sch.trigger('account_switched', document, Spaz.Prefs.getCurrentAccount());
+
 	}
 
-	/*
-		Initialize indicators of current account
-	(function(){
-		var account = Spaz.Prefs.getCurrentAccount();
-		if(account){
-			Spaz.AccountPrefs.updateWindowTitleAndToolsMenu(account.id);
-		}
-	})();
-	*/
-
-	
 	sch.debug('ended document.ready()');
 };
