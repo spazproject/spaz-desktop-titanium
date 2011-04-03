@@ -1,4 +1,4 @@
-/*********** Built 2011-04-03 00:02:32 EDT ***********/
+/*********** Built 2011-04-03 11:35:59 EDT ***********/
 /*jslint 
 browser: true,
 nomen: false,
@@ -117,6 +117,10 @@ var SPAZCORE_SERVICE_IDENTICA = 'identi.ca';
 /**
  * @constant 
  */
+var SPAZCORE_SERVICE_FREELISHUS = 'freelish.us';
+/**
+ * @constant 
+ */
 var SPAZCORE_SERVICE_WORDPRESS_TWITTER = 'wordpress-twitter';
 /**
  * @constant 
@@ -135,6 +139,10 @@ var SPAZCORE_BASEURL_TWITTER = 'https://twitter.com/';
  * @constant 
  */
 var SPAZCORE_BASEURL_IDENTICA = 'https://identi.ca/';
+/**
+ * @constant 
+ */
+var SPAZCORE_BASEURL_FREELISHUS = 'http://freelish.us/';
 
 
 
@@ -7093,6 +7101,9 @@ sc.helpers.getServiceBaseUrl = function(service) {
 		case SPAZCORE_SERVICE_IDENTICA:
 			url = SPAZCORE_BASEURL_IDENTICA;
 			break;
+		case SPAZCORE_SERVICE_FREELISHUS:
+			url = SPAZCORE_BASEURL_FREELISHUS;
+			break;
 	}
 	
 	return url;
@@ -7114,6 +7125,9 @@ sc.helpers.getServiceProfileUrl = function(username, service) {
 		case SPAZCORE_SERVICE_IDENTICA:
 			url = SPAZCORE_BASEURL_IDENTICA+"/"+username;
 			break;
+		case SPAZCORE_SERVICE_FREELISHUS:
+			url = SPAZCORE_BASEURL_FREELISHUS+"/"+username;
+			break;
 	}
 	
 	return url;
@@ -7134,6 +7148,9 @@ sc.helpers.getStatusUrl = function(id, username, service) {
 			break;
 		case SPAZCORE_SERVICE_IDENTICA:
 			url = SPAZCORE_BASEURL_IDENTICA+'notice/'+id;
+			break;
+		case SPAZCORE_SERVICE_FREELISHUS:
+			url = SPAZCORE_BASEURL_FREELISHUS+'notice/'+id;
 			break;
 	}
 	
@@ -7288,6 +7305,10 @@ var SPAZCORE_ACCOUNT_TWITTER	= 'twitter';
  * @constant 
  */
 var SPAZCORE_ACCOUNT_IDENTICA	= 'identi.ca';
+/**
+ * @constant 
+ */
+var SPAZCORE_ACCOUNT_FREELISHUS	= 'freelish.us';
 /**
  * @constant 
  */
@@ -7679,6 +7700,9 @@ SPAZAUTH_SERVICES[SPAZCORE_ACCOUNT_WORDPRESS_TWITTER] = {
 	'authType': SPAZCORE_AUTHTYPE_BASIC
 };
 SPAZAUTH_SERVICES[SPAZCORE_ACCOUNT_IDENTICA] = {
+    'authType': SPAZCORE_AUTHTYPE_BASIC
+};
+SPAZAUTH_SERVICES[SPAZCORE_ACCOUNT_FREELISHUS] = {
     'authType': SPAZCORE_AUTHTYPE_BASIC
 };
 SPAZAUTH_SERVICES[SPAZCORE_ACCOUNT_CUSTOM] = {
@@ -11058,6 +11082,10 @@ var SPAZCORE_SERVICEURL_IDENTICA = 'https://identi.ca/api/';
 /**
  * @constant 
  */
+var SPAZCORE_SERVICEURL_FREELISHUS = 'http://freelish.us/api/';
+/**
+ * @constant 
+ */
 var SPAZCORE_SERVICEURL_WORDPRESS_TWITTER = 'https://twitter-api.wordpress.com/';
 /**
  * @constant 
@@ -11394,6 +11422,9 @@ SpazTwit.prototype.setBaseURLByService= function(service) {
 		case SPAZCORE_SERVICE_IDENTICA:
 			baseurl = SPAZCORE_SERVICEURL_IDENTICA;
 			break;
+		case SPAZCORE_SERVICE_FREELISHUS:
+			baseurl = SPAZCORE_SERVICEURL_FREELISHUS;
+			break;
 		case SPAZCORE_SERVICE_WORDPRESS_TWITTER:
 			baseurl = SPAZCORE_SERVICEURL_WORDPRESS_TWITTER;
 			break;
@@ -11420,6 +11451,9 @@ SpazTwit.prototype.getServiceFromBaseURL = function(baseurl) {
 			break;
 		case SPAZCORE_SERVICEURL_IDENTICA:
 			service = SPAZCORE_SERVICE_IDENTICA;
+			break;
+		case SPAZCORE_SERVICEURL_FREELISHUS:
+			service = SPAZCORE_SERVICE_FREELISHUS;
 			break;
 		case SPAZCORE_SERVICEURL_WORDPRESS_TWITTER:
 			service = SPAZCORE_SERVICE_WORDPRESS_TWITTER;
@@ -12912,6 +12946,7 @@ SpazTwit.prototype._callMethod = function(opts) {
 
 SpazTwit.prototype.getUser = function(user_id, onSuccess, onFailure) {
 	var data = {};
+	var that = this;
 
 	if (sch.isString(user_id) && user_id.indexOf('@') === 0) {
 		data.screen_name = user_id.substr(1);
@@ -12929,7 +12964,7 @@ SpazTwit.prototype.getUser = function(user_id, onSuccess, onFailure) {
 		'success_callback': function(data) {
 			sch.error('BEFORE PROCESSING');
 			sch.error(data);
-			data = this._processUser(data, SPAZCORE_SECTION_HOME);
+			data = that._processUser(data, SPAZCORE_SECTION_HOME);
 			sch.error('AFTER PROCESSING');
 			sch.error(data);
 			onSuccess(data);
