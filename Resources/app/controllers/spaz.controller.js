@@ -445,7 +445,7 @@ Spaz.Controller.initIntercept = function() {
 		function uploadDraggedImage(event) {
 			var fileUrl = event.dataTransfer.getData("text/uri-list");
 			
-			fileUrl = fileUrl.replace("file://localhost", "");
+			fileUrl = decodeURI(fileUrl.replace("file://localhost", ""));
 			
 			sch.debug(fileUrl);
 
