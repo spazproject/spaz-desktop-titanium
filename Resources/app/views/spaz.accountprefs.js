@@ -205,24 +205,37 @@ Spaz.AccountPrefs.init = function(){
 				 bind save button
 				 */
 				$saveAccountButton.click(function(){
-					var editedaccid = Spaz.AccountPrefs.edit($idEdit.val(), {
-						'username': $username.val(),
-						'password': $password.val(),
-						'type': $accountType.val()
-					}).id;
 					
-					var val;
-					for (var i = 0, iMax = that.metavals.length; i < iMax; i++) {
-						if (that.checkboxes.indexOf(that.metavals[i]) !== -1) {
-							val = !!($('#' + that.metavals[i] + ':checked').length) || false;
-						}
-						else {
-							val = $('#' + that.metavals[i]).val();
-						}
-						that.spaz_acc.setMeta(editedaccid, that.metavals[i], val);
-					};
-					
-					Spaz.UI.closePopbox();
+					var auth  = new SpazAuth($accountType.val());
+
+					if (auth.authorize($username.val(), $password.val())) { // check credentials first
+						
+						var editedaccid = Spaz.AccountPrefs.edit($idEdit.val(), {
+							'username': $username.val(),
+							'password': $password.val(),
+							'auth': auth.save(),
+							'type': $accountType.val()
+						}).id;
+
+						var val;
+						for (var i = 0, iMax = that.metavals.length; i < iMax; i++) {
+							if (that.checkboxes.indexOf(that.metavals[i]) !== -1) {
+								val = !!($('#' + that.metavals[i] + ':checked').length) || false;
+							}
+							else {
+								val = $('#' + that.metavals[i]).val();
+							}
+							that.spaz_acc.setMeta(editedaccid, that.metavals[i], val);
+						};
+						
+						Spaz.UI.closePopbox();
+						
+					} else { // failed!!
+						$('#current-account-id').val(newaccid);
+						Spaz.UI.statusBar('Authoriztion failed!');
+						Spaz.UI.flashStatusBar();
+					}
+
 				});
 				
 				/*
