@@ -70,6 +70,8 @@ Spaz.Profile.build = function(username){
 		
 		if (data.SC_service !== SPAZCORE_SERVICE_TWITTER) {
 			$profile.find('.counts .listed').hide();
+		} else {
+			$profile.find('.counts .listed').show();
 		}
 		
 		
