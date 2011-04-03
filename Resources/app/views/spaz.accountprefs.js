@@ -231,7 +231,6 @@ Spaz.AccountPrefs.init = function(){
 						Spaz.UI.closePopbox();
 						
 					} else { // failed!!
-						$('#current-account-id').val(newaccid);
 						Spaz.UI.statusBar('Authoriztion failed!');
 						Spaz.UI.flashStatusBar();
 					}
