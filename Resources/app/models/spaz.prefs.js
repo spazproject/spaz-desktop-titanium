@@ -572,6 +572,11 @@ Spaz.Prefs.changeMethods = {
 						var apiurl = SPAZCORE_SERVICEURL_IDENTICA;
 						break;
 
+					case SPAZCORE_SERVICE_FREELISHUS:
+						var baseurl = SPAZCORE_BASEURL_FREELISHUS;
+						var apiurl = SPAZCORE_SERVICEURL_FREELISHUS;
+						break;
+
 					default:
 						var baseurl = SPAZCORE_BASEURL_TWITTER;
 						var apiurl = SPAZCORE_SERVICEURL_TWITTER;
