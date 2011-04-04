@@ -478,13 +478,11 @@ Spaz.Data.blockUser = function(userid) {
 			sch.debug(data);
 			$badentries.remove();
 			Spaz.UI.statusBar("Blocked " + userid);
-			jQuery('div.timeline-entry[data-user_id="'+userid+'"], div.timeline-entry[data-user-screen_name="'+userid+'"]').remove();
 			Spaz.UI.hideLoading();
 		},
 		function(xhr, msg, exc) {
 			sch.debug(msg);
 			$badentries.remove();
-			jQuery('div.timeline-entry[data-user_id="'+userid+'"], div.timeline-entry[data-user-screen_name="'+userid+'"]').remove();
 			Spaz.UI.statusBar("Block failed for " + userid);
 			Spaz.UI.hideLoading();
 		}
