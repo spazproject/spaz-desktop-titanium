@@ -1,3 +1,7 @@
+var MAIN_WINDOW_WIDTH_MIN = 320;
+var MAIN_WINDOW_HEIGHT_MIN = 200;
+
+
 var Spaz;
 if (!Spaz) Spaz = {};
 

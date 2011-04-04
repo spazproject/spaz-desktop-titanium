@@ -71,7 +71,7 @@ Spaz.Windows.onAppExit = function(event) {
 	Spaz.Prefs.savePrefs();
 	
 	if (event) {
-		sch.dump('onAppExit triggered by event')
+		sch.dump('onAppExit triggered by event');
 		// event.preventDefault();
 		// event.stopImmediatePropagation();
 	}
@@ -118,7 +118,7 @@ Spaz.Windows.windowClose = function() {
  * 
  */
 Spaz.Windows.makeSystrayIcon = function() {
-	sch.debug('Making Windows system tray menu')
+	sch.debug('Making Windows system tray menu');
 	var tray = Titanium.UI.addTray("images/spaz-icon-alpha_16.png", Spaz.Windows.onSystrayClick);
 	tray.setHint($L("Spaz loves you"));
 };
@@ -141,14 +141,14 @@ Spaz.Windows.makeWindowHidden = function(){
 
 
 Spaz.Windows.setWindowOpacity = function(value) {
-	percentage = parseInt(value);
+	percentage = parseInt(value, 10);
 	if (isNaN(percentage)) {
 		percentage = 100;
 	}
 	if (percentage < 25) {
 		percentage = 25;
 	}
-	var val = parseInt(percentage) / 100;
+	var val = parseInt(percentage, 10) / 100;
 	if (isNaN(val)) {
 		val = 1;
 	} else if (val >= 1) {
@@ -160,7 +160,10 @@ Spaz.Windows.setWindowOpacity = function(value) {
 };
 
 
-
+/**
+ * @DEPRECATED 
+ * See Spaz.Windows.listenForResize
+ */
 Spaz.Windows.windowResize = function(){
 	nativeWindow.startResize(air.NativeWindowResize.BOTTOM_RIGHT);
 };
@@ -208,26 +211,54 @@ Spaz.Windows.listenForMove = function() {
 
 Spaz.Windows.listenForResize = function() {
 	var resizeHandle = document.getElementById('resize-se');
+	
+	var wnd = Titanium.UI.currentWindow;
+	var start_w = wnd.getWidth();
+	var start_h = wnd.getHeight();
+	
+	var win_x = wnd.getX();
+	var win_y = wnd.getY();
+	
+	var current_bounds = {'x':win_x, 'y':win_y, 'width':start_w, 'height':start_h};
 
 	resizeHandle.addEventListener('mousedown', function (e){
 		var isDragging = true;
 		var mousePosition = {x:event.clientX, y:event.clientY};
+		
+		sch.error('START POSITION: '+event.clientX+'x'+event.clientY);
+		sch.error('START W/H: '+start_w+','+start_h);
 
-		document.addEventListener('mousemove', drag, false);
+		document.addEventListener('mousemove', onDrag, false);
 		document.addEventListener('mouseup', function (e){
-			document.removeEventListener('mousemove', drag, false);
+			
+			Spaz.Windows.onWindowResize();				
+
+			document.removeEventListener('mousemove', onDrag, false);
 			document.removeEventListener('mouseup', arguments.callee, false);
 		}, false);
 
 
-		function drag(event) {
-            // console.log("firing drag", event.clientX, event.clientY);
-			var wnd = Titanium.UI.currentWindow;
-			wnd.setBounds({'x':wnd.getX(), 'y':wnd.getY(), 'width':event.clientX, 'height':event.clientY});
-            Spaz.Windows.onWindowResize();
-	        return;
+		function onDrag(event) {			
+			
+			var new_w = event.clientX;
+			var new_h = event.clientY;
+			
+			if ((new_w - win_x) < MAIN_WINDOW_WIDTH_MIN) {
+				new_w = MAIN_WINDOW_WIDTH_MIN;
+			}
+			
+			if ((new_h - win_y) < MAIN_WINDOW_HEIGHT_MIN) {
+				new_h = MAIN_WINDOW_HEIGHT_MIN;
+			}
+			
+			// set new current_bounds, but don't fire onWindowResize it until mouseup
+			if (start_w != new_w || start_h != new_h) {
+				current_bounds = {'x':win_x, 'y':win_y, 'width':new_w, 'height':new_h};
+				wnd.setBounds(current_bounds);				
+			}
+			return;
 		}
-        event.stopPropagation();
+		event.stopPropagation();
 	}, false);
 };
 
