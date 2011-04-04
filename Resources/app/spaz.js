@@ -92,7 +92,9 @@ Spaz.loadOAuthServices = function() {
  */
 Spaz.initialize = function() {
 	
-
+	
+	Spaz.Windows.makeWindowHidden();
+	
 	sch.debug('root init begin');
 	
 	/* @TODO find equivalent */
