@@ -8,6 +8,7 @@ html {
   height: 100%;
 }
 body {
+  opacity:1;
   display: block;
   width: 100%;
   height: 100%;
@@ -148,6 +149,7 @@ div.followers-row:nth-child(even){
 		The container is a div that wraps around all of the content
 	*/
   #container {
+	opacity:1.0;
     position:fixed;
     overflow:hidden;
     left:8px;

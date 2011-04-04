@@ -10,6 +10,7 @@ html {
 }
 
 body {
+	opacity:1;
 	font-family:Myriad, Myriad Pro, Tahoma, Arial, Helvetica, sans-serif;
 	margin:0px;
 	padding:0px;
@@ -52,6 +53,7 @@ div.timeline-entry:nth-child(even){
 		The container is a div that wraps around all of the content
 	*/
 	#container {
+		opacity:1.0;
 		overflow:hidden;
 		background-color:#FFFFFF;
 		-khtml-border-radius:5px; /* this is webkit-specific and gives us rounded corners*/
