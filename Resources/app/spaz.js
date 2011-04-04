@@ -63,15 +63,22 @@ Spaz.createUserDirs = function() {
  * loads the user.js file, if it exists, and injects it into the script tag with id='userjs' 
  */
 Spaz.loadUserJS = function() {
-	var userjsfile = sch.getFileObject(sch.getAppStorageDir()).resolve('user.js');
+	var userjsfile = Titanium.Filesystem.getFile(sch.getAppStorageDir(), 'user.js');
 	
-	if (userjsfile.exists()) {
-		var userJS = Spaz.Sys.getFileContents(userjsfile.toString());
-		$('#userjs').text(userJS);
-	} else {
+	if (!userjsfile.exists()) {
 		userjsfile.touch();
 		Spaz.Sys.setFileContents(userjsfile.toString(), "/* Edit this file to add your own functionality to Spaz */\n\n");
 	}
+	
+	
+	$LAB
+		.setOptions({
+			'UseLocalXHR':false,
+			'UseCachePreload':false,
+			'UsePreloading':false
+		})
+		.script(userjsfile.toURL())
+		.wait(function() { sch.trigger('load.userjs'); });
 	
 };
 
