@@ -470,15 +470,21 @@ Spaz.Data.blockUser = function(userid) {
 	    twit = new SpazTwit({auth: auth});
 	Spaz.Data.setAPIUrl(twit);
 
+	var $badentries = jQuery('div.timeline-entry[data-user-id="'+userid+'"], div.timeline-entry[data-user-screen_name="'+userid+'"]');
+
 	twit.block(
 		userid,
 		function(data) {
 			sch.debug(data);
+			$badentries.remove();
 			Spaz.UI.statusBar("Blocked " + userid);
+			jQuery('div.timeline-entry[data-user_id="'+userid+'"], div.timeline-entry[data-user-screen_name="'+userid+'"]').remove();
 			Spaz.UI.hideLoading();
 		},
 		function(xhr, msg, exc) {
 			sch.debug(msg);
+			$badentries.remove();
+			jQuery('div.timeline-entry[data-user_id="'+userid+'"], div.timeline-entry[data-user-screen_name="'+userid+'"]').remove();
 			Spaz.UI.statusBar("Block failed for " + userid);
 			Spaz.UI.hideLoading();
 		}
@@ -491,17 +497,20 @@ Spaz.Data.reportUser = function(userid) {
 	    twit = new SpazTwit({auth: auth});
 	Spaz.Data.setAPIUrl(twit);
 
+	var $badentries = jQuery('div.timeline-entry[data-user-id="'+userid+'"], div.timeline-entry[data-user-screen_name="'+userid+'"]');
+
 	twit.reportSpam(
 		userid,
 		function(data) {
 			sch.debug(data);
-			jQuery('div.timeline-entry[data-user_id="'+userid+'"], div.timeline-entry[data-user-screen_name="'+userid+'"]');
+			$badentries.remove();
 			Spaz.UI.statusBar("Blocked and reported " + userid);
 			Spaz.UI.hideLoading();
 		},
 		function(xhr, msg, exc) {
 			sch.debug(msg);
-			Spaz.UI.statusBar("Block & report failed for " + userid);
+			$badentries.remove();
+			Spaz.UI.statusBar("Block & report failed for " + userid + "; deleting anyway");
 			Spaz.UI.hideLoading();
 		}
 	);
