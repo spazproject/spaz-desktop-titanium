@@ -2,7 +2,6 @@
 which will be re-shown when a theme kicks in. This, of course,
 means themes must set display:block on the <body> element */
 
-@import url("timeline-filters.css");
 @import url("popbox-content.css");
 
 body { opacity:0; }
@@ -237,6 +236,7 @@ div#timeline-followerslist:empty + div.loadmore-panel {
 }
 
 div.embedly {
+	display:inline-block;
 };
 	div.embedly img {
 		position:relative;

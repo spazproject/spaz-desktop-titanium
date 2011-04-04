@@ -2655,3 +2655,14 @@ div#popbox-content-conversation #timeline-conversation div.timeline-entry{
 #news-content div.entry div.entry-content {
 	line-height:1.4em;
 }
+
+
+
+/*
+* embedly
+*/
+
+div.embedly {
+	-webkit-box-shadow:0px 1px 5px #333333;
+	margin: 10px;
+};
