@@ -1462,9 +1462,9 @@ Spaz.Prefs.getCurrentAccount = function() {
  * returns meta val for current account 
  */
 Spaz.Prefs.getCurrentAccountMeta = function(key) {	
-	var acc = Spaz.Prefs.getCurrentAccount();
-	if (acc) {
-		return acc.getMeta(key);
+	var accid = Spaz.Prefs.getCurrentAccountId();
+	if (accid) {
+		return Spaz.Prefs._accounts.getMeta(accid, key);
 	} else {
 		return null;
 	}
@@ -1475,9 +1475,9 @@ Spaz.Prefs.getCurrentAccountMeta = function(key) {
  * returns meta val for current account 
  */
 Spaz.Prefs.setCurrentAccountMeta = function(key, val) {	
-	var acc = Spaz.Prefs.getCurrentAccount();
-	if (acc) {
-		return acc.setMeta(key, val);
+	var accid = Spaz.Prefs.getCurrentAccountId();
+	if (accid) {
+		return Spaz.Prefs._accounts.setMeta(accid, key, val);
 	} else {
 		return null;
 	}
