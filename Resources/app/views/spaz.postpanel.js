@@ -18,7 +18,8 @@ function SpazPostPanel(opts) {
 	this.on_over   = opts.on_over	|| this.on_over_default;
 	this.on_under  = opts.on_under	|| this.on_under_default;
 	this.on_submit = opts.on_submit || null;
-	// this.shortlink_service = opts.shortlink_service || SPAZCORE_SHORTURL_SERVICE_BITLY;
+
+	// this can get overridden by account prefs below
 	this.shortlink_service = opts.shortlink_service || SPAZCORE_SHORTURL_SERVICE_JMP;
 	
 	this.irt_status = '';
@@ -287,7 +288,9 @@ SpazPostPanel.prototype.shortenURLs = function() {
 	
 	var event_target = this.textarea;
 	
-	var surl = new SpazShortURL(this.shortlink_service);
+	var svc = Spaz.Prefs.getCurrentAccountMeta('services-url-shortener') || this.shortlink_service;
+	
+	var surl = new SpazShortURL(svc);
 	
 	var longurls = sc.helpers.extractURLs(this.getMessageText());
 
