@@ -103,8 +103,8 @@ Spaz.AccountPrefs.init = function(){
 				} else {
 					$('#' + that.metavals[i]).val('');
 				}
-				
 			};
+			$urlshortener.val(SPAZCORE_SHORTURL_SERVICE_JMP).trigger('change'); // set default
 			
 			/*
 			 bind save button
@@ -286,7 +286,7 @@ Spaz.AccountPrefs.init = function(){
 		});
 		
 		$urlshortener.change(function() {
-			if ($urlshortener.val() == SPAZCORE_SHORTURL_SERVICE_JMP || value == SPAZCORE_SHORTURL_SERVICE_JMP) {
+			if ($urlshortener.val() == SPAZCORE_SHORTURL_SERVICE_BITLY || $urlshortener.val() == SPAZCORE_SHORTURL_SERVICE_JMP) {
 				$('#services-bitly-container').show();
 			} else {
 				$('#services-bitly-container').hide();
@@ -326,8 +326,9 @@ Spaz.AccountPrefs.init = function(){
 		var labels = shurl.getServiceLabels();
 		for (var i=0; i < labels.length; i++) {
 			var label = labels[i];
-			$('#services-url-shortener').append('<option value="'+label+'">'+label+'</option>');
+			$urlshortener.append('<option value="'+label+'">'+label+'</option>');
 		}
+		$urlshortener.val(SPAZCORE_SHORTURL_SERVICE_JMP).trigger('change'); // set default
 
 
 		// Clean up UI
