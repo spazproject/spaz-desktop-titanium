@@ -6,9 +6,25 @@ Spaz.AccountPrefs.init = function(){
 	this.spaz_acc = Spaz.Prefs._accounts;
 	
 	
-	this.metavals = ['twitter-api-accesskey', 'twitter-api-base-url', 'twitter-base-url', 'twitter-disable-direct-posting', 'services-pingfm-userappkey', 'services-pingfm-enabled', 'services-pingfm-sendreplies', 'services-shortie-email', 'services-shortie-secretkey', 'services-twitpic-sharepassword'];
+	this.metavals = [
+		'twitter-api-accesskey',
+		'twitter-api-base-url',
+		'twitter-base-url',
+		'twitter-disable-direct-posting',
+		'services-pingfm-userappkey',
+		'services-pingfm-enabled',
+		'services-pingfm-sendreplies',
+		'services-twitpic-sharepassword',
+		'services-url-shortener'
+	];
 	
-	this.checkboxes = ['twitter-disable-direct-posting', 'twitter-enable-userstream', 'services-pingfm-enabled', 'services-pingfm-sendreplies', 'services-twitpic-sharepassword'];
+	this.checkboxes = [
+		'twitter-disable-direct-posting',
+		'twitter-enable-userstream',
+		'services-pingfm-enabled',
+		'services-pingfm-sendreplies',
+		'services-twitpic-sharepassword'
+	];
 	
 	var that = this,
 	    $accountList          = $('#account-list'),
@@ -16,6 +32,7 @@ Spaz.AccountPrefs.init = function(){
 	    $idEdit               = $('#id_edit'),
 	    $username             = $('#username'),
 	    $password             = $('#password'),
+	    $urlshortener         = $('#services-url-shortener'),
 	    $accountType          = $('#account-type'),
 	    $saveAccountButton    = $('#account-save'),
 	    $cancelAccountButton  = $('#account-cancel');
@@ -195,7 +212,7 @@ Spaz.AccountPrefs.init = function(){
 						$('#' + that.metavals[i]).attr('checked', !!(val));
 					}
 					else {
-						$('#' + that.metavals[i]).val(that.spaz_acc.getMeta(editing.id, that.metavals[i]));
+						$('#' + that.metavals[i]).val(val);
 					}
 					
 				};
@@ -267,6 +284,14 @@ Spaz.AccountPrefs.init = function(){
 			$('#twitter-api-base-url-row').toggle($accountType.val() === SPAZCORE_ACCOUNT_CUSTOM || $accountType.val() === SPAZCORE_ACCOUNT_STATUSNET);
 			$('#twitter-base-url-row').toggle($accountType.val() === SPAZCORE_ACCOUNT_CUSTOM || $accountType.val() === SPAZCORE_ACCOUNT_STATUSNET);
 		});
+		
+		$urlshortener.change(funtion() {
+			if ($urlshortener.val() == SPAZCORE_SHORTURL_SERVICE_JMP || value == SPAZCORE_SHORTURL_SERVICE_JMP) {
+				$('#services-bitly-container').show();
+			} else {
+				$('#services-bitly-container').hide();
+			}
+		});
 
 		sch.debug('LOADED USERS:');
 		sch.debug(sch.enJSON(Spaz.AccountPrefs.spaz_acc._accounts));
@@ -292,6 +317,18 @@ Spaz.AccountPrefs.init = function(){
 				Spaz.AccountPrefs.selectAccount(currentUserId);
 			}
 		})();
+
+		
+		/*
+		Load url shortener options
+		*/
+		var shurl = new SpazShortURL();
+		var labels = shurl.getServiceLabels();
+		for (var i=0; i < labels.length; i++) {
+			var label = labels[i];
+			$('#services-url-shortener').append('<option value="'+label+'">'+label+'</option>');
+		}
+
 
 		// Clean up UI
 		$accountDetails.hide();
