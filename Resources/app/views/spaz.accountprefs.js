@@ -285,7 +285,7 @@ Spaz.AccountPrefs.init = function(){
 			$('#twitter-base-url-row').toggle($accountType.val() === SPAZCORE_ACCOUNT_CUSTOM || $accountType.val() === SPAZCORE_ACCOUNT_STATUSNET);
 		});
 		
-		$urlshortener.change(funtion() {
+		$urlshortener.change(function() {
 			if ($urlshortener.val() == SPAZCORE_SHORTURL_SERVICE_JMP || value == SPAZCORE_SHORTURL_SERVICE_JMP) {
 				$('#services-bitly-container').show();
 			} else {
