@@ -1,4 +1,4 @@
-/*********** Built 2011-04-06 13:34:09 EDT ***********/
+/*********** Built 2011-04-06 18:34:57 EDT ***********/
 /*jslint 
 browser: true,
 nomen: false,
@@ -9927,12 +9927,15 @@ var SPAZCORE_EXPANDABLE_DOMAINS = [
 	"bacn.me",
 	"bloat.me",
 	"budurl.com",
+	"chzb.gr",
 	"clipurl.us",
 	"cort.as",
 	"dwarfurl.com",
 	"ff.im",
 	"fff.to",
+	"goo.gl",
 	"href.in",
+	"ht.ly",
 	"idek.net",
 	"korta.nu",
 	"lin.cr",
@@ -9967,6 +9970,7 @@ var SPAZCORE_EXPANDABLE_DOMAINS = [
 	"snipr.com",
 	"snipurl.com",
 	"snurl.com",
+	"t.co",
 	"tiny.cc",
 	"tinysong.com",
 	"togoto.us",
@@ -9977,6 +9981,7 @@ var SPAZCORE_EXPANDABLE_DOMAINS = [
 	"twurl.nl",
 	"u.mavrev.com",
 	"u.nu",
+	"un.cr",
 	"ur1.ca",
 	"url.az",
 	"url.ie",
@@ -10103,7 +10108,7 @@ SpazShortURL.prototype.services[SPAZCORE_SHORTURL_SERVICE_GOOGLE] = {
 		var result = sc.helpers.deJSON(data);
 		
 		if (result.longUrl && result.id) {
-			result.longurl = longurl; // google re-encodes stuff so we need to have the original we passed
+			result.longurl = longurl; // google re-encodes characters so we need to use the original we passed
 			result.shorturl = result.id;
 		}
 		return result;
@@ -10141,7 +10146,11 @@ SpazShortURL.prototype.getAPIObj = function(service) {
 /**
  * shortens a URL by making an ajax call
  * @param {string} longurl
- * @param {object} opts   right now opts.event_target (a DOMelement) and opts.apiopts (passed to api's getData() call) are supported
+ * @param {object} [opts]   right now opts.event_target (a DOMelement) and opts.apiopts (passed to api's getData() call) are supported
+ * @param {DOMElement} [opts.event_target]
+ * @param {Object} [opts.apiopts]
+ * @param {Function} [opts.onSuccess]
+ * @param {Function} [opts.onError]
  */
 SpazShortURL.prototype.shorten = function(longurl, opts) {
 	
@@ -10200,6 +10209,10 @@ SpazShortURL.prototype.shorten = function(longurl, opts) {
 					errobj.msg = 'Unknown Error';
 				}
 				shortener._onShortenResponseFailure(errobj, opts.event_target);
+				if (opts.onError) {
+					opts.onError(errobj);
+				}
+				
 			},
 			success:function(data) {
 				// var shorturl = trim(data);
@@ -10214,6 +10227,9 @@ SpazShortURL.prototype.shorten = function(longurl, opts) {
 				}
 				sch.error(return_data);
 				shortener._onShortenResponseSuccess(return_data, opts.event_target);
+				if (opts.onSuccess) {
+					opts.onSuccess(return_data);
+				}
 			},
 
 			'type':self.api.method || "POST",
@@ -10279,28 +10295,34 @@ SpazShortURL.prototype.expand = function(shorturl, opts) {
 				errobj.msg = 'Unknown Error';
 			}
 			shortener._onExpandResponseFailure(errobj, opts.event_target);
+			if (opts.onError) {
+				opts.onError(errobj);
+			}
+			
 		},
 		success:function(data) {
-			// var shorturl = trim(data);
-			data = sc.helpers.deJSON(data);
-			var longurl = data[shorturl];
+			data = sch.deJSON(data);
+			var longurl = data['final_url'];
 			
 			/*
 				save it to cache
 			*/
 			shortener.saveExpandedURLToCache(shorturl, longurl);
 			
-			shortener._onExpandResponseSuccess({
-					'shorturl':shorturl,
-					'longurl' :longurl
-				},
-				opts.event_target
-			);
+			var resp = {
+				'shorturl':shorturl,
+				'longurl' :longurl
+			};
+			
+			shortener._onExpandResponseSuccess(resp, opts.event_target);
+			if (opts.onSuccess) {
+				opts.onSuccess(resp);
+			}
 		},
 		beforeSend:function(xhr) {},
 		type:"GET",
-		url :'http://longurlplease.appspot.com/api/v1.1',
-		data:{ 'q':shorturl }
+		url :'http://api.getspaz.com/url/resolve',
+		data:{ 'url':shorturl }
 	});
 };
 
@@ -10330,6 +10352,8 @@ SpazShortURL.prototype.findExpandableURLs = function(str) {
 			regexes.push(new RegExp("http://"+thisdomain+"/(-?[a-zA-Z0-9]+)", "gi"));
 		} else if (thisdomain == 'ow.ly') { // we have to skip ow.ly/i/XXX links
 			regexes.push(new RegExp("http://"+thisdomain+"/(-?[a-zA-Z0-9]{2,})", "gi"));
+		} else if (thisdomain == 'goo.gl') { // we have to skip ow.ly/i/XXX links
+			regexes.push(new RegExp("http://"+thisdomain+"/(?:fb/|)(-?[a-zA-Z0-9]+)", "gi"));
 		} else {
 			regexes.push(new RegExp("http://"+thisdomain+"/([a-zA-Z0-9-_]+)", "gi"));
 		}
@@ -10355,11 +10379,11 @@ SpazShortURL.prototype.findExpandableURLs = function(str) {
 };
 
 
-SpazShortURL.prototype.expandURLs = function(urls, target) {
+SpazShortURL.prototype.expandURLs = function(urls, target, onSuccess, onFailure) {
 	for (var i=0; i < urls.length; i++) {
 		var thisurl = urls[i];
 		sch.dump('expanding '+thisurl);
-		this.expand(thisurl, { 'event_target':target });
+		this.expand(thisurl, { 'event_target':target, 'onSuccess':onSuccess, 'onFailure':onFailure });
 	};
 };
 
