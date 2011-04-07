@@ -26,7 +26,7 @@
 		<maximizable>true</maximizable>
 		<minimizable>true</minimizable>
 		<closeable>true</closeable>
-		<chrome>false</chrome>
-		<transparent-background>true</transparent-background>
+		<chrome>true</chrome>
+		<transparent-background>false</transparent-background>
 	</window>
 </ti:app>
