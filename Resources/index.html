@@ -6,18 +6,18 @@
 
 	<link rel="stylesheet" href="css/init.css" type="text/css" media="screen" charset="utf-8" />
 
-    <script type="text/javascript" src="http://scripts.embed.ly/embedly.js"></script>
-    
-	<!-- The AIR aliases definitions -->
-	<script src="vendors/air/AIRAliases.js" type="text/javascript" charset="utf-8"></script>
 
+	<!-- LAB.js -->
+	<script src="vendors/LAB.min.js"></script>
+	<script src="vendors/fLAB.min.js"></script>
+		
 	<!-- JazzRecord DB lib -->
 	<script src="vendors/jazz_record.js" type="text/javascript" charset="utf-8"></script>
 
-    <!-- Lawnchair -->
-    <script src="vendors/lawnchair/adaptors/WebkitSQLiteAdaptor.js" type="text/javascript" charset="utf-8"></script>
-    <script src="vendors/lawnchair/Lawnchair.js" type="text/javascript" charset="utf-8"></script>
-    <script src="vendors/lawnchair/adaptors/LawnchairAdaptorHelpers.js" type="text/javascript" charset="utf-8"></script>
+	<!-- Lawnchair -->
+	<script src="vendors/lawnchair/adaptors/WebkitSQLiteAdaptor.js" type="text/javascript" charset="utf-8"></script>
+	<script src="vendors/lawnchair/Lawnchair.js" type="text/javascript" charset="utf-8"></script>
+	<script src="vendors/lawnchair/adaptors/LawnchairAdaptorHelpers.js" type="text/javascript" charset="utf-8"></script>
 
 	<!-- Timer lib for benchmarking -->
 	<script src="vendors/time.js" type="text/javascript" charset="utf-8"></script>
@@ -27,6 +27,9 @@
 
 	<!-- Showdown, the Markdown parser -->
 	<script src="vendors/showdown.js" type="text/javascript" charset="utf-8"></script>
+	
+	<!-- SpazGrowl -->
+	<script src="vendors/SpazGrowl.js" type="text/javascript" charset="utf-8"></script>
 
 
 	<!-- jQuery libs -->
@@ -48,7 +51,7 @@
 	<script src="vendors/jquery/jqXMLUtils.js"					type="text/javascript" charset="utf-8"></script>
 	<script src="vendors/jquery/jquery.DOMWindow.js" type="text/javascript" charset="utf-8"></script>
 	<script src="vendors/jquery/jquery.tinysort.js" type="text/javascript" charset="utf-8"></script>
-    <script src="vendors/jquery/jquery.embedly.js" type="text/javascript" charset="utf-8"></script>
+	<script src="vendors/jquery/jquery.embedly.js" type="text/javascript" charset="utf-8"></script>
 	<script src="vendors/jquery/jquery.mustache.js" type="text/javascript" charset="utf-8"></script>
 
 	<!-- HTML notification library -->
@@ -126,17 +129,16 @@
 	<script src="app/views/spaz.wilhelm.js"></script>
 
 	<script src="app/views/spaz.timelines.js"  type="text/javascript" charset="utf-8"></script>
-	<script src="app/views/timelines/spaz.timelines.friends.js"  type="text/javascript" charset="utf-8"></script>
+	<script src="app/views/timelines/spaz.timelines.friends.js"	 type="text/javascript" charset="utf-8"></script>
 	<script src="app/views/timelines/spaz.timelines.favorites.js"  type="text/javascript" charset="utf-8"></script>
-	<script src="app/views/timelines/spaz.timelines.search.js"  type="text/javascript" charset="utf-8"></script>
+	<script src="app/views/timelines/spaz.timelines.search.js"	type="text/javascript" charset="utf-8"></script>
 	<script src="app/views/timelines/spaz.timelines.user.js"  type="text/javascript" charset="utf-8"></script>
 	<script src="app/views/timelines/spaz.timelines.userlists.js"  type="text/javascript" charset="utf-8"></script>
-	<script src="app/views/timelines/spaz.timelines.public.js"  type="text/javascript" charset="utf-8"></script>
+	<script src="app/views/timelines/spaz.timelines.public.js"	type="text/javascript" charset="utf-8"></script>
 	<script src="app/views/timelines/spaz.timelines.followers.js"  type="text/javascript" charset="utf-8"></script>
 
-    <script src="app/views/spaz.timelinefilters.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app/views/spaz.timelinefilters.js" type="text/javascript" charset="utf-8"></script>
 	<script src="app/views/spaz.postpanel.js"  type="text/javascript" charset="utf-8"></script>
-	<script src="app/views/spaz.shortlink.js"  type="text/javascript" charset="utf-8"></script>
 	<script src="app/views/spaz.dock.js"	   type="text/javascript"></script>
 	<script src="app/views/spaz.tooltip.js"	   type="text/javascript" charset="utf-8"></script>
 	<script src="app/views/spaz.menus.js"	   type="text/javascript" charset="utf-8"></script>
@@ -152,8 +154,6 @@
 	<script type="text/javascript" charset="utf-8" id="themeinfo"></script>
 	<script type="text/javascript" charset="utf-8" id="themejs"></script>
 
-	<!-- user js script -->
-	<script type="text/javascript" charset="utf-8" id="userjs"></script>
 
 	<script type="text/javascript">
 
@@ -207,7 +207,7 @@
 				</li>
 
 				<!-- SENT STATUSES -->
-				<li class="TabbedPanelsTab" tabindex="3" title="Tweets you've sent"
+				<li class="TabbedPanelsTab" tabindex="3" title="Statuses you've sent"
 					onmouseover="Spaz.UI.showTooltip(this, this.title)"
 					onmouseout="Spaz.UI.hideTooltips()"
 					id="tab-user" onclick="Spaz.UI.setSelectedTab(this)">
@@ -278,7 +278,7 @@
 						<form onsubmit="return false;">
 							<button id="refresh-friends"  class="refresh"  title="Refresh this timeline">Refresh</button>
 							<button id="markread-friends" class="markread" title="Mark all as read">Mark</button>
-							<button id="view-friends"     title="Filter mentions, DMs, unread tweets, etc.">View</button>
+							<button id="view-friends"	  title="Filter mentions, DMs, unread tweets, etc.">View</button>
 							<input type="text" name="filter-friends" value="" id="filter-friends" title="Enter text to filter this timeline" placeholder="Filter" />
 						</form>
 					</div>
@@ -296,7 +296,7 @@
 				<div class="TabbedPanelsContent" id="panel-user">
 					<div id="menu-user" class="panelmenu">
 						<form onsubmit="return false;">
-							<button id="refresh-user"  class="refresh"  title="Refresh this timeline">Refresh</button>
+							<button id="refresh-user"  class="refresh"	title="Refresh this timeline">Refresh</button>
 							<button id="markread-user" class="markread" title="Mark all as read">Mark</button>
 							<input type="text" name="filter-user" value="" id="filter-user" title="Enter text to filter this timeline" placeholder="Filter" />
 						</form>
@@ -315,7 +315,7 @@
 				<div class="TabbedPanelsContent" id="panel-favorites">
 					<div id="menu-favorites" class="panelmenu">
 						<form onsubmit="return false;">
-							<button id="refresh-favorites"  class="refresh"  title="Refresh this timeline">Refresh</button>
+							<button id="refresh-favorites"	class="refresh"	 title="Refresh this timeline">Refresh</button>
 							<button id="markread-favorites" class="markread" title="Mark all as read">Mark</button>
 							<input type="text" name="filter-favorites" value="" id="filter-favorites" title="Enter text to filter this timeline" placeholder="Filter" />
 						</form>
@@ -333,9 +333,9 @@
 				<div class="TabbedPanelsContent" id="panel-userlists">
 					<div id="menu-userlists" class="panelmenu">
 						<form onsubmit="return false;">
-							<button id="refresh-userlists"  class="refresh"  title="Refresh this timeline">Refresh</button>
+							<button id="refresh-userlists"	class="refresh"	 title="Refresh this timeline">Refresh</button>
 							<button id="markread-userlists" class="markread" title="Mark all as read">Mark</button>
-							<button id="view-userlists"     title="Choose a list to view">Lists</button>
+							<button id="view-userlists"		title="Choose a list to view">Lists</button>
 							<input type="text" name="filter-userlists" value="" id="filter-userlists" title="Enter text to filter this timeline" placeholder="Filter" />
 						</form>
 					</div>
@@ -356,9 +356,9 @@
 				<div class="TabbedPanelsContent" id="panel-public">
 					<div id="menu-public" class="panelmenu">
 						<form onsubmit="return false;">
-							<button id="refresh-public"  class="refresh"  title="Refresh this timeline">Refresh</button>
+							<button id="refresh-public"	 class="refresh"  title="Refresh this timeline">Refresh</button>
 							<button id="markread-public" class="markread" title="Mark all as read">Mark</button>
-							<!-- <button id="trends-public"   title="Trending worldwide (N/A)">Trends</button> -->
+							<!-- <button id="trends-public"	  title="Trending worldwide (N/A)">Trends</button> -->
 							<input type="text" name="filter-public" value="" id="filter-public" title="Enter text to filter this timeline" placeholder="Filter" />
 						</form>
 					</div>
@@ -379,10 +379,10 @@
 					<div id="menu-search" class="panelmenu">
 						<form onsubmit="return false;">
 							<button id="refresh-search" class="refresh" title="Refresh this timeline">Refresh</button>
-							<button id="search-saved"   title="Saved searches">Saved</button>
+							<button id="search-saved"	title="Saved searches">Saved</button>
 							<input type="text" name="search-for" value="" id="search-for" title="Enter search" placeholder="Search" />
-							<button id="search-go"      title="Submit search">Search</button>
-							<button id="search-help"    title="Search help">?</button>
+							<button id="search-go"		title="Submit search">Search</button>
+							<button id="search-help"	title="Search help">?</button>
 						</form>
 					</div>
 					<div id="timelinewrapper-search" class="timeline-wrapper">
@@ -403,8 +403,8 @@
 				<div class="TabbedPanelsContent" id="panel-followerslist">
 					<div id="menu-followerslist" class="panelmenu">
 						<form onsubmit="return false;">
-							<button id="refresh-followerslist"  class="refresh"  title="Refresh">Refresh</button>
-							<button id="view-followerslist"     title="Choose a list to view">View</button>
+							<button id="refresh-followerslist"	class="refresh"	 title="Refresh">Refresh</button>
+							<button id="view-followerslist"		title="Choose a list to view">View</button>
 							<input type="text" name="filter-followers" value="" id="filter-followers" title="Enter text to filter this list" placeholder="Filter" />
 						</form>
 					</div>
@@ -448,9 +448,9 @@
 
 												<div class="formrow controls">
 													<input type="hidden" name="current-account-id" id="current-account-id" />
-													<input type="button" name="add-account"    value="+"      class="add-account" />
-													<input type="button" name="del-account"    value="-"      id="del-account" />
-													<input type="button" name="edit-account"   value="Edit"   id="edit-account" />
+													<input type="button" name="add-account"	   value="+"	  class="add-account" />
+													<input type="button" name="del-account"	   value="-"	  id="del-account" />
+													<input type="button" name="edit-account"   value="Edit"	  id="edit-account" />
 													<input type="button" name="switch-account" value="Switch" id="switch-account" />
 												</div>
 											</fieldset>
@@ -481,11 +481,17 @@
 															<select name="account-type" id="account-type">
 																<option value="twitter">Twitter</option>
 																<option value="identi.ca">identi.ca</option>
+																<option value="freelish.us">freelish.us</option>
 																<option value="StatusNet">StatusNet</option>
 																<option value="custom">Custom&hellip;</option>
 															</select>
 														</div>
 												
+														<div class="formrow" id='twitter-base-url-row'>
+															<label for="twitter-base-url">Base Web URL </label>
+															<input type="text" name="twitter-base-url" id="twitter-base-url" value="" />
+														</div>
+
 														<div class="formrow" id='twitter-api-base-url-row'>
 															<label for="twitter-api-base-url">Base API URL </label>
 															<input type="text" name="twitter-api-base-url" id="twitter-api-base-url" value="" />
@@ -497,7 +503,29 @@
 																Disable direct posting (will only post via <strong>Other Services</strong>)
 															</label>
 														</div>
-												
+														
+														<fieldset>
+															<legend>URL Shortening</legend>
+															<div class="formrow">
+																<label for="base-theme">Service</label>
+																<select id="services-url-shortener" name="services-url-shortener">
+																	<!-- filled in by spaz.accountprefs.js -->
+																</select>
+															</div>
+															<div id="services-bitly-container">
+																<div class="formrow">
+																	<label for="services-bitly-login">Bit.ly login	(<a href="http://bit.ly/account/register">Get an account</a>)</label>
+																	<input type="text" name="services-bitly-login" id="services-bitly-login" value="" placeholder="optional" />
+																</div>
+																<div class="formrow">
+																	<label for="services-bitly-apikey">
+																		Bit.ly API key
+																	</label>
+																	<input type="text" name="services-bitly-apikey" id="services-bitly-apikey" value="" placeholder="optional" />
+																</div>
+															</div>
+														</fieldset>
+														
 														<fieldset>
 															<legend>Ping.FM</legend>
 															<div class="formrow">
@@ -526,19 +554,6 @@
 																	<input type="checkbox" name="services-pingfm-sendreplies" id="services-pingfm-sendreplies" value="1" />
 																	<label for="services-pingfm-sendreplies" class="checkbox">Post @replies</label>
 																</div>
-															</div>
-														</fieldset>
-														<fieldset>
-															<legend>Bit.ly API</legend>
-															<div class="formrow">
-																<label for="services-bitly-login">Bit.ly login  (<a href="http://bit.ly/account/register">Get an account</a>)</label>
-																<input type="text" name="services-bitly-login" id="services-bitly-login" value="" />
-															</div>
-															<div class="formrow">
-																<label for="services-bitly-apikey">
-																	Bit.ly API key
-																</label>
-																<input type="text" name="services-bitly-apikey" id="services-bitly-apikey" value="" />
 															</div>
 														</fieldset>
 														<fieldset>
@@ -626,12 +641,12 @@
 											<fieldset>
 												<legend>Message Load Counts</legend>
 												<div class="formrow">
-													<label for="timeline-home-pager-count">Home Tweets</label>
+													<label for="timeline-home-pager-count">Home Statuses</label>
 													<select id="timeline-home-pager-count" name="timeline-home-pager-count">
 													</select>
 												</div>
 												<div class="formrow">
-													<label for="timeline-direct-pager-count">Direct Tweets</label>
+													<label for="timeline-direct-pager-count">Direct Messages</label>
 													<select id="timeline-direct-pager-count" name="timeline-direct-pager-count">
 													</select>
 												</div>
@@ -705,7 +720,7 @@
 													<label for="window-notificationmethod">Method</label>
 													<select id="window-notificationmethod" name="window-notificationmethod">
 														<option value="internal">Internal</option>
-														<!-- <option value="growl" >Growl (OS X-only –&nbsp;experimental)</option> -->
+														<option value="system" >System (Growl et al)</option>
 													</select>
 												</div>
 												<div class="formrow">
@@ -820,26 +835,26 @@
 													<!-- <span class="relaunch-required">*</span> -->
 												</div>
 											</fieldset>
-                                            <fieldset>
-                                                <div class="formrow">
-                                                    <input type="checkbox" name="twitter-enable-userstream" value="1"
-                                                        id="twitter-enable-userstream" />
-                                                    <label for="twitter-enable-userstream" class="checkbox">
-                                                        Enable Twitter User Stream
-                                                    </label>
-                                                    <span class="relaunch-required">*</span>
-                                                </div>
-                                            </fieldset>
-                                            <fieldset>
-                                                <div class="formrow">
-                                                    <input type="checkbox" name="handle-http-auth" value="1"
-                                                        id="network-airhandlehttpauth" />
-                                                    <label for="network-airhandlehttpauth" class="checkbox">
-                                                        Enable HTTP auth handling
-                                                    </label>
-                                                    <!-- <span class="relaunch-required">*</span> -->
-                                                </div>
-                                            </fieldset>
+											<fieldset>
+												<div class="formrow">
+													<input type="checkbox" name="twitter-enable-userstream" value="1"
+														id="twitter-enable-userstream" />
+													<label for="twitter-enable-userstream" class="checkbox">
+														Enable Twitter User Stream
+													</label>
+													<span class="relaunch-required">*</span>
+												</div>
+											</fieldset>
+											<fieldset>
+												<div class="formrow">
+													<input type="checkbox" name="handle-http-auth" value="1"
+														id="network-airhandlehttpauth" />
+													<label for="network-airhandlehttpauth" class="checkbox">
+														Enable HTTP auth handling
+													</label>
+													<!-- <span class="relaunch-required">*</span> -->
+												</div>
+											</fieldset>
 										</div>
 									</div>
 
@@ -939,14 +954,14 @@
 		</form>
 
 		<!-- STATUSBAR -->
-		<div id="statusbar" onmousedown="Spaz.Windows.windowMove();">
+		<div id="statusbar">
 			<!-- LOADING -->
-			<span id='loading'><!-- <img src='{theme-dir}/images/loading.gif' /> --></span>
+			<span id='loading'></span>
 			<span id='statusbar-text'>Ready</span>
 		</div>
 
 
-		<div id="resize-sw">
+		<div id="resize-se">
 		</div>
 
 
@@ -1161,47 +1176,6 @@
 			</div>
 		</div>
 		
-		
-		<!--
-			Short Link window
-		-->
-		<div class="popbox-content-wrapper" id="shortLinkWindow">
-			<div class="popbox-content" id="popbox-content-short-link">
-				<h1>Shorten Link <span class="closeDOMWindow">close</span></h1>
-
-				<div class="content">
-					<form id="shortenLink-form" onsubmit="return false;">
-						<div class="formrow">
-							<label for="url-shortener">Service</label>
-							<select id="url-shortener" name="url-shortener">
-								<!-- stuff goes here -->
-							</select>
-						</div>
-
-						<div class="formrow">
-							<label for="shorten-original-link">Link</label>
-							<input type="text" name="original-link" id="shorten-original-link" value="http://" />
-						</div>
-
-						<div class="formrow" id="shorten-custom-hidden" style="display: none; visibility: hidden;">
-							<label for="shorten-custom-link">Custom</label>
-							<input type="text" name="custom-link" id="shorten-custom-link" value="" />
-						</div>
-
-						<div class="formrow">
-							<label for="shorten-short-link">Short</label>
-							<input type="text" name="short-link" id="shorten-short-link" value="" />
-						</div>
-
-						<div class="formrow" style="text-align:right; margin-top:15px">
-							<input type="submit" id="shorten-button" name="update" value="Shorten" />
-						</div>
-						<div id="verification-result" align="center">&nbsp;</div>
-					</form>
-				</div>
-			</div>
-		</div>
-
 
 		<!--
 			Image Upload window

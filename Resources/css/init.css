@@ -2,44 +2,41 @@
 which will be re-shown when a theme kicks in. This, of course,
 means themes must set display:block on the <body> element */
 
-@import url("timeline-filters.css");
 @import url("popbox-content.css");
 
-body {
-	display:none;
-}
+body { opacity:0; }
 
 #container {
-	opacity:1.0;
-	-webkit-animation-name: body-fade-in;
+	display:block;
+/*	-webkit-animation-name: body-fade-in;
 	-webkit-animation-duration: 1s;
 	-webkit-animation-iteration-count: 1;
-}
+*/}
 	@-webkit-keyframes body-fade-in {
 		0% {
-/*			-webkit-transform: scale(0.1);*/
-			opacity:0.0;
+			-webkit-transform: opacity(0);
+			opacity:0.2;
 		}	
 		100% {
-/*			-webkit-transform: scale(1.0);*/
+			-webkit-transform: opacity(1.0);
 			opacity:1.0;
 		}
 	}
 
 	#container.animation-fadeout {
-		-webkit-animation-name: body-fade-out;
+/*		-webkit-animation-name: body-fade-out;
 		-webkit-animation-duration: 1s;
 		-webkit-animation-iteration-count: 1;
 		opacity:0;
-	}
+*/	}
 
 		@-webkit-keyframes body-fade-out {
 			0% {
-/*				-webkit-transform: scale(1.0);*/
+				-webkit-transform: opactiy(1.0);
 				opacity:1.0;
 			}	
 			100% {
-/*				-webkit-transform: scale(0.1);*/
+				-webkit-transform: opacity(1.0);
 				opacity:0.0;
 			}
 		}
@@ -240,6 +237,7 @@ div#timeline-followerslist:empty + div.loadmore-panel {
 }
 
 div.embedly {
+	display:inline-block;
 };
 	div.embedly img {
 		position:relative;

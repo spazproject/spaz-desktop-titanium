@@ -217,7 +217,7 @@ Spaz.UI.setCurrentPage = function(tabEl, newpage) {
     $('#' + panel + ' .timeline-pager-number').html(newpage);
 };
 Spaz.UI.showEntryboxTip = function() {
-    Spaz.UI.statusBar('Logged in as <span class="statusbar-username">' + Spaz.Prefs.getUsername() + '@'+Spaz.Prefs.getAccountType()+'</span>. ENTER sends.');
+    Spaz.UI.statusBar('Logged in as <span class="statusbar-username">' + Spaz.Prefs.getUsername() + '@'+Spaz.Prefs.getCurrentAccountType()+'</span>. ENTER sends.');
 };
 
 Spaz.UI.showLocationOnMap = function(location) {
@@ -946,48 +946,55 @@ Spaz.UI.notifyOfNewEntries = function(new_entries) {
 
         sch.debug('NewEntries found!');
 
-		if (Spaz.Prefs.get('window-notificationmethod') === 'growl') {
+		if (Spaz.Prefs.get('window-notificationmethod') === 'system') {
 
 			if (!Spaz.Growl) {
 				Spaz.Growl = new SpazGrowl('Spaz');
 			}
 			
 			if (Spaz.Prefs.get('notify-totals')) {
-				Spaz.Growl.notify(new_count + " New Messages", "There were "+new_count+" new messages found", {
-					'identifier':SpazGrowl.NEW_MESSAGE_COUNT
+				Spaz.UI.notify({
+					'title':new_count + " New Messages",
+					'message':"There were "+new_count+" new messages found"
 				});
 			}
 
 
 			if ( new_count > Spaz.Prefs.get('window-notificationmax')) {
-				new_entries = new_entries.slice(0, Spaz.Prefs.get('window-notificationmax'));
+				notify_entries = notify_entries.slice(0, Spaz.Prefs.get('window-notificationmax'));
 			}
 
 			
-			for (var x=0; x<new_entries.length; x++) {
+			for (var x=0; x<notify_entries.length; x++) {
 				
-				var this_entry = new_entries[x];
-				var growl_opts = {};
+				var this_entry = notify_entries[x];
 				
 				if (this_entry.SC_is_dm && Spaz.Prefs.get('notify-dms')) {
 					var title = "New DM from "+this_entry.sender.screen_name;
 					var text        = this_entry.SC_text_raw;
-					growl_opts.img = this_entry.sender.profile_image_url;
-					// growl_opts.identifier = SpazGrowl.NEW_MESSAGE_DM;
-					Spaz.Growl.notify(title, text, growl_opts);
+					var img   = this_entry.sender.profile_image_url;
+					Spaz.UI.notify({
+						message:  text,
+						title:    title,
+						icon:     img});
 				} else {
 					if (this_entry.SC_is_reply && Spaz.Prefs.get('notify-mentions')) {
 						var title = "New @mention from "+this_entry.user.screen_name;
 						var text        = this_entry.SC_text_raw;
-						growl_opts.img = this_entry.user.profile_image_url;
-						// growl_opts.identifier = SpazGrowl.NEW_MESSAGE_REPLY;
-						Spaz.Growl.notify(title, text, growl_opts);
+						var img = this_entry.user.profile_image_url;
+						Spaz.UI.notify({
+							message:  text,
+							title:    title,
+							icon:     img});
+
 					} else if (Spaz.Prefs.get('notify-messages')) {
 						var title = "New message from "+this_entry.user.screen_name;
 						var text        = this_entry.SC_text_raw;
-						growl_opts.img = this_entry.user.profile_image_url;
-						// growl_opts.identifier = SpazGrowl.NEW_MESSAGE;
-						Spaz.Growl.notify(title, text, growl_opts);
+						var img = this_entry.user.profile_image_url;
+						Spaz.UI.notify({
+							message:  text,
+							title:    title,
+							icon:     img});
 					}
 				}
 				
@@ -1067,7 +1074,7 @@ Spaz.UI.alert = function(message, title) {
 
 
 Spaz.UI.notify = function(opts) {
-	
+
 	opts = sch.defaults({
 		message:  'message',
 		title:    'title',
@@ -1084,13 +1091,18 @@ Spaz.UI.notify = function(opts) {
     if (Spaz.Prefs.get('window-shownotificationpopups') || opts.force) {
         // Spaz.Notify.add(message, title, position, duration, icon);
 
-		if (Spaz.Prefs.get('window-notificationmethod') === 'growl') {
+		if (Spaz.Prefs.get('window-notificationmethod') === 'system') {
 
 			if (!Spaz.Growl) {
-				Spaz.Growl = new SpazGrowl('Spaz', sch.getFileObject(sch.joinPaths([sch.getAppDir(), 'images/spaz-icon-alpha.png'])).toURL());
+				Spaz.Growl = new SpazGrowl();
 			}
 
-			Spaz.Growl.notify(opts.title, opts.message, opts.icon);
+			Spaz.Growl.notify(opts.title, opts.message, {
+				icon:opts.icon,
+				duration:opts.duration,
+				onClick:opts.onClick
+			});
+			
 		} else {
 			PurrJS.notify({
 				title:    opts.title,

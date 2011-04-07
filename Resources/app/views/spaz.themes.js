@@ -3,7 +3,7 @@ if (!Spaz.Themes) Spaz.Themes = {};
 // placeholder for themes object
 Spaz.Themes.themes = {};
 
-Spaz.Themes.validThemes = ['spaz', 'Leopaz', 'Terminal64'];
+Spaz.Themes.validThemes = ['spaz', 'spaz-mini', 'Leopaz', 'Terminal64'];
 
 
 // initializer
@@ -141,22 +141,25 @@ Spaz.Themes.setCurrentTheme = function() {
 
 
 Spaz.Themes.getThemePaths = function() {
-	var appdir    = sch.getFileObject(sch.getAppDir());
-	var themesdir = appdir.resolve('Contents/Resources/themes');
-	var appStore  = sch.getFileObject(sch.getAppStorageDir());
-	var userthemesdir = appStore.resolve(USERDIR_THEMES);
-
+	var themesdir = Titanium.Filesystem.getFile(sch.getAppDir(), 'Resources', 'themes');
+	sch.error('themesdir:'+themesdir);
+	var userthemesdir = Titanium.Filesystem.getFile(sch.getAppStorageDir(), USERDIR_THEMES);
+	sch.error('userthemesdir:'+userthemesdir);
 	// we load from both the built-in themes dir and the userthemes dir
 	var list = [];
-	var default_themes = themesdir.getDirectoryListing();	
+	var default_themes = themesdir.getDirectoryListing();
+	
 	for (var i=0; i < default_themes.length; i++) {
 		list.push(default_themes[i]);
 	}
 	
 	var user_themes    = userthemesdir.getDirectoryListing();
-	for (var i=0; i < user_themes.length; i++) {
-		list.push(user_themes[i]);
+	if (user_themes) {
+		for (var i=0; i < user_themes.length; i++) {
+			list.push(user_themes[i]);
+		}		
 	}
+	sch.error(JSON.stringify(list));
 	
 
 	var themes = new Array();
@@ -177,7 +180,9 @@ Spaz.Themes.getThemePaths = function() {
 				themejs  : thisthemejs.toURL(),
 				themeinfo: Spaz.Themes.loadThemeInfo(thisthemeinfo)
 			};
-
+			
+			sch.error(JSON.stringify(thistheme));
+			
 			// sanity check to make sure the themedir actually has something in it
 			if (thisthemecss.exists()) {
 				themes.push(thistheme);

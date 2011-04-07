@@ -6,9 +6,25 @@ Spaz.AccountPrefs.init = function(){
 	this.spaz_acc = Spaz.Prefs._accounts;
 	
 	
-	this.metavals = ['twitter-api-accesskey', 'twitter-api-base-url', 'twitter-disable-direct-posting', 'services-pingfm-userappkey', 'services-pingfm-enabled', 'services-pingfm-sendreplies', 'services-shortie-email', 'services-shortie-secretkey', 'services-twitpic-sharepassword'];
+	this.metavals = [
+		'twitter-api-accesskey',
+		'twitter-api-base-url',
+		'twitter-base-url',
+		'twitter-disable-direct-posting',
+		'services-pingfm-userappkey',
+		'services-pingfm-enabled',
+		'services-pingfm-sendreplies',
+		'services-twitpic-sharepassword',
+		'services-url-shortener'
+	];
 	
-	this.checkboxes = ['twitter-disable-direct-posting', 'twitter-enable-userstream', 'services-pingfm-enabled', 'services-pingfm-sendreplies', 'services-twitpic-sharepassword'];
+	this.checkboxes = [
+		'twitter-disable-direct-posting',
+		'twitter-enable-userstream',
+		'services-pingfm-enabled',
+		'services-pingfm-sendreplies',
+		'services-twitpic-sharepassword'
+	];
 	
 	var that = this,
 	    $accountList          = $('#account-list'),
@@ -16,6 +32,7 @@ Spaz.AccountPrefs.init = function(){
 	    $idEdit               = $('#id_edit'),
 	    $username             = $('#username'),
 	    $password             = $('#password'),
+	    $urlshortener         = $('#services-url-shortener'),
 	    $accountType          = $('#account-type'),
 	    $saveAccountButton    = $('#account-save'),
 	    $cancelAccountButton  = $('#account-cancel');
@@ -86,8 +103,8 @@ Spaz.AccountPrefs.init = function(){
 				} else {
 					$('#' + that.metavals[i]).val('');
 				}
-				
 			};
+			$urlshortener.val(SPAZCORE_SHORTURL_SERVICE_JMP).trigger('change'); // set default
 			
 			/*
 			 bind save button
@@ -96,6 +113,9 @@ Spaz.AccountPrefs.init = function(){
 				var auth  = new SpazAuth($accountType.val());
 				
 				if (auth.authorize($username.val(), $password.val())) { // check credentials first
+
+					Spaz.UI.closePopbox();
+					
 					var newaccid = Spaz.AccountPrefs.add($username.val(), auth.save(), $accountType.val()).id;
 					var val;
 					
@@ -111,7 +131,7 @@ Spaz.AccountPrefs.init = function(){
 
 					$accountList.val(newaccid);
 					Spaz.AccountPrefs.setAccount(newaccid);
-					Spaz.UI.closePopbox();
+
 
 				} else { // failed!!
 					$('#current-account-id').val(newaccid);
@@ -192,7 +212,7 @@ Spaz.AccountPrefs.init = function(){
 						$('#' + that.metavals[i]).attr('checked', !!(val));
 					}
 					else {
-						$('#' + that.metavals[i]).val(that.spaz_acc.getMeta(editing.id, that.metavals[i]));
+						$('#' + that.metavals[i]).val(val);
 					}
 					
 				};
@@ -202,24 +222,36 @@ Spaz.AccountPrefs.init = function(){
 				 bind save button
 				 */
 				$saveAccountButton.click(function(){
-					var editedaccid = Spaz.AccountPrefs.edit($idEdit.val(), {
-						'username': $username.val(),
-						'password': $password.val(),
-						'type': $accountType.val()
-					}).id;
 					
-					var val;
-					for (var i = 0, iMax = that.metavals.length; i < iMax; i++) {
-						if (that.checkboxes.indexOf(that.metavals[i]) !== -1) {
-							val = !!($('#' + that.metavals[i] + ':checked').length) || false;
-						}
-						else {
-							val = $('#' + that.metavals[i]).val();
-						}
-						that.spaz_acc.setMeta(editedaccid, that.metavals[i], val);
-					};
-					
-					Spaz.UI.closePopbox();
+					var auth  = new SpazAuth($accountType.val());
+
+					if (auth.authorize($username.val(), $password.val())) { // check credentials first
+						
+						var editedaccid = Spaz.AccountPrefs.edit($idEdit.val(), {
+							'username': $username.val(),
+							'password': $password.val(),
+							'auth': auth.save(),
+							'type': $accountType.val()
+						}).id;
+
+						var val;
+						for (var i = 0, iMax = that.metavals.length; i < iMax; i++) {
+							if (that.checkboxes.indexOf(that.metavals[i]) !== -1) {
+								val = !!($('#' + that.metavals[i] + ':checked').length) || false;
+							}
+							else {
+								val = $('#' + that.metavals[i]).val();
+							}
+							that.spaz_acc.setMeta(editedaccid, that.metavals[i], val);
+						};
+						
+						Spaz.UI.closePopbox();
+						
+					} else { // failed!!
+						Spaz.UI.statusBar('Authoriztion failed!');
+						Spaz.UI.flashStatusBar();
+					}
+
 				});
 				
 				/*
@@ -246,10 +278,19 @@ Spaz.AccountPrefs.init = function(){
 		});
 		
 		/*
-		 if "custom" is set for type, showthe api-base-url row
+		 if "custom" or "statusnet" is set for type, showthe api-base-url && base-url row
 		 */
 		$accountType.change(function(){
-			$('#twitter-api-base-url-row').toggle($accountType.val() === 'custom');
+			$('#twitter-api-base-url-row').toggle($accountType.val() === SPAZCORE_ACCOUNT_CUSTOM || $accountType.val() === SPAZCORE_ACCOUNT_STATUSNET);
+			$('#twitter-base-url-row').toggle($accountType.val() === SPAZCORE_ACCOUNT_CUSTOM || $accountType.val() === SPAZCORE_ACCOUNT_STATUSNET);
+		});
+		
+		$urlshortener.change(function() {
+			if ($urlshortener.val() == SPAZCORE_SHORTURL_SERVICE_BITLY || $urlshortener.val() == SPAZCORE_SHORTURL_SERVICE_JMP) {
+				$('#services-bitly-container').show();
+			} else {
+				$('#services-bitly-container').hide();
+			}
 		});
 
 		sch.debug('LOADED USERS:');
@@ -277,8 +318,22 @@ Spaz.AccountPrefs.init = function(){
 			}
 		})();
 
+		
+		/*
+		Load url shortener options
+		*/
+		var shurl = new SpazShortURL();
+		var labels = shurl.getServiceLabels();
+		for (var i=0; i < labels.length; i++) {
+			var label = labels[i];
+			$urlshortener.append('<option value="'+label+'">'+label+'</option>');
+		}
+		$urlshortener.val(SPAZCORE_SHORTURL_SERVICE_JMP).trigger('change'); // set default
+
+
 		// Clean up UI
 		$accountDetails.hide();
+		$('#twitter-base-url-row').hide();
 		$('#twitter-api-base-url-row').hide();
 		Spaz.AccountPrefs.toggleCTA();
 

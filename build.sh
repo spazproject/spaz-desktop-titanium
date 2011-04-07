@@ -5,6 +5,7 @@ TMPPATH='/tmp/spaz'
 BLDPATH='/Users/coj/Sites/spaz-builds'
 TIPATH='/Users/coj/Library/Application Support/Titanium'
 SDKPATH='/Users/coj/Library/Application Support/Titanium/sdk/osx/1.1.0'
+
 BLDDATE=`date +%Y%m%d-%H%M%S%Z`
 
 # let user know where we'll be working

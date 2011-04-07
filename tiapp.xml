@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ti:app xmlns:ti="http://ti.appcelerator.org">
 	<!-- These values are edited/maintained by Titanium Developer -->
-	<id>com.funkatron.app.spaz.desktop</id>
-	<name>Spaz</name>
-	<version>1.0</version>
-	<publisher>Funkatron Productions</publisher>
-	<url>http://getspaz.com</url>
-	<icon>images/spaz-icon-alpha.png</icon>
-	<copyright>© Funkatron Productions</copyright>
+<id>com.funkatron.app.spaz.desktop</id>
+<name>Spaz</name>
+<version>1.0</version>
+<publisher>Funkatron Productions</publisher>
+<url>http://getspaz.com</url>
+<icon>spaz-icon-flat-512.png</icon>
+<copyright>© Funkatron Productions</copyright>
+<analytics>false</analytics>
 	<!-- Window Definition - these values can be edited -->
 	<window>
 		<id>main</id>

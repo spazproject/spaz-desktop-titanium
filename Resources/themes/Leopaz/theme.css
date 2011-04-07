@@ -8,6 +8,7 @@ html {
   height: 100%;
 }
 body {
+  opacity:1;
   display: block;
   width: 100%;
   height: 100%;
@@ -148,6 +149,7 @@ div.followers-row:nth-child(even){
 		The container is a div that wraps around all of the content
 	*/
   #container {
+	opacity:1.0;
     position:fixed;
     overflow:hidden;
     left:0px;
@@ -954,7 +956,7 @@ div.followers-row:nth-child(even){
           #entrybox-attach span{
             display:block;
             width:16px;
-            background:url(../../../images/glyphish/photos.png) center center no-repeat;
+            background:url(../../images/glyphish/photos.png) center center no-repeat;
             pointer-events:none;
             text-indent:-9999em;
           }
@@ -1067,13 +1069,13 @@ div.followers-row:nth-child(even){
 			The little resizing widget. This is totally misnamed (it should be "se" and not "sw")
 			but I'm kind of an idiot.
 		*/
-		#resize-sw{
+		#resize-se{
 			display:none;
 			position:absolute;
 			bottom:4px;
 			right:4px;
 			font-size:12px;
-			background-image:url(images/resize-sw.png);
+			background-image:url(images/resize-se.png);
 			text-align:center;
 			width:12px;
 			height:12px;
@@ -2294,7 +2296,7 @@ div.popbox-content div.controls button:active{
 
 div.popbox-content.info h1{
   padding:10px;
-  background:transparent url(../../../images/spaz-icon-alpha-half.png) right 40% no-repeat;
+  background:transparent url(../../images/spaz-icon-alpha-half.png) right 40% no-repeat;
   border-top:1px solid rgba(255, 255, 255, 0.15);
   border-bottom:1px solid rgb(38, 38, 38);
   text-align:center;
@@ -2643,3 +2645,14 @@ div#popbox-content-conversation #timeline-conversation div.timeline-entry{
 #news-content div.entry div.entry-content {
 	line-height:1.4em;
 }
+
+
+
+/*
+* embedly
+*/
+
+div.embedly {
+	-webkit-box-shadow:0px 1px 5px #333333;
+	margin: 10px;
+};

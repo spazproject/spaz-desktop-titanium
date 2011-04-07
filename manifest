@@ -1,10 +1,10 @@
 #appname:Spaz
 #appid:com.funkatron.app.spaz.desktop
-#publisher:coj
-#image:default_app_logo.png
+#publisher:Funkatron Productions
+#image:spaz-icon-flat-512.png
 #url:http://getspaz.com
 #guid:b0dfc79d-57b2-4a4a-bc8b-71be7c5c620c
-#desc:undefined
+#desc:EXPERIMENTAL BUILD
 #type:desktop
 runtime:1.1.0
 tiapp:1.1.0

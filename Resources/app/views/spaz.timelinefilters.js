@@ -39,19 +39,24 @@ Spaz.TimelineFilters.defaultEntryFilters = [
 			d.text = d.text.replace(/href="([^"]+)"/gi, 'href="$1" title="Open link in a browser window" class="inline-link"');		
 			return d;	
 		}
-	},
-	{
-		'label':'getImageURLs',
-		'func':function(d) {
-			var sui = new SpazImageURL();
-			if (d.SC_is_retweet) {
-				d.SC_thumbnail_urls = sui.getThumbsForUrls(d.retweeted_status.text);
-			} else {
-				d.SC_thumbnail_urls = sui.getThumbsForUrls(d.SC_text_raw||d.text);
-			}
-			return d;
-		}
 	}
+	
+	/*
+		for now, remove this and rely on embedly hooks
+	*/
+	// ,
+	// 	{
+	// 		'label':'getImageURLs',
+	// 		'func':function(d) {
+	// 			var sui = new SpazImageURL();
+	// 			if (d.SC_is_retweet) {
+	// 				d.SC_thumbnail_urls = sui.getThumbsForUrls(d.retweeted_status.text);
+	// 			} else {
+	// 				d.SC_thumbnail_urls = sui.getThumbsForUrls(d.SC_text_raw||d.text);
+	// 			}
+	// 			return d;
+	// 		}
+	// 	}
 ];
 
 /*

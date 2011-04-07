@@ -89,12 +89,10 @@
 		})
 		.mouseup(onMouseUp);
 
-	window.nativeWindow.addEventListener(
-		air.NativeWindowBoundsEvent.RESIZE, 
-		function() {
-			sch.error('air.NativeWindowBoundsEvent.RESIZE');
+	Titanium.API.addEventListener(
+		Titanium.RESIZED, 
+		function(e) {
 			var max = maxEntryFormHeight();
-			sch.error("max:"+max);
 			$entryForm.height();
 			if ($entryForm.height() > max) {
 				setEntryFormHeight(max);

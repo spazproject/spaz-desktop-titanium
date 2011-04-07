@@ -5,6 +5,7 @@ html {
 	height:100%;
 }
 body {
+	opacity:1;
 	font-family:'Bitstream Vera Sans Mono', Inconsolata, 'Anadale Mono', Monaco, 'Lucida Console', monospace;
 	margin:0px;
 	padding:0px;
@@ -45,6 +46,7 @@ img {
 }
 
 #container {
+	opacity:1.0;
 	overflow:hidden;
 	background-color:transparent;
 	background-color:#000000;
@@ -954,12 +956,12 @@ input[type='text']#dock-refreshinterval {
 
 
 
-#resize-sw {
+#resize-se {
 	position:absolute;
 	bottom: 3px;
 	right:  3px;
 	font-size:12px;
-	background-image:url('images/resize-sw.png');
+	background-image:url('images/resize-se.png');
 	background-color:006600;
 	cursor: sw-resize;
 	text-align:center;

@@ -10,6 +10,7 @@ html {
 }
 
 body {
+	opacity:1;
 	font-family:Myriad, Myriad Pro, Tahoma, Arial, Helvetica, sans-serif;
 	margin:0px;
 	padding:0px;
@@ -52,6 +53,7 @@ div.timeline-entry:nth-child(even){
 		The container is a div that wraps around all of the content
 	*/
 	#container {
+		opacity:1.0;
 		overflow:hidden;
 		background-color:#FFFFFF;
 		-khtml-border-radius:5px; /* this is webkit-specific and gives us rounded corners*/
@@ -596,12 +598,12 @@ div.timeline-entry:nth-child(even){
 			The little resizing widget. This is totally misnamed (it should be "se" and not "sw")
 			but I'm kind of an idiot.
 		*/
-		#resize-sw {
+		#resize-se {
 			position:absolute;
 			bottom:0px;
 			right:0px;
 			font-size:12px;
-			background-image:url('images/resize-sw.png');
+			background-image:url('images/resize-se.png');
 			cursor: sw-resize;
 			text-align:center;
 			width: 13px;

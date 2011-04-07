@@ -1,3 +1,7 @@
+var MAIN_WINDOW_WIDTH_MIN = 320;
+var MAIN_WINDOW_HEIGHT_MIN = 200;
+
+
 var Spaz;
 if (!Spaz) Spaz = {};
 
@@ -20,7 +24,8 @@ Spaz.startReloadTimer = function() {
  * this forces a reload of the index.html doc in the HTMLLoader 
  */
 Spaz.reloadHTMLDoc = function() {
-	window.htmlLoader.load(new air.URLRequest("index.html"));
+	Spaz.Prefs.savePrefs();
+	window.location.reload();
 };
 
 Spaz.stopReloadTimer = function() {
@@ -39,16 +44,16 @@ Spaz.restartReloadTimer = function() {
 Spaz.createUserDirs = function() {
 	var appStore = sch.getFileObject(sch.getAppStorageDir());
 	
-	var userThemesDir = appStore.resolve(USERDIR_THEMES);
+	var userThemesDir = Titanium.Filesystem.getFile(appStore, USERDIR_THEMES);
 	userThemesDir.createDirectory();
 
-	var userPluginsDir = appStore.resolve(USERDIR_PLUGINS);
+	var userPluginsDir = Titanium.Filesystem.getFile(appStore, USERDIR_PLUGINS);
 	userPluginsDir.createDirectory();
 
-	var userSmileysDir = appStore.resolve(USERDIR_SMILEYS);
+	var userSmileysDir = Titanium.Filesystem.getFile(appStore, USERDIR_SMILEYS);
 	userSmileysDir.createDirectory();
 
-	var userSoundsDir = appStore.resolve(USERDIR_SOUND);
+	var userSoundsDir = Titanium.Filesystem.getFile(appStore, USERDIR_SOUND);
 	userSoundsDir.createDirectory();
 
 	sch.debug(userThemesDir.toString());
@@ -62,15 +67,22 @@ Spaz.createUserDirs = function() {
  * loads the user.js file, if it exists, and injects it into the script tag with id='userjs' 
  */
 Spaz.loadUserJS = function() {
-	var userjsfile = sch.getFileObject(sch.getAppStorageDir()).resolve('user.js');
+	var userjsfile = Titanium.Filesystem.getFile(sch.getAppStorageDir(), 'user.js');
 	
-	if (userjsfile.exists()) {
-		var userJS = Spaz.Sys.getFileContents(userjsfile.toString());
-		$('#userjs').text(userJS);
-	} else {
+	if (!userjsfile.exists()) {
 		userjsfile.touch();
 		Spaz.Sys.setFileContents(userjsfile.toString(), "/* Edit this file to add your own functionality to Spaz */\n\n");
 	}
+	
+	
+	$LAB
+		.setOptions({
+			'UseLocalXHR':false,
+			'UseCachePreload':false,
+			'UsePreloading':false
+		})
+		.script(userjsfile.toURL())
+		.wait(function() { sch.trigger('load.userjs'); });
 	
 };
 
@@ -91,7 +103,9 @@ Spaz.loadOAuthServices = function() {
  */
 Spaz.initialize = function() {
 	
-
+	
+	Spaz.Windows.makeWindowHidden();
+	
 	sch.debug('root init begin');
 	
 	/* @TODO find equivalent */
@@ -114,7 +128,7 @@ Spaz.initialize = function() {
 	
 	// turn on inspector
 	if (Spaz.Prefs.get('inspector-enabled')) {
-		Spaz.Debug.insertInspectorScripts();
+		Spaz.Debug.openInspector();
 	}
 	
 	// turn on debugging
@@ -194,8 +208,6 @@ Spaz.initialize = function() {
 		sch.debug('Ending check for update');
 	}
 
-
-
 	/************************
 	 * Other stuff to do when document is ready
 	 ***********************/
@@ -252,27 +264,20 @@ Spaz.initialize = function() {
 	/*
 		Initialize native menus
 	*/
-	sch.error('Spaz.Menus.initAll()')
+	sch.debug('Spaz.Menus.initAll()');
 	Spaz.Menus.initAll();
 
 	/*
 		Set up event delegation stuff
 	*/
-	sch.error('Spaz.Controller.initIntercept()')
+	sch.debug('Spaz.Controller.initIntercept()');
 	Spaz.Controller.initIntercept();
-
-	/*
-		if we have a username and password set, trigger an "account_switched" event
-		to kick things off
-	*/
-	if (Spaz.Prefs.getUsername() && Spaz.Prefs.getAccountType()) {
-		sch.trigger('account_switched', document, Spaz.Prefs.getCurrentAccount());
-	}
 
 
 	/*
 		set-up usernameCompleter
 	*/
+	sch.debug("new usernameCompleter");
 	Spaz.uc = new usernameCompleter({
 		'usernames':Spaz.Autocomplete.getScreenNames(),
 		'hashtags':Spaz.Autocomplete.getHashTags(),
@@ -285,6 +290,7 @@ Spaz.initialize = function() {
 	/*
 		set-up post panel
 	*/
+	sch.debug("new SpazPostPanel");
 	Spaz.postPanel = new SpazPostPanel({
 		on_submit:function() {
 			this.disable();
@@ -339,78 +345,10 @@ Spaz.initialize = function() {
 	Spaz.Timelines.toggleNewUserCTAs();
 
 	/*
-		Initialize indicators of current account
-	*/
-	(function(){
-		var account = Spaz.Prefs.getCurrentAccount();
-		if(account){
-			Spaz.AccountPrefs.updateWindowTitleAndToolsMenu(account.id);
-		}
-	})();
-
-	/*
 		About popbox
 	*/
 	$('#about-version').text("v"+Spaz.Sys.getVersion());
 
-
-	/*
-		initialinze URL shortener
-	*/
-	var initUrlShortener = function() {
-		
-		var method;
-		
-		// get the pref
-		var service = Spaz.Prefs.get('url-shortener');
-		sch.debug("service is "+ service);
-	
-			if (service == 'shortie') {
-				$('#shorten-custom-hidden').css({display: 'block', visibility: 'visible'});
-			}
-	
-		// populate the dropdown
-		for (method in Spaz.Shortlink.services) {
-			sch.debug(method);
-	
-			if (method[0] != '$') {
-				if (method == service) {
-					$('#url-shortener').append('<option value="'+method+'" selected="selected">'+method+'</option>');
-				} else {
-					$('#url-shortener').append('<option value="'+method+'">'+method+'</option>');
-				}
-			}
-		}
-		
-		
-		$('#url-shortener').bind('change', function() {
-	
-			sch.debug($('#url-shortener').val());
-			Spaz.Prefs.set('url-shortener', $('#url-shortener').val());
-			if ($('#url-shortener').val() != 'shortie') {
-				$('#shorten-custom-hidden').css({display: 'none', visibility: 'hidden'});
-			} else {
-				$('#shorten-custom-hidden').css({display: 'block', visibility: 'visible'});
-			}
-		});
-		
-		$('#shorten-original-link').focus();
-		$('#shorten-original-link').val('http://');
-		$('#shortenLink-form').bind('submit', function() {
-		var service = Spaz.Prefs.get('url-shortener');
-			sch.debug("service is "+ service);
-				var custom = $('#shorten-custom-link').val();
-				if (custom != '') {
-				Spaz.Shortlink.services[service]($('#shorten-original-link').val(), custom);
-				} else {
-				Spaz.Shortlink.services[service]($('#shorten-original-link').val());
-				}
-		});
-		
-		// sch.debug(air.NativeApplication.nativeApplication.spazPrefs);
-	};
-
-	initUrlShortener();
 
 	/*
 		initialize Image uploader popbox
@@ -425,6 +363,19 @@ Spaz.initialize = function() {
 		load news popup
 	*/
 	setTimeout(Spaz.Newspopup.build, 3000);
-	
+	/*
+		if we have a username and password set, trigger an "account_switched" event
+		to kick things off
+	*/
+	if (Spaz.Prefs.getUsername() && Spaz.Prefs.getCurrentAccountType()) {		
+		
+		console.log(Spaz.Prefs.getUsername(), Spaz.Prefs.getCurrentAccountType(), Spaz.Prefs.getCurrentAccount());
+		
+		Spaz.AccountPrefs.updateWindowTitleAndToolsMenu(Spaz.Prefs.getCurrentAccount().id); 	// Initialize indicators of current account
+		
+		sch.trigger('account_switched', document, Spaz.Prefs.getCurrentAccount());
+
+	}
+
 	sch.debug('ended document.ready()');
 };

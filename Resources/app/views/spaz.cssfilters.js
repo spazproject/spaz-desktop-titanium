@@ -7,46 +7,46 @@ Spaz.cssFilters.filters = [
 	{
 		label: 'All',
 		id:    'view-friends-menu-all',
-		'css': 'div.timeline-entry       { display:block; }\
-				div.timeline-entry.reply { display:block; }\
-				div.timeline-entry.dm    { display:block; }'
+		'css': '#timeline-friends div.timeline-entry       { display:block; }\
+				#timeline-friends div.timeline-entry.reply { display:block; }\
+				#timeline-friends div.timeline-entry.dm    { display:block; }'
 	},
 	{
 		label: '@Mentions and DMs',
 		id:    'view-friends-menu-replies-dms',
-		'css': 'div.timeline-entry       { display:none; }\
-				div.timeline-entry.reply { display:block; }\
-				div.timeline-entry.dm    { display:block; }'
+		'css': '#timeline-friends div.timeline-entry       { display:none; }\
+				#timeline-friends div.timeline-entry.reply { display:block; }\
+				#timeline-friends div.timeline-entry.dm    { display:block; }'
 	},
 	{
 		label: '@Mentions',
 		id:    'view-friends-menu-replies',
-		'css': 'div.timeline-entry       { display:none; }\
-				div.timeline-entry.reply { display:block; }\
-				div.timeline-entry.dm    { display:none; }'
+		'css': '#timeline-friends div.timeline-entry       { display:none; }\
+				#timeline-friends div.timeline-entry.reply { display:block; }\
+				#timeline-friends div.timeline-entry.dm    { display:none; }'
 	},
 	{
 		label: 'DMs',
 		id:    'view-friends-menu-dms',
-		'css': 'div.timeline-entry       { display:none; }\
-				div.timeline-entry.reply { display:none; }\
-				div.timeline-entry.dm    { display:block; }'
+		'css': '#timeline-friends div.timeline-entry       { display:none; }\
+				#timeline-friends div.timeline-entry.reply { display:none; }\
+				#timeline-friends div.timeline-entry.dm    { display:block; }'
 	},
 	{
 		label: 'Unread',
 		id:    'view-friends-menu-unread',
-		'css': 'div.timeline-entry       { display:block; }\
-				div.timeline-entry.reply { display:block; }\
-				div.timeline-entry.dm    { display:block; }\
-				div.timeline-entry.read  { display:none;  }'
+		'css': '#timeline-friends div.timeline-entry       { display:block; }\
+				#timeline-friends div.timeline-entry.reply { display:block; }\
+				#timeline-friends div.timeline-entry.dm    { display:block; }\
+				#timeline-friends div.timeline-entry.read  { display:none;  }'
 	},
 	{
 		label: 'No API RTs',
 		id:    'view-friends-menu-no-rts',
-		'css': 'div.timeline-entry       { display:block; }\
-				div.timeline-entry.reply { display:block; }\
-				div.timeline-entry.dm    { display:block; }\
-				div.timeline-entry.retweet { display:none;}'
+		'css': '#timeline-friends div.timeline-entry       { display:block; }\
+				#timeline-friends div.timeline-entry.reply { display:block; }\
+				#timeline-friends div.timeline-entry.dm    { display:block; }\
+				#timeline-friends div.timeline-entry.retweet { display:none;}'
 
 	}
 ];

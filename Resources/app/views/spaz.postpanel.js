@@ -18,7 +18,8 @@ function SpazPostPanel(opts) {
 	this.on_over   = opts.on_over	|| this.on_over_default;
 	this.on_under  = opts.on_under	|| this.on_under_default;
 	this.on_submit = opts.on_submit || null;
-	// this.shortlink_service = opts.shortlink_service || SPAZCORE_SHORTURL_SERVICE_BITLY;
+
+	// this can get overridden by account prefs below
 	this.shortlink_service = opts.shortlink_service || SPAZCORE_SHORTURL_SERVICE_JMP;
 	
 	this.irt_status = '';
@@ -91,7 +92,7 @@ SpazPostPanel.prototype.prepPhotoPost = function(url) {
 		return false;
 	}
 
-	var text = url + ' ';
+	var text = this.getMessageText(text) + ' ' + url + ' ';
 
 	this.setMessageText(text);
 	return text;
@@ -185,13 +186,12 @@ SpazPostPanel.prototype.addListeners = function() {
 			}
 			return false;
 		});
+	
+	// bind shortener listeners
+	sch.listen(this.textarea, sc.events.newShortURLSuccess, _.bind(this.onShortURLSuccess, this));
+	sch.listen(this.textarea, sc.events.newShortURLFailure, _.bind(this.onShortURLFailure, this));
 };
 
-// SpazPostPanel.prototype.removeListeners = function() {
-//	sc.helpers.unlisten(this.textarea, 'keyup');
-//	sc.helpers.unlisten(this.textarea, 'focus');
-//	sc.helpers.unlisten(this.textarea, 'blur');
-// };
 
 SpazPostPanel.prototype.updateTextMetadata = function(){
 	var thisPP = this;
@@ -288,7 +288,9 @@ SpazPostPanel.prototype.shortenURLs = function() {
 	
 	var event_target = this.textarea;
 	
-	var surl = new SpazShortURL(this.shortlink_service);
+	var svc = Spaz.Prefs.getCurrentAccountMeta('services-url-shortener') || this.shortlink_service;
+	
+	var surl = new SpazShortURL(svc);
 	
 	var longurls = sc.helpers.extractURLs(this.getMessageText());
 
@@ -312,42 +314,37 @@ SpazPostPanel.prototype.shortenURLs = function() {
 		return;
 	}
 	
-	function onShortURLSuccess(e, data) {
-		Spaz.UI.statusBar('URLs shortened');
-		Spaz.UI.hideLoading();		
-		
-		var newtext = sc.helpers.replaceMultiple(thisPP.getMessageText(), data);
-		thisPP.setMessageText(newtext); 
-		thisPP.updateTextMetadata();
-		sch.unlisten(event_target, sc.events.newShortURLSuccess, onShortURLSuccess);
-		sch.unlisten(event_target, sc.events.newShortURLFailure, onShortURLFailure);
-	}
-	function onShortURLFailure(e) {
-		Spaz.UI.statusBar('URL shortening failed');
-		Spaz.UI.hideLoading();
-
-		thisPP.updateTextMetadata();
-		sch.unlisten(event_target, sc.events.newShortURLSuccess, onShortURLSuccess);
-		sch.unlisten(event_target, sc.events.newShortURLFailure, onShortURLFailure);
-	}
 	
-	sch.listen(event_target, sc.events.newShortURLSuccess, onShortURLSuccess);
-	sch.listen(event_target, sc.events.newShortURLFailure, onShortURLFailure);
-
-
 	Spaz.UI.statusBar('Shortening URLs in message');
 	Spaz.UI.showLoading();
 	
 	surl.shorten(reallylongurls, {
 		'event_target':event_target,
 		'apiopts': {
-			'version':'2.0.1',
-			'format':'json',
 			'login':Spaz.Prefs.get('services-bitly-login') || 'spazcore',
 			'apiKey':Spaz.Prefs.get('services-bitly-apikey') || 'R_f3b86681a63a6bbefc7d8949fd915f1d'
 		}
 	});
 };
+
+
+
+SpazPostPanel.prototype.onShortURLSuccess = function(e, data) {
+	Spaz.UI.statusBar('URLs shortened');
+	Spaz.UI.hideLoading();		
+	
+	var newtext = this.getMessageText().replace(data.longurl, data.shorturl);
+	this.setMessageText(newtext); 
+	this.updateTextMetadata();
+};
+
+SpazPostPanel.prototype.onShortURLFailure = function(e) {
+	Spaz.UI.statusBar('URL shortening failed');
+	Spaz.UI.hideLoading();
+
+	this.updateTextMetadata();
+};
+
 
 
 SpazPostPanel.prototype.submit = function() {

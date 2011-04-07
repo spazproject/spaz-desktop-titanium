@@ -29,3 +29,36 @@ Spaz.Hooks.trigger = function(hook, data) {
 Spaz.Hooks.register = function(hook, listener) {
 	sch.listen(document, hook, listener);
 };
+
+
+/**
+ * Load default hooks 
+ */
+(function() {
+	
+	/**
+	 * A helper to load media via embedly 
+	 */
+	var embedly_listener = function(e) {
+		/*
+			loads media
+		*/
+		jQuery('div.timeline-entry.new div.status-text a').embedly({
+				maxWidth: 250,
+				maxHeight:300,
+				'method':'afterParent',
+				'wrapElement':'div',
+				'className':'embedly'
+			}
+		);
+	};
+
+
+	/**
+	 * add listeners to these hooks
+	 */
+	Spaz.Hooks.register('friends_timeline_data_success_finish', embedly_listener);
+	Spaz.Hooks.register('search_timeline_data_success_finish', embedly_listener);
+	Spaz.Hooks.register('public_timeline_data_success_finish', embedly_listener);
+	
+})();

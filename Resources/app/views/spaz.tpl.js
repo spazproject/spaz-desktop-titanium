@@ -24,6 +24,20 @@ Spaz.Tpl.parseArray    = function(template, data_array) {
 
 
 
+/**
+ * given a user object, it returns an appropriate URL to the avatar 
+ */
+Spaz.Tpl.getAvatarUrl = function(userobj) {
+	
+	// is it cached?
+	// @TODO
+	
+	return userobj.profile_image_url;
+};
+
+
+
+
 if (!Spaz.Templates) Spaz.Templates = {};
 
 Spaz.Templates.timeline_entry = function(d) {
@@ -55,9 +69,14 @@ Spaz.Templates.timeline_entry = function(d) {
 		d.isSent = d.isSent;
 		d.text = d.retweeted_status.text;
 	}
+	
+	d.user.avatar_url = Spaz.Tpl.getAvatarUrl(d.user);
+	
+	d.status_url = sch.getStatusUrl(d.id, d.user.screen_name, d.SC_service);
+	
 	entryHTML += '"  data-status-id="'+d.id+'" data-user-screen_name="'+d.user.screen_name+'" data-user-id="'+d.user.id+'" data-timestamp="'+d.SC_created_at_unixtime+'">';
 	entryHTML += '	<div class="user" id="user-'+d.user.id+'" user-id="'+d.user.id+'" user-screen_name="'+d.user.screen_name+'">';
-	entryHTML += '		<div class="user-image clickable" style="background-image:url('+d.user.profile_image_url+')" title="View profile" user-id="'+d.user.id+'" user-screen_name="'+d.user.screen_name+'">'+d.user.screen_name+'</div>';
+	entryHTML += '		<div class="user-image clickable" style="background-image:url('+d.user.avatar_url+')" title="View profile" user-id="'+d.user.id+'" user-screen_name="'+d.user.screen_name+'">'+d.user.screen_name+'</div>';
 	entryHTML += '		<div class="user-screen-name clickable" title="View profile" user-id="'+d.user.id+'" user-screen_name="'+d.user.screen_name+'">'+d.user.screen_name+'</div>';
 	entryHTML += '	</div>';
 	entryHTML += '	<div class="status" id="status-'+d.id+'">';
@@ -98,13 +117,16 @@ Spaz.Templates.timeline_entry = function(d) {
 								}
 	entryHTML += '				</div>';
 	entryHTML += '				<div class="status-link">';
-	entryHTML += '					<a href="http://twitter.com/'+d.user.screen_name+'/statuses/'+d.id+'/" data-created-at="'+d.created_at+'" class="status-created-at clickable" title="View full post in browser">'+d.created_at+'</a>';
-	// 								if (d.in_reply_to_status_id) {
-	// entryHTML += '						<!-- <a href="/'+d.in_reply_to_user_id+'/statuses/'+d.in_reply_to_status_id+'/"  class="status-in-reply-to clickable" title="View message this responds to">&crarr;</a> -->';
-	// 								}
-									if (d.retweeting_user) {
-	entryHTML += '						<span class="status-rt-by">RTed by <span class="user-screen-name clickable" title="View profile" user-screen_name="'+d.retweeting_user.screen_name+'">'+d.retweeting_user.screen_name+'</span></span>';
-									}
+
+	if (d.status_url) {
+		entryHTML += '					<a href="'+d.status_url+'" data-created-at="'+d.created_at+'" class="status-created-at clickable" title="View full post in browser">'+d.created_at+'</a>';
+	} else {
+		entryHTML += '					<span data-created-at="'+d.created_at+'" class="status-created-at">'+d.created_at+'</span>';
+	}
+
+	if (d.retweeting_user) {
+		entryHTML += '						<span class="status-rt-by">RTed by <span class="user-screen-name clickable" title="View profile" user-screen_name="'+d.retweeting_user.screen_name+'">'+d.retweeting_user.screen_name+'</span></span>';
+	}
 	entryHTML += '					<span class="status-source">from';
 	entryHTML += '						<span class="status-source-label">'+d.source+'</span>';
 	entryHTML += '					</span>';
