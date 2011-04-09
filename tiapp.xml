@@ -3,7 +3,7 @@
 	<!-- These values are edited/maintained by Titanium Developer -->
 <id>com.funkatron.app.spaz.desktop</id>
 <name>Spaz</name>
-<version>1.0</version>
+<version>0.10.0</version>
 <publisher>Funkatron Productions</publisher>
 <url>http://getspaz.com</url>
 <icon>spaz-icon-flat-512.png</icon>
