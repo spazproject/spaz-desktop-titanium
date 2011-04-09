@@ -145,11 +145,11 @@ div.followers-row:nth-child(even){
 
 
 
-	/*********************************************************************
-		The container is a div that wraps around all of the content
-	*/
+  /*********************************************************************
+    The container is a div that wraps around all of the content
+  */
   #container {
-	opacity:1.0;
+  opacity:1.0;
     position:fixed;
     overflow:hidden;
     left:0px;
@@ -169,11 +169,11 @@ div.followers-row:nth-child(even){
   }
 
 
-		/*********************************************************************
-			The contains the classic "Spaz" title and the window buttons
-		*/
+    /*********************************************************************
+      The contains the classic "Spaz" title and the window buttons
+    */
     #header{
-	  display:none;
+    display:none;
       position:absolute;
       left:0;
       right:0;
@@ -188,46 +188,46 @@ div.followers-row:nth-child(even){
       color:#fff;
       font-size:18px;
       text-align:left;
-	
+  
     }
     body:not(.active) #header{
       background:transparent;
     }
-			#window-buttons{
-				position:absolute;
+      #window-buttons{
+        position:absolute;
         left:8px;
         top:3px;
         width:35px;
         height:14px;
-			}
-				.window-button{
-				  position:absolute;
-				  left:0px;
-				  top:0px;
+      }
+        .window-button{
+          position:absolute;
+          left:0px;
+          top:0px;
           width:14px;
           height:16px;
-					margin:0;
-					background-position:-14px 0;
-					background-repeat:no-repeat;
-					font-size:0px;
-					text-indent:-9999em;
-				}
-				body:not(.active) .window-button{
-				  background-position:0 0;
-				}
-				#window-buttons:hover .window-button{
-				  background-position:-28px 0;
-				}
-				.window-button:active{
-				  background-position:-42px 0;
-				}
-				#close{
-				  background-image:url(images/window-controls-close.png);
-				}
-				#minimize{
-				  left:21px;
-				  background-image:url(images/window-controls-minimize.png);
-				}
+          margin:0;
+          background-position:-14px 0;
+          background-repeat:no-repeat;
+          font-size:0px;
+          text-indent:-9999em;
+        }
+        body:not(.active) .window-button{
+          background-position:0 0;
+        }
+        #window-buttons:hover .window-button{
+          background-position:-28px 0;
+        }
+        .window-button:active{
+          background-position:-42px 0;
+        }
+        #close{
+          background-image:url(images/window-controls-close.png);
+        }
+        #minimize{
+          left:21px;
+          background-image:url(images/window-controls-minimize.png);
+        }
       #header-label {
         width: 55px;
         margin: -3px auto 0;
@@ -253,40 +253,40 @@ div.followers-row:nth-child(even){
         pointer-events:none;
         text-indent:-9999em;
       }
-		
-		/*
-			The tabs group contains the tabs themselves and the content panels
-			
-			From Spry CSS Notes:
-			This is the selector for the main TabbedPanels container. For our
-			default style, this container does not contribute anything visually,
-			but it is floated left to make sure that any floating or clearing done
-			with any of its child elements are contained completely within the
-			TabbedPanels container, to minimize any impact or undesireable
-			interaction with other floated elements on the page that may be used
-			for layout.
-			
-			If you want to constrain the width of the TabbedPanels widget, set a
-			width on the TabbedPanels container. By default, the TabbedPanels widget
-			expands horizontally to fill up available space.
-			 
-		*/
-		#tabs, .TabbedPanels {
-			margin: 0px;
-			padding: 0px;
-			float: left;
-			clear: none;
-		}
-		
-			/*
-				The timeline tabs, a UL group
-				
-				From Spry CSS Notes:
-				This is the selector for the TabGroup. The TabGroup container houses
-				all of the tab buttons for each tabbed panel in the widget. This container
-				does not contribute anything visually to the look of the widget for our
-				default style.
-			*/
+    
+    /*
+      The tabs group contains the tabs themselves and the content panels
+      
+      From Spry CSS Notes:
+      This is the selector for the main TabbedPanels container. For our
+      default style, this container does not contribute anything visually,
+      but it is floated left to make sure that any floating or clearing done
+      with any of its child elements are contained completely within the
+      TabbedPanels container, to minimize any impact or undesireable
+      interaction with other floated elements on the page that may be used
+      for layout.
+      
+      If you want to constrain the width of the TabbedPanels widget, set a
+      width on the TabbedPanels container. By default, the TabbedPanels widget
+      expands horizontally to fill up available space.
+       
+    */
+    #tabs, .TabbedPanels {
+      margin: 0px;
+      padding: 0px;
+      float: left;
+      clear: none;
+    }
+    
+      /*
+        The timeline tabs, a UL group
+        
+        From Spry CSS Notes:
+        This is the selector for the TabGroup. The TabGroup container houses
+        all of the tab buttons for each tabbed panel in the widget. This container
+        does not contribute anything visually to the look of the widget for our
+        default style.
+      */
       #timeline-tabs, .TabbedPanelsTabGroup{
         position:absolute;
         left:8px;
@@ -303,75 +303,75 @@ div.followers-row:nth-child(even){
           /* Re-capture pointer events for visible controls, e.g., tabs */
       }
 
-				/*				
-					From Spry CSS Notes:
-					This is the selector for the TabbedPanelsTab. This container houses
-					the title for the panel. This is also the tab "button" that the user clicks
-					on to activate the corresponding content panel so that it appears on top
-					of the other tabbed panels contained in the widget.
+        /*        
+          From Spry CSS Notes:
+          This is the selector for the TabbedPanelsTab. This container houses
+          the title for the panel. This is also the tab "button" that the user clicks
+          on to activate the corresponding content panel so that it appears on top
+          of the other tabbed panels contained in the widget.
 
-					For our default style, each tab is positioned relatively 1 pixel down from
-					where it wold normally render. This allows each tab to overlap the content
-					panel that renders below it. Each tab is rendered with a 1 pixel bottom
-					border that has a color that matches the top border of the current content
-					panel. This gives the appearance that the tab is being drawn behind the
-					content panel.
-				 */
-				.TabbedPanelsTab,
-				#tools-menu-toggle{
-					margin:0;
-					padding:0;
-					font-size:11px;
+          For our default style, each tab is positioned relatively 1 pixel down from
+          where it wold normally render. This allows each tab to overlap the content
+          panel that renders below it. Each tab is rendered with a 1 pixel bottom
+          border that has a color that matches the top border of the current content
+          panel. This gives the appearance that the tab is being drawn behind the
+          content panel.
+         */
+        .TabbedPanelsTab,
+        #tools-menu-toggle{
+          margin:0;
+          padding:0;
+          font-size:11px;
           background:transparent url(images/view-switches.png) 0 0 no-repeat;
-				}
-				.TabbedPanelsTab{
-					position:relative;
-					top:-5px;
-					float:left;
-					border:none;
-					list-style:none;
-				}
-				#tools-menu-toggle{
-				  position:absolute;
-				  right:8px;
-				  top:2px;
-				}
+        }
+        .TabbedPanelsTab{
+          position:relative;
+          top:-5px;
+          float:left;
+          border:none;
+          list-style:none;
+        }
+        #tools-menu-toggle{
+          position:absolute;
+          right:8px;
+          top:2px;
+        }
 
-				/*
-					From Spry CSS Notes:
-					This selector is an example of how to change the appearnce of a tab button
-					container as the mouse enters it. The class "TabbedPanelsTabHover" is
-					programatically added and removed from the tab element as the mouse enters
-					and exits the container.
-				 */
-				.TabbedPanelsTabHover{}
+        /*
+          From Spry CSS Notes:
+          This selector is an example of how to change the appearnce of a tab button
+          container as the mouse enters it. The class "TabbedPanelsTabHover" is
+          programatically added and removed from the tab element as the mouse enters
+          and exits the container.
+         */
+        .TabbedPanelsTabHover{}
 
-				/*
-					From Spry CSS Notes:
-					This selector is an example of how to change the appearance of a tab button
-					container after the user has clicked on it to activate a content panel.
-					The class "TabbedPanelsTabSelected" is programatically added and removed
-					from the tab element as the user clicks on the tab button containers in
-					the widget.
+        /*
+          From Spry CSS Notes:
+          This selector is an example of how to change the appearance of a tab button
+          container after the user has clicked on it to activate a content panel.
+          The class "TabbedPanelsTabSelected" is programatically added and removed
+          from the tab element as the user clicks on the tab button containers in
+          the widget.
 
-					As mentioned above, for our default style, tab buttons are positioned
-					1 pixel down from where it would normally render. When the tab button is
-					selected, we change its bottom border to match the background color of the
-					content panel so that it looks like the tab is part of the content panel.
-				 */
-				.TabbedPanelsTabSelected{}
+          As mentioned above, for our default style, tab buttons are positioned
+          1 pixel down from where it would normally render. When the tab button is
+          selected, we change its bottom border to match the background color of the
+          content panel so that it looks like the tab is part of the content panel.
+         */
+        .TabbedPanelsTabSelected{}
 
-				/*
-					From Spry CSS Notes:
-					This selector is an example of how to make a link inside of a tab button
-					look like normal text. Users may want to use links inside of a tab button
-					so that when it gets focus, the text *inside* the tab button gets a focus
-					ring around it, instead of the focus ring around the entire tab.
-				 */
-				.TabbedPanelsTab a {
-					color: #FFFFFF;
-					text-decoration: none;
-				}
+        /*
+          From Spry CSS Notes:
+          This selector is an example of how to make a link inside of a tab button
+          look like normal text. Users may want to use links inside of a tab button
+          so that when it gets focus, the text *inside* the tab button gets a focus
+          ring around it, instead of the focus ring around the entire tab.
+         */
+        .TabbedPanelsTab a {
+          color: #FFFFFF;
+          text-decoration: none;
+        }
         #tab-friends                                                {}
           body:not(.active) #tab-friends                              { background-position:0 -23px; }
           #tab-friends:not(.TabbedPanelsTabSelected):active           { background-position:0 -46px; }
@@ -417,17 +417,17 @@ div.followers-row:nth-child(even){
         #tools-menu-toggle                                          { background-position:-124px 0; position:absolute; width:40px; margin-left:15px; }
           body:not(.active) #tools-menu-toggle                        { background-position:-124px -23px; }
           #tools-menu-toggle:active                                   { background-position:-124px -46px; }
-				
-					/* The image in the tab itself */
-					.tab-icon{
-						display:block;
-						width:31px;
-						height:23px;
-						cursor:default;
-					}
-					body:not(.active) .tab-icon{
-					  opacity:0.5;
-					}
+        
+          /* The image in the tab itself */
+          .tab-icon{
+            display:block;
+            width:31px;
+            height:23px;
+            cursor:default;
+          }
+          body:not(.active) .tab-icon{
+            opacity:0.5;
+          }
           #tab-friends .tab-icon                                { background:url(images/tab-icon-timeline.png) 7px 3px no-repeat; }
           #tab-friends.TabbedPanelsTabSelected .tab-icon        { background:url(images/tab-icon-timeline-selected.png) 4px 0 no-repeat; }
           #tab-user .tab-icon                                   { background:url(images/tab-icon-user.png) 8px 5px no-repeat; }
@@ -452,15 +452,15 @@ div.followers-row:nth-child(even){
             font-size:13px;
           }
 
-			/*
-				These are the content panels, wrapped inside a single container div
-				
-				From Spry CSS Notes:
-				This is the selector for the ContentGroup. The ContentGroup container houses
-				all of the content panels for each tabbed panel in the widget. For our
-				default style, this container provides the background color and borders that
-				surround the content.
-			*/
+      /*
+        These are the content panels, wrapped inside a single container div
+        
+        From Spry CSS Notes:
+        This is the selector for the ContentGroup. The ContentGroup container houses
+        all of the content panels for each tabbed panel in the widget. For our
+        default style, this container provides the background color and borders that
+        surround the content.
+      */
       #timeline-tabs-content,
       .TabbedPanelsContentGroup{
         position:absolute;
@@ -471,30 +471,30 @@ div.followers-row:nth-child(even){
         clear:both;
       }
 
-				/* This is the selector for the Content panel. The Content panel holds the
-				 * content for a single tabbed panel. For our default style, this container
-				 * provides some padding, so that the content is not pushed up against the
-				 * widget borders.
-				 *
-				 * The name of the class ("TabbedPanelsContent") used in this selector is
-				 * not necessary to make the widget function. You can use any class name you
-				 * want to style the Content container.
-				 */
-				.TabbedPanelsContent{
-					margin:0px;
-					padding:0px;
-				}
+        /* This is the selector for the Content panel. The Content panel holds the
+         * content for a single tabbed panel. For our default style, this container
+         * provides some padding, so that the content is not pushed up against the
+         * widget borders.
+         *
+         * The name of the class ("TabbedPanelsContent") used in this selector is
+         * not necessary to make the widget function. You can use any class name you
+         * want to style the Content container.
+         */
+        .TabbedPanelsContent{
+          margin:0px;
+          padding:0px;
+        }
 
-				/* This selector is an example of how to change the appearnce of the currently
-				 * active container panel. The class "TabbedPanelsContentVisible" is
-				 * programatically added and removed from the content element as the panel
-				 * is activated/deactivated.
-				 */
-				.TabbedPanelsContentVisible{}
+        /* This selector is an example of how to change the appearnce of the currently
+         * active container panel. The class "TabbedPanelsContentVisible" is
+         * programatically added and removed from the content element as the panel
+         * is activated/deactivated.
+         */
+        .TabbedPanelsContentVisible{}
 
-					/*
-						The panelmenu appears at the top of each timeline
-					*/
+          /*
+            The panelmenu appears at the top of each timeline
+          */
           .panelmenu {
             position: relative;
             height: 34px;
@@ -661,9 +661,9 @@ div.followers-row:nth-child(even){
             }
             div.timeline-subtitle {
               position: fixed;
-              left: 8px;
-              right: 8px;
-              top: 96px;
+              left:  0px;
+              right: 0px;
+              top:  68px;
               overflow: hidden;
               min-width: 281px; /* = #container min-width - horizontal padding */
               margin: -1px 0 0;
@@ -696,41 +696,41 @@ div.followers-row:nth-child(even){
                 text-transform: uppercase;
               }
 
-							/*
-								This is effectively dead since the Twitter API doesn't support paging anymore.
-								Still, I'm keeping it in in case we ever re-enable some sort of paging.
-							*/
-							div.timeline-pager {
-								background-color: #555555;
-								color:#ffffcc;
-								position:absolute;
-								bottom: 90px;
-								left:   10px;
-								right:  10px;
-								height: 11px;
-								padding:2px;
-								font-size: 8px;
-								border-top:   1px solid #555555;
-								border-bottom:1px solid #555555;
-							}
-							div.timeline-pager a {
-								color:#ffffcc;
-							}
-							div.timeline-pager-left {
-								position:absolute;
-								left: 4px;
-								top: -4px;
-								font-size:16px;
-							}
-							div.timeline-pager-info {
-								text-align:center;
-							}
-							div.timeline-pager-right {
-								position:absolute;
-								right: 4px;
-								top:  -4px;
-								font-size:16px;
-							}
+              /*
+                This is effectively dead since the Twitter API doesn't support paging anymore.
+                Still, I'm keeping it in in case we ever re-enable some sort of paging.
+              */
+              div.timeline-pager {
+                background-color: #555555;
+                color:#ffffcc;
+                position:absolute;
+                bottom: 90px;
+                left:   10px;
+                right:  10px;
+                height: 11px;
+                padding:2px;
+                font-size: 8px;
+                border-top:   1px solid #555555;
+                border-bottom:1px solid #555555;
+              }
+              div.timeline-pager a {
+                color:#ffffcc;
+              }
+              div.timeline-pager-left {
+                position:absolute;
+                left: 4px;
+                top: -4px;
+                font-size:16px;
+              }
+              div.timeline-pager-info {
+                text-align:center;
+              }
+              div.timeline-pager-right {
+                position:absolute;
+                right: 4px;
+                top:  -4px;
+                font-size:16px;
+              }
             .timeline-wrapper div.empty,
             .timeline-wrapper div.intro,
             .timeline-wrapper div.loading,
@@ -787,9 +787,9 @@ div.followers-row:nth-child(even){
               color:#909090;
             }
 
-		/*
-			The entryform contains the #entrybox textarea input for posts and the #updateButton
-		*/
+    /*
+      The entryform contains the #entrybox textarea input for posts and the #updateButton
+    */
     #entryform {
       position:absolute;
       left:0;
@@ -816,9 +816,9 @@ div.followers-row:nth-child(even){
         border-top-color:#fff;
         opacity:0.5;
       }
-			/*
-				This is a Spry textarea widget
-			*/
+      /*
+        This is a Spry textarea widget
+      */
       #entrybox{
         position:absolute;
         left:4px;
@@ -832,7 +832,7 @@ div.followers-row:nth-child(even){
         border-left:1px solid #c1c1c1;
         border-right:1px solid #c1c1c1;
         border-top:0;
-        border-bottom:1px solid #d0d0d0;
+        border-bottom:1px solid #b1b1b1;
         font-size:11px;
         text-align:left;
       }
@@ -842,17 +842,17 @@ div.followers-row:nth-child(even){
       #entryform.has-drafts #entrybox{
         bottom:26px;
       }
-				/* the hint shown when the widget does not have focus */
-				.textareaHintState{
-					color:#828282;
-				}
-				/* Formatting for when the textarea has focus */
-				.textareaFocusState,
-				#entrybox:focus{
-				  background-color:#ffffff;
-					color:#000000;
-				}
-			
+        /* the hint shown when the widget does not have focus */
+        .textareaHintState{
+          color:#828282;
+        }
+        /* Formatting for when the textarea has focus */
+        .textareaFocusState,
+        #entrybox:focus{
+          background-color:#ffffff;
+          color:#000000;
+        }
+      
       /*
         Shows the number of characters entered, and the tweet being replied
         to, if any
@@ -1007,18 +1007,18 @@ div.followers-row:nth-child(even){
         border-color: #767676;
       }
 
-			/*
-				The button to submit the post. This can be hidden completely, and the user can still
-				hit ENTER to send, so it's not really necessary
-			*/
-			#updateButton{
-			  display:none;
-			}
-			
-			
-		/*
-			The bar at the bottom of the app that displays info
-		*/
+      /*
+        The button to submit the post. This can be hidden completely, and the user can still
+        hit ENTER to send, so it's not really necessary
+      */
+      #updateButton{
+        display:none;
+      }
+      
+      
+    /*
+      The bar at the bottom of the app that displays info
+    */
     #statusbar {
       position: absolute;
       left: 0;
@@ -1060,26 +1060,26 @@ div.followers-row:nth-child(even){
       body:not(.active) #statusbar-text{
         color:#6f6f6f;
       }
-			span.statusbar-username{
-				font-weight:bold;
-			}
+      span.statusbar-username{
+        font-weight:bold;
+      }
 
 
-		/*
-			The little resizing widget. This is totally misnamed (it should be "se" and not "sw")
-			but I'm kind of an idiot.
-		*/
-		#resize-se{
-			display:none;
-			position:absolute;
-			bottom:4px;
-			right:4px;
-			font-size:12px;
-			background-image:url(images/resize-se.png);
-			text-align:center;
-			width:12px;
-			height:12px;
-		}
+    /*
+      The little resizing widget. This is totally misnamed (it should be "se" and not "sw")
+      but I'm kind of an idiot.
+    */
+    #resize-se{
+      display:none;
+      position:absolute;
+      bottom:4px;
+      right:4px;
+      font-size:12px;
+      background-image:url(images/resize-se.png);
+      text-align:center;
+      width:12px;
+      height:12px;
+    }
 
 
 
@@ -1277,13 +1277,13 @@ div.spaz-menu#user-menu {
 
 
 /*************************************************
-	Timeline entries are... entries in the timelines
+  Timeline entries are... entries in the timelines
 */
 div.timeline-entry{
   position:relative;
-	padding:5px;
-	clear:both;
-	overflow:hidden;
+  padding:5px;
+  clear:both;
+  overflow:hidden;
 }
 div.timeline-entry:hover{
   opacity:1;
@@ -1306,7 +1306,7 @@ div.timeline-entry:hover{
     text-indent:0;
   }
   /*
-  	Entries that have been "read" (selected and then deselected)
+    Entries that have been "read" (selected and then deselected)
   */
   div.timeline-entry.read{}
   div.timeline-entry.read:not(.ui-selected){
@@ -1398,9 +1398,9 @@ div.timeline-entry:hover{
       background-color: #666 !important;
     }
 
-	/*
-		A container for the avatar image and the user's screen name
-	*/
+  /*
+    A container for the avatar image and the user's screen name
+  */
   div.user{
     position:relative;
     float:left;
@@ -1422,19 +1422,19 @@ div.timeline-entry:hover{
       /* box-shadow:0 1px 5px #333; */ /* Disabled: Not all imgs are square */
       text-indent:-9999em;
     }
-		div.user-screen-name{
-			font-size:10px;
-			overflow:hidden;
-			text-overflow:ellipsis;
-	        white-space: nowrap;
-		}
-		div.user-screen-name:hover{
-			text-decoration:underline;
-		}
+    div.user-screen-name{
+      font-size:10px;
+      overflow:hidden;
+      text-overflow:ellipsis;
+          white-space: nowrap;
+    }
+    div.user-screen-name:hover{
+      text-decoration:underline;
+    }
 
-	/*
-		This is the container for the "status", which is the message posted + some metadata about it + some action links
-	*/
+  /*
+    This is the container for the "status", which is the message posted + some metadata about it + some action links
+  */
   div.status{
     min-height:60px; /* Pushes bg image to bottom of div.timeline-entry */
     margin:0 0 0 70px;
@@ -1555,20 +1555,20 @@ div.timeline-entry:hover{
         .draft-action[data-action=delete]
                               { background-image:url(images/status-delete.png); }
 
-		/* the container for the "permalink" to the post */
-		div.status-link{
-			font-size:9px;
-			color:#666666;
-		}
-		  /* the link to the relative time of the posting. this is the permalink */
-			a.status-created-at{}
-			/* the text that says "from Foobar" */
-			.status-source{
-			  display:block;
-			}
-			/* the text with the name of the posting source ("Foobar") */
-			.status-source-label{}
-			/* the icon that indicates this is a protected post */
+    /* the container for the "permalink" to the post */
+    div.status-link{
+      font-size:9px;
+      color:#666666;
+    }
+      /* the link to the relative time of the posting. this is the permalink */
+      a.status-created-at{}
+      /* the text that says "from Foobar" */
+      .status-source{
+        display:block;
+      }
+      /* the text with the name of the posting source ("Foobar") */
+      .status-source-label{}
+      /* the icon that indicates this is a protected post */
       span.status-protected{
         display:block;
         width:9px;
@@ -2006,52 +2006,52 @@ body:not(.active) #panel-prefs .timeline-wrapper{
 /*** Tables ***/
 
 table.data {
-	margin-left:auto;
-	margin-right:auto;
-	text-align:center;
-	padding:5px;
-	border-top:3px solid #333333;
-	border-bottom:1px solid #333333;
-	border-collapse:collapse;
-	width:100%;
+  margin-left:auto;
+  margin-right:auto;
+  text-align:center;
+  padding:5px;
+  border-top:3px solid #333333;
+  border-bottom:1px solid #333333;
+  border-collapse:collapse;
+  width:100%;
 }
-	table.data th {
-		background-color:#202020;
-		color:#DDDDDD;
-		font-size:9px;
-		font-weight:bold;
-		text-align:left;
-		padding:4px;
-	}
-	table.data tr {
-		border-top-style: solid;
-		border-top-width: 1px;
-	}
-		table.data tr:hover {
-			background:#FFFFCC;
-		}
-	table.data td {
-		font-size:10px;
-		padding:4px;
-		text-align:left;
-	}
-		table.data td.label {
-			font-weight:bold;
-			text-align:right;
-			border-right:1px solid #999999;
-		}
-		table.data td.label:after { /*content:":";*/ }
-		table.data td.value {
-			padding:2px;
-		}
+  table.data th {
+    background-color:#202020;
+    color:#DDDDDD;
+    font-size:9px;
+    font-weight:bold;
+    text-align:left;
+    padding:4px;
+  }
+  table.data tr {
+    border-top-style: solid;
+    border-top-width: 1px;
+  }
+    table.data tr:hover {
+      background:#FFFFCC;
+    }
+  table.data td {
+    font-size:10px;
+    padding:4px;
+    text-align:left;
+  }
+    table.data td.label {
+      font-weight:bold;
+      text-align:right;
+      border-right:1px solid #999999;
+    }
+    table.data td.label:after { /*content:":";*/ }
+    table.data td.value {
+      padding:2px;
+    }
 
 
 
 /*
-	I think this is needed by some widgets. Maybe not?
+  I think this is needed by some widgets. Maybe not?
 */
 .SpryHiddenRegion {
-	visibility:hidden;
+  visibility:hidden;
 }
 
 
@@ -2623,27 +2623,27 @@ div#popbox-content-conversation #timeline-conversation div.timeline-entry{
 
 
 /*
-	news popup
+  news popup
 */
 #news-content {
-	font-size: 0.875em;
+  font-size: 0.875em;
 }
 #news-content a:hover {
-	text-decoration: underline;
+  text-decoration: underline;
 }
 #news-content div.entry {
-	padding-bottom: 2em;
+  padding-bottom: 2em;
 }
 #news-content div.entry div.title {
-	font-size: 1.5em;
-	font-weight:normal;
+  font-size: 1.5em;
+  font-weight:normal;
 }
 #news-content div.entry div.date {
-	line-height:2em;
-	font-size:0.75em;
+  line-height:2em;
+  font-size:0.75em;
 }
 #news-content div.entry div.entry-content {
-	line-height:1.4em;
+  line-height:1.4em;
 }
 
 
@@ -2653,6 +2653,6 @@ div#popbox-content-conversation #timeline-conversation div.timeline-entry{
 */
 
 div.embedly {
-	-webkit-box-shadow:0px 1px 5px #333333;
-	margin: 10px;
+  -webkit-box-shadow:0px 1px 5px #333333;
+  margin: 10px;
 };

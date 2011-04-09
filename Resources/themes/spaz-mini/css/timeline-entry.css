@@ -6,7 +6,8 @@ div.timeline-entry:nth-child(odd),
 ul#account-list li:nth-child(odd),
 div.followers-row:nth-child(odd) {
 	background-color: #FFFFEE;
-	border-top-color: #999966;
+	border-top-color: #BEC0C8;
+	border-bottom-color: #F2F1E0;
 	background-image: url('../images/entry-odd-bg.png');
 	background-repeat: repeat-x;
 
@@ -15,7 +16,8 @@ div.timeline-entry:nth-child(even),
 ul#account-list li:nth-child(even),
 div.followers-row:nth-child(even) {
 	background-color: #EEEEFF;
-	border-top-color: #666699;
+	border-top-color: #D6D5CC;
+	border-bottom-color: #E3E4F5;
 	background-image: url('../images/entry-even-bg.png');
 	background-repeat: repeat-x;
 }
@@ -28,6 +30,9 @@ div.timeline-entry {
 	position: relative;
 	clear: both;
 	overflow: hidden;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-top-color: #666699;
 	border-top-width: 1px;
 	border-top-style: solid;
 	border-top-color: #999966;
