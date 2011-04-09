@@ -163,7 +163,7 @@ to, if any
 #entrybox-attach span {
 	display: block;
 	width: 16px;
-	background: url(../../../../images/glyphish/photos.png) center center no-repeat;
+	background: url(../../../images/glyphish/photos.png) center center no-repeat;
 	pointer-events: none;
 	text-indent: -9999em;
 }
