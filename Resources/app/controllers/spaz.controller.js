@@ -67,6 +67,9 @@ sch.listen(document, 'account_switched', function(e, account) {
 						Spaz.Prefs.getUsername() +
 						"@" +
 						Spaz.Prefs.getCurrentAccountType());
+		Spaz.UI.setTitle(Spaz.Prefs.getUsername() +
+						"@" +
+						Spaz.Prefs.getCurrentAccountType());
 		Spaz.UI.flashStatusBar();
 
 		if (Spaz.Prefs.get('timeline-loadonswitch')) {
