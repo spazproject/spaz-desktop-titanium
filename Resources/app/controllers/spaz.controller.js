@@ -429,18 +429,12 @@ Spaz.Controller.initIntercept = function() {
 	/*
 		Set-up drag and drop events
 	*/
-	var target = document.getElementById('container');
-	target.addEventListener("dragenter", dragEnterOverHandler);
-	target.addEventListener("dragover", dragEnterOverHandler);
-	target.addEventListener("drop", dropHandler);
-
 	function dragEnterOverHandler(event){
 		event.preventDefault();
 	}
 
 	function dropHandler(event){
 		event.preventDefault();
-		uploadDraggedImage(event);
 
 		/*
 			Upload the dragged image to Twitpic
@@ -460,7 +454,14 @@ Spaz.Controller.initIntercept = function() {
 				return;
 			}
 		}
+
+		uploadDraggedImage(event);
 	}
+
+	var target = document.getElementById('container');
+	target.addEventListener("dragenter", dragEnterOverHandler);
+	target.addEventListener("dragover", dragEnterOverHandler);
+	target.addEventListener("drop", dropHandler);
 
 };
 

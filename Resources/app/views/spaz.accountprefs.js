@@ -103,7 +103,7 @@ Spaz.AccountPrefs.init = function(){
 				} else {
 					$('#' + that.metavals[i]).val('');
 				}
-			};
+			}
 			$urlshortener.val(SPAZCORE_SHORTURL_SERVICE_JMP).trigger('change'); // set default
 			
 			/*
@@ -111,12 +111,12 @@ Spaz.AccountPrefs.init = function(){
 			 */
 			$saveAccountButton.click(function(){
 				var auth  = new SpazAuth($accountType.val());
-				
+				var newaccid; 
 				if (auth.authorize($username.val(), $password.val())) { // check credentials first
 
 					Spaz.UI.closePopbox();
 					
-					var newaccid = Spaz.AccountPrefs.add($username.val(), auth.save(), $accountType.val()).id;
+					newaccid = Spaz.AccountPrefs.add($username.val(), auth.save(), $accountType.val()).id;
 					var val;
 					
 					for (var i = 0; i < that.metavals.length; i++) {
@@ -127,7 +127,7 @@ Spaz.AccountPrefs.init = function(){
 							val = $('#' + that.metavals[i]).val();
 						}
 						that.spaz_acc.setMeta(newaccid, that.metavals[i], val);
-					};
+					}
 
 					$accountList.val(newaccid);
 					Spaz.AccountPrefs.setAccount(newaccid);
@@ -215,7 +215,7 @@ Spaz.AccountPrefs.init = function(){
 						$('#' + that.metavals[i]).val(val);
 					}
 					
-				};
+				}
 				
 				
 				/*
@@ -243,7 +243,7 @@ Spaz.AccountPrefs.init = function(){
 								val = $('#' + that.metavals[i]).val();
 							}
 							that.spaz_acc.setMeta(editedaccid, that.metavals[i], val);
-						};
+						}
 						
 						Spaz.UI.closePopbox();
 						

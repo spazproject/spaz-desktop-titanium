@@ -3,7 +3,7 @@ var MAIN_WINDOW_HEIGHT_MIN = 200;
 
 
 var Spaz;
-if (!Spaz) Spaz = {};
+if (!Spaz) {Spaz = {};}
 
 /**
  * localization helper. Not yet implemented; just returns the passed string 
@@ -90,11 +90,11 @@ Spaz.loadUserJS = function() {
 
 Spaz.loadOAuthServices = function() {
 	SpazAuth.addService(SPAZCORE_ACCOUNT_TWITTER, {
-        authType: SPAZCORE_AUTHTYPE_OAUTH,
-        consumerKey: SPAZCORE_CONSUMERKEY_TWITTER,
-        consumerSecret: SPAZCORE_CONSUMERSECRET_TWITTER,
-        accessURL: 'https://twitter.com/oauth/access_token'
-    });
+		authType: SPAZCORE_AUTHTYPE_OAUTH,
+		consumerKey: SPAZCORE_CONSUMERKEY_TWITTER,
+		consumerSecret: SPAZCORE_CONSUMERSECRET_TWITTER,
+		accessURL: 'https://twitter.com/oauth/access_token'
+	});
 };
 
 
@@ -131,20 +131,20 @@ Spaz.initialize = function() {
 		Spaz.Debug.openInspector();
 	}
 	
+	
+	/*
+		wrap this to log
+	*/
+	function logwrap(fn) {
+		return function(){
+			Spaz.Debug.logToFile.apply(this, arguments);
+			return fn.apply(this, arguments);
+		};
+	}
 	// turn on debugging
 	if (Spaz.Prefs.get('debug-enabled')) {
-		
-		/*
-			wrap this to log
-		*/
-		function wrap(fn) {
-			return function(){
-				Spaz.Debug.logToFile.apply(this, arguments);
-				return fn.apply(this, arguments);
-			};
-		}
-		
-		sc.helpers.dump = wrap(sc.helpers.dump);
+				
+		sc.helpers.dump = logwrap(sc.helpers.dump);
 
 		sc.setDumpLevel(5);
 	}
@@ -157,20 +157,20 @@ Spaz.initialize = function() {
 	sch.debug("database initialization");
 	// Spaz.DB.init();
 	
-    sch.debug('JazzRecord initialization');
-    JazzRecord.adapter = new JazzRecord.TitaniumAdapter({dbFile: "spaz_jr.db"});
-    if (Spaz.Prefs.get('debug-enabled')) {
-     JazzRecord.debug = true;
-    }
-    JazzRecord.depth = 0;
-    JazzRecord.migrate();
-    // JazzRecord.addIndex('tweets', 'twitter_id');
-    // JazzRecord.addIndex('twusers', 'twitter_id');
-    // JazzRecord.addIndex('twusers', 'screen_name');
-    JazzRecord.addIndex('drafts', 'updated_at_unixtime');
+	sch.debug('JazzRecord initialization');
+	JazzRecord.adapter = new JazzRecord.TitaniumAdapter({dbFile: "spaz_jr.db"});
+	if (Spaz.Prefs.get('debug-enabled')) {
+	 JazzRecord.debug = true;
+	}
+	JazzRecord.depth = 0;
+	JazzRecord.migrate();
+	// JazzRecord.addIndex('tweets', 'twitter_id');
+	// JazzRecord.addIndex('twusers', 'twitter_id');
+	// JazzRecord.addIndex('twusers', 'screen_name');
+	JazzRecord.addIndex('drafts', 'updated_at_unixtime');
 
 
-    Spaz.TweetsModel = new Tweets();
+	Spaz.TweetsModel = new Tweets();
 
 	// Docking initialization
 	sch.debug("docking initialization");
@@ -370,8 +370,8 @@ Spaz.initialize = function() {
 	if (Spaz.Prefs.getUsername() && Spaz.Prefs.getCurrentAccountType()) {		
 		
 		console.log(Spaz.Prefs.getUsername(), Spaz.Prefs.getCurrentAccountType(), Spaz.Prefs.getCurrentAccount());
-		
-		Spaz.AccountPrefs.updateWindowTitleAndToolsMenu(Spaz.Prefs.getCurrentAccount().id); 	// Initialize indicators of current account
+		// Initialize indicators of current account
+		Spaz.AccountPrefs.updateWindowTitleAndToolsMenu(Spaz.Prefs.getCurrentAccount().id); 
 		
 		sch.trigger('account_switched', document, Spaz.Prefs.getCurrentAccount());
 

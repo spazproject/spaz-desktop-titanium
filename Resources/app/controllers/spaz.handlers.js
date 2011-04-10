@@ -47,7 +47,7 @@ Spaz.Handlers.showContextMenu = function(event) {
 		sch.debug('no http link found');
 	}
 	
-}
+};
 
 
 
