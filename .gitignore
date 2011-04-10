@@ -1,3 +1,4 @@
 dist
 tmp
 auth_config.js
+*.sublime-project
