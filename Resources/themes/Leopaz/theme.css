@@ -2179,15 +2179,15 @@ body:not(.active) ::-webkit-scrollbar-thumb:vertical{
 
 #DOMWindowOverlay{
   /* Using lots of `!important` to override the JS plugin. */
-  left:8px !important;
-  right:8px !important;
+  left: 0px !important;
+  right:0px !important;
   top:0 !important;
-  bottom:8px !important;
+  bottom:0px !important;
   width:auto !important;
   height:auto !important;
   min-width:297px;
-  border-radius:4px;
-    -webkit-border-radius:4px;
+  border-radius:0px;
+    -webkit-border-radius:0px;
 }
 div.popbox-content {
   overflow: auto;
