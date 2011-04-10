@@ -24,7 +24,15 @@ Spaz.UI.mainTimelineId = 'timeline-friends';
 
 
 
-
+Spaz.UI.setTitle = function(msg) {
+	var new_title;
+	if (msg) {
+		new_title = "Spaz – "+msg;
+	} else {
+		new_title = "Spaz";
+	}
+	window.document.title = new_title;
+};
 
 
 Spaz.UI.statusBar = function(txt) {
