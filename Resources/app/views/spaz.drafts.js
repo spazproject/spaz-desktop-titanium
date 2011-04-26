@@ -251,9 +251,9 @@ Spaz.Drafts.highlightEditing = function(){
 	if(id){
 		$('#draft-' + id).addClass('editing').find('div.meta .editing').show();
 		$saveButton.html('Save Existing Draft').
-			attr('title', 'To start a new draft, delete the current text.');
+			attr('data-spaz-title', 'To start a new draft, delete the current text.');
 	}else{
-		$saveButton.html('Save New Draft').removeAttr('title');
+		$saveButton.html('Save New Draft').removeAttr('data-spaz-title');
 	}
 };
 

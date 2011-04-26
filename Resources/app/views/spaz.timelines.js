@@ -13,10 +13,10 @@ var SPAZ_MAKECLICKABLE_OPTS = {
 		'maxlen'	:100
 	},
 	'screenname': {
-		'tpl':'<span class="user-screen-name clickable" title="View profile" user-screen_name="#username#">@#username#</span>' // should contain macro '#username#'
+		'tpl':'<span class="user-screen-name clickable" data-spaz-title="View profile" user-screen_name="#username#">@#username#</span>' // should contain macro '#username#'
 	},
 	'hashtag': {
-		'tpl':'<span class="hashtag clickable" title="Search for this hashtag" data-hashtag="#hashtag_enc#">##hashtag#</span>' // should contain macros '#hashtag#' and '#hashtag_enc#'
+		'tpl':'<span class="hashtag clickable" data-spaz-title="Search for this hashtag" data-hashtag="#hashtag_enc#">##hashtag#</span>' // should contain macros '#hashtag#' and '#hashtag_enc#'
 	}
 };
 

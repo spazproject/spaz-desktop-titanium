@@ -138,10 +138,10 @@ function usernameCompleter(opts) {
 				
 				var that = this; // help with scoping
 				$.each(matching_results, function() {
-					$(that.displayDiv).append('<div title="'+this+'" class="autocomplete-match">'+this+'</div>');
+					$(that.displayDiv).append('<div data-spaz-title="'+this+'" class="autocomplete-match">'+this+'</div>');
 				});
 				$(this.displayDiv+' .autocomplete-match').one('click', function() {
-					var thismatch = $(this).attr('title');
+					var thismatch = $(this).attr('data-spaz-title');
 					that.insertMatch(thismatch);
 				});
 				

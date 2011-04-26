@@ -107,39 +107,43 @@ sch.listen(document, 'account_switched', function(e, account) {
  */
 Spaz.Controller.initIntercept = function() {
 
+	// for some reason these need to be .live()s. Really should
+	// convert all below to .live()
+	$('.TabbedPanelsTab').live('mouseover', function(e) {
+		var tt = new Spaz_Tooltip($(this).attr('data-spaz-title'), {
+			'e'		:e,
+		});
+		tt.show();
+	});
+
+
+
 	$('body').intercept('mouseover', {
 		
-			// '.TabbedPanelsTab':function(e) {
-			//	var tt = new Spaz_Tooltip($(this).attr('title'), {
-			//		'e'		:e,
-			//	});
-			//	tt.show();
-			// },
-
-			'.status-action[title]':function(e) {
-				var tt = new Spaz_Tooltip($(this).attr('title'), {
+			'.status-action[data-spaz-title]':function(e) {
+				var tt = new Spaz_Tooltip($(this).attr('data-spaz-title'), {
 					'e'		:e,
 					'trigger':this
 				});
 				tt.show();
 			},
-			'.user-screen-name[title]':function(e) {
-				var tt = new Spaz_Tooltip($(this).attr('title'), {
+			'.user-screen-name[data-spaz-title]':function(e) {
+				var tt = new Spaz_Tooltip($(this).attr('data-spaz-title'), {
 					'e'		:e,
 					'trigger':this
 				});
 				tt.show();
 			},
 			'span.in-reply-to':function(e) {
-				var tt = new Spaz_Tooltip($(this).attr('title'), {
+				var tt = new Spaz_Tooltip($(this).attr('data-spaz-title'), {
 					'e'		:e,
 					'trigger':this
 				});
 				sch.debug('IN REPLY TO');
 				tt.showIRT($(this).attr('data-irt-status-id'));
 			},
-			'.user-image[title]':function(e) {
-				var tt = new Spaz_Tooltip($(this).attr('title'), {
+			'.user-image[data-spaz-title]':function(e) {
+				var tt = new Spaz_Tooltip($(this).attr('data-spaz-title'), {
 					'e'		:e,
 					'trigger':this
 				});
@@ -147,7 +151,7 @@ Spaz.Controller.initIntercept = function() {
 			},
 			'a[href]':function(e) {
 				var href = $(this).attr('href');
-				var tt = new Spaz_Tooltip($(this).attr('title'), {
+				var tt = new Spaz_Tooltip($(this).attr('data-spaz-title'), {
 					'e'		:e,
 					'trigger':this
 				});
@@ -157,46 +161,45 @@ Spaz.Controller.initIntercept = function() {
 			'a .highlight':function(e) {
 				if ($(this).parents('a').attr('href')) {
 					var href = $(this).parents('a').attr('href');
-					var tt = new Spaz_Tooltip($(this).attr('title'), {
+					var tt = new Spaz_Tooltip($(this).attr('data-spaz-title'), {
 						'e'		:e,
 						'trigger':this
 					});
 					tt.showURLPreview(href);
 				}
 			},
-			'a[title], .clickable[title]':function(e) {
+			'a[data-spaz-title], .clickable[data-spaz-title]':function(e) {
 				if ($(this).attr('href')) { // don't fire if we have an href -- already handled
 					return;
 				}
-				var tt = new Spaz_Tooltip($(this).attr('title'), {
+				var tt = new Spaz_Tooltip($(this).attr('data-spaz-title'), {
 					'e'		:e,
 					'trigger':this
 				});
-				sch.debug('tooltip from a[title]');
+				sch.debug('tooltip from a[data-spaz-title]');
 				tt.show();
 			},
 			'a[user-screen_name]':function(e) {
-				var tt = new Spaz_Tooltip($(this).attr('title'), {
+				var tt = new Spaz_Tooltip($(this).attr('data-spaz-title'), {
 					'e'		:e,
 					'trigger':this
 				});
 				tt.show();
 			},
-			'input[title], button[title]':function(e) {
-				var tt = new Spaz_Tooltip($(this).attr('title'), {
+			'input[data-spaz-title], button[data-spaz-title]':function(e) {
+				var tt = new Spaz_Tooltip($(this).attr('data-spaz-title'), {
 					'e'		:e,
 					'trigger':this
 				});
 				tt.show();
 			},
 			'.directory-user-followstatus':function(e) {
-				var tt = new Spaz_Tooltip($(this).attr('title'), {
+				var tt = new Spaz_Tooltip($(this).attr('data-spaz-title'), {
 					'e'		:e,
 					'trigger':this
 				});
 				tt.show();
 			}
-			
 		})
 
 		.intercept('mouseout', {
@@ -207,13 +210,8 @@ Spaz.Controller.initIntercept = function() {
 
 		.intercept('click', {
 			
-			// '.TabbedPanelsTab':function(e) {
-			//	Spaz.UI.setSelectedTab(this);
-			// },
-			
-			'#tab-public':function(e) {
-				// alert('e.target');
-				// Spaz.Timelines.public.activate();
+			'.TabbedPanelsTab':function(e) {
+				Spaz.UI.setSelectedTab(this);
 			},
 			
 			'#filter-friends':function(e) {

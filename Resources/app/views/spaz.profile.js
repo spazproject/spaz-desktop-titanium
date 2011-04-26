@@ -129,7 +129,7 @@ Spaz.Profile.build = function(username){
 			if(value){
 				$bio.html(sch.makeClickable(value, {
 					screenname: {
-						tpl: '<span class="username clickable" title="View profile" ' +
+						tpl: '<span class="username clickable" data-spaz-title="View profile" ' +
 							'data-username="#username#">@#username#</span>'
 					},
 					hashtag: {

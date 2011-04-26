@@ -80,7 +80,7 @@ Spaz_Tooltip.prototype.show = function(opts) {
 
 		// show the tooltip
 		thisTT.jqtt
-			.attr('title', thisTT.uuid) // assign uuid
+			.attr('data-spaz-title', thisTT.uuid) // assign uuid
 			.css({ left: thisTT.event.pageX, top: thisTT.event.pageY + 10 })
 			.show()
 			.css('opacity', 0)
@@ -261,8 +261,8 @@ Spaz_Tooltip.prototype.setTrigger = function(trigger_element) {
 Spaz_Tooltip.prototype.setContent = function(content, uuid) {
     sch.debug('setContent for '+ uuid + " to " + content);
 	sch.debug('uuid is '+uuid+'; this.uuid:'+this.uuid);
-    sch.debug("this.jqtt.attr('title'):"+this.jqtt.attr('title'));
-    if (uuid && this.uuid && (this.uuid != uuid || this.jqtt.attr('title') !== uuid)) {
+    sch.debug("this.jqtt.attr('data-spaz-title'):"+this.jqtt.attr('data-spaz-title'));
+    if (uuid && this.uuid && (this.uuid != uuid || this.jqtt.attr('data-spaz-title') !== uuid)) {
         sch.debug('UUID did not match, not updating');
         return;
     } else {
@@ -277,7 +277,7 @@ Spaz_Tooltip.prototype.setContent = function(content, uuid) {
 Spaz_Tooltip.prototype.setUUID = function(uuid) {
     this.uuid = uuid;
     if (this.jqtt) {
-        this.jqtt.attr('title', uuid);
+        this.jqtt.attr('data-spaz-title', uuid);
     }
 };
 

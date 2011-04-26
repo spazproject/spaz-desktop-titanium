@@ -36,7 +36,7 @@ Spaz.TimelineFilters.defaultEntryFilters = [
 		'func':function(d) {
 			var md = new Showdown.converter();
 			d.text = md.makeHtml(d.text);
-			d.text = d.text.replace(/href="([^"]+)"/gi, 'href="$1" title="Open link in a browser window" class="inline-link"');		
+			d.text = d.text.replace(/href="([^"]+)"/gi, 'href="$1" data-spaz-title="Open link in a browser window" class="inline-link"');		
 			return d;	
 		}
 	}
