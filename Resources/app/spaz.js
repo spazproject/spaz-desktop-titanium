@@ -241,12 +241,17 @@ Spaz.initialize = function() {
 
 	Spaz.UI.buildToolsMenu();
 
-	// $('.panelmenu form input[title="filter"]').hint();
-
-	$('.TabbedPanelsTab').each(function(i) {
-		this.title = this.title + '<br />Shortcut: <strong>CMD or CTRL+' + (parseInt(i, 10) + 1) + '</strong>';
-	});
-	sch.debug('Set shortcut info in tab titles');
+	// $('.TabbedPanelsTab').each(function(i) {
+	// 	$this = $(this);
+	// 	$this.attr('data-spaz-title',
+	// 		[
+	// 			$this.attr('data-spaz-title'),
+	// 			'Shortcut: CMD or CTRL+' + (parseInt(i, 10) + 1) + ''
+	// 		].join("\n")
+	// 	);
+	// 	console.log("this.outerHTML", this.outerHTML);
+	// });
+	// sch.debug('Set shortcut info in tab titles');
 
 
 	/*
